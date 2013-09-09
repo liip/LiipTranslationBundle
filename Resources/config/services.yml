@@ -1,0 +1,7 @@
+parameters:
+#    liip_translation.example.class: Liip\TranslationBundle\Example
+
+services:
+#    liip_translation.example:
+#        class: %liip_translation.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
