@@ -1,0 +1,31 @@
+{
+    "name": "liip/translation-bundle",
+    "type": "symfony-bundle",
+    "description": "provide various tools to ease translation management",
+    "keywords": ["translation", "i18n"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Liip AG",
+            "homepage": "http://www.liip.ch/"
+        },
+        {
+            "name": "Community contributions",
+            "homepage": "https://github.com/liip/LiipTranslationBundle/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "2.*"
+    },
+    "require-dev":{
+        "symfony/console": "~2.0",
+        "symfony/framework-bundle": "2.3.*",
+        "symfony/finder": "2.*"
+    },
+    "autoload": {
+        "psr-0": { "Liip\\TranslationBundle": "" }
+    },
+    "target-dir": "Liip/TranslationBundle"
+}
