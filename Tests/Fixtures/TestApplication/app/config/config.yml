@@ -1,0 +1,15 @@
+framework:
+    secret:          Blablablaaa
+    router:          { resource: "%kernel.root_dir%/config/routing.yml" }
+    form:            true
+    csrf_protection: true
+    session:         ~
+    default_locale:  en
+    translator:      { fallback: en }
+    profiler:        { only_exceptions: false }
+    templating:
+        engines: ['twig']
+
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%

@@ -1,0 +1,3 @@
+liip_translation:
+    resource: "@LiipTranslationBundle/Resources/config/routing.yml"
+    prefix:   /
