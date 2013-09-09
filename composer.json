@@ -21,7 +21,7 @@
     },
     "require-dev":{
         "symfony/console": "~2.0",
-        "symfony/framework-bundle": "2.3.*",
+        "symfony/framework-bundle": "2.*",
         "symfony/finder": "2.*"
     },
     "autoload": {
