@@ -10,7 +10,8 @@ class AppKernel extends Kernel
         return array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new Liip\TranslationBundle\LiipTranslationBundle()
+            new Liip\TranslationBundle\LiipTranslationBundle(),
+            new Liip\TranslationBundle\Tests\Fixtures\TestApplication\TestBundle\TestBundle()
         );
     }
 

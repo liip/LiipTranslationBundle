@@ -1,3 +1,7 @@
+non_regression:
+    pattern:  /non-regression
+    defaults: { _controller: TestBundle:Test:fallbackTest }
+
 liip_translation:
     resource: "@LiipTranslationBundle/Resources/config/routing.yml"
     prefix:   /
