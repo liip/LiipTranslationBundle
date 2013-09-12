@@ -20,6 +20,7 @@
     </filter>
 
     <php>
+        <!-- This is used for functional test case into a real SF2 app -->
         <server name="KERNEL_DIR" value="./Tests/Fixtures/TestApplication/app" />
     </php>
 

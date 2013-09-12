@@ -1,7 +1,7 @@
 parameters:
-#    liip_translation.example.class: Liip\TranslationBundle\Example
+    translator.class: Liip\TranslationBundle\Translation\DualModeTranslator
 
 services:
-#    liip_translation.example:
-#        class: %liip_translation.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    liip.translation.manager:
+        class: Liip\TranslationBundle\Manager\Manager
+        arguments: ["%liip_translation_config%", "@translator"]
