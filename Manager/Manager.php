@@ -27,4 +27,14 @@ class Manager
         return $this->config['locale_list'];
     }
 
+    /**
+     * Return the list of all translations resources
+     *
+     * @return array
+     */
+    public function getStandardResources()
+    {
+        return $this->translator->getStandardResources();
+    }
+
 }
