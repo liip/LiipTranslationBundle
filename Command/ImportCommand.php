@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Liip\TranslationBundle\Translation\DualModeTranslator;
-use Liip\TranslationBundle\Manager\Manager;
+use Liip\TranslationBundle\Model\Manager;
 use Symfony\Component\Translation\Translator;
 
 

@@ -3,5 +3,7 @@ parameters:
 
 services:
     liip.translation.manager:
-        class: Liip\TranslationBundle\Manager\Manager
-        arguments: ["%liip_translation_config%", "@translator"]
+        class: Liip\TranslationBundle\Model\Manager
+        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.storage"]
+    liip.translation.storage:
+        class: Liip\TranslationBundle\Model\Storage\Storage

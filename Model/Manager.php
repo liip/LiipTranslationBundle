@@ -1,8 +1,9 @@
 <?php
 
-namespace Liip\TranslationBundle\Manager;
+namespace Liip\TranslationBundle\Model;
 
 use Liip\TranslationBundle\Translation\DualModeTranslator;
+use Liip\TranslationBundle\Model\Storage\Storage;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class Manager
@@ -14,10 +15,14 @@ class Manager
 
     protected $logger;
 
-    public function __construct($config, $translator)
+    /** @var  RepositoryInterface */
+    protected $storage;
+
+    public function __construct($config, $translator, Storage $storage)
     {
         $this->config = $config;
         $this->translator = $translator;
+        $this->storage = $storage;
     }
 
     /**
@@ -73,16 +78,17 @@ class Manager
 
             /** @var MessageCatalogue $catalog */
             $catalog = $this->translator->loadResource($resource);
+            $this->storage->load();
 
             foreach ($catalog->all() as $domain => $translations) {
                 $this->log("\n  Import catalog <comment>$domain</comment>\n");
                 foreach($translations as $key => $value) {
-                    $this->log("    >> new key [$key] with a base value of [$value]\n");
-                    $metadata = $catalog->getMetadata($key, $domain);
-                    var_dump($metadata);
-                    $this->storage->import($domain, $key, $resource['locale'], $metadata, $value);
+                    $this->log("    >> key [$key] with a base value of [$value]\n");
+                    $this->storage->createOrUpdateTranslationUnit($domain, $key, $catalog->getMetadata($key, $domain));
+                    $this->storage->setBaseTranslation($resource['locale'], $domain, $key , $value);
                 }
             }
+            $this->storage->save();
             $this->log(" <info>Import success</info>\n");
 
         }
