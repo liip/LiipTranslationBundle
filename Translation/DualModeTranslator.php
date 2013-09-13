@@ -98,6 +98,12 @@ class DualModeTranslator extends Translator
      */
     public function loadResource($resource)
     {
+        // If possible use the liip loader
+        if (in_array($resource['format'], array('xliff', 'xlf'))) {
+            return $this->container->get('liip.xliff.loader')->load($resource['path'], $resource['locale'], $resource['domain']);
+        }
+        
+        // Search for an other service
         foreach ($this->loaderIds as $serviceId => $formats) {
             foreach ($formats as $format) {
                 if ($resource['format'] === $format) {
@@ -105,6 +111,7 @@ class DualModeTranslator extends Translator
                 }
             }
         }
+
         throw new \RuntimeException("Not service found to load {$resource['path']}");
     }
 
