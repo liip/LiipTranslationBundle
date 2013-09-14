@@ -7,31 +7,32 @@
 namespace Liip\TranslationBundle\Model\Storage;
 
 
-use Liip\TranslationBundle\Model\Storage\Repository\FileRepository;
-use Liip\TranslationBundle\Model\Storage\Repository\RepositoryInterface;
+use Liip\TranslationBundle\Model\Storage\Persistence\FilePersistence;
+use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class Storage {
 
-    /** @var  RepositoryInterface */
-    protected $repository;
+    /** @var  PersistenceInterface */
+    protected $Persistence;
     protected $units;
     protected $translations;
 
     public function load() {
-        $this->repository = new FileRepository();
-        $this->repository->load();
-        $this->units = $this->repository->getUnits();
-        $this->translations = $this->repository->getTranslations();
+        $this->Persistence = new YamlFilePersistence();
+        $this->Persistence->load();
+        $this->units = $this->Persistence->getUnits();
+        $this->translations = $this->Persistence->getTranslations();
     }
 
     /**
-     * Save the current unit and translation into the repository
+     * Save the current unit and translation into the Persistence
      */
     public function save() {
-        $this->repository->setTranslations($this->translations);
-        $this->repository->setUnits($this->units);
-        $this->repository->save();
+        $this->Persistence->setTranslations($this->translations);
+        $this->Persistence->setUnits($this->units);
+        $this->Persistence->save();
     }
 
     /**

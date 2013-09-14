@@ -1,10 +1,8 @@
 <?php
 
-namespace Liip\TranslationBundle\Model\Storage\Repository;
+namespace Liip\TranslationBundle\Model\Storage\Persistence;
 
-use Liip\TranslationBundle\Model\Translation\Unit;
-
-interface RepositoryInterface
+interface PersistenceInterface
 {
     public function load();
 

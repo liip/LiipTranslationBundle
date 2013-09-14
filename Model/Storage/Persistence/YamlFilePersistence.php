@@ -1,12 +1,12 @@
 <?php
 
-namespace Liip\TranslationBundle\Model\Storage\Repository;
+namespace Liip\TranslationBundle\Model\Storage\Persistence;
 
-use Liip\TranslationBundle\Model\Storage\Repository\RepositoryInterface;
+use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
 use Symfony\Component\Yaml\Yaml;
 
 
-class FileRepository implements RepositoryInterface {
+class YamlFilePersistence implements PersistenceInterface {
 
     protected $directory = '/Users/dj/Sites/i18n-sandbox/data/translations';
     protected $loaded = false;

@@ -15,7 +15,7 @@ class Manager
 
     protected $logger;
 
-    /** @var  RepositoryInterface */
+    /** @var  Storage */
     protected $storage;
 
     public function __construct($config, $translator, Storage $storage)
