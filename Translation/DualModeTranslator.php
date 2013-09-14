@@ -2,48 +2,49 @@
 
 namespace Liip\TranslationBundle\Translation;
 
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
+use Symfony\Bundle\FrameworkBundle\Translation\BaseTranslator;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Translation\Loader\LoaderInterface;
+use Symfony\Component\Translation\MessageCatalogue;
 
 /**
- * A translator that can work based on the standard symfony system, or that can be
- *  switch to use the intermediate storage of the LiipTranslationBundle
+ * A translator that work over an intermediate storage
  *
  * @package Liip\TranslationBundle\Translation
  */
-class DualModeTranslator extends Translator
+class Translator extends BaseTranslator
 {
     /**
-     * Define the current mode, could be:
-     *
-     *  * 'standard' :      traditional translation files (yml, xliff, etc...)
-     *  * 'intermediate' :  from the new intermediate storage
-     *
-     * @var string
-     */
-    protected $mode = 'standard';
-    protected static $validModes = array('standard','intermediate');
-
-    /**
-     * Store the resources added to the base class
+     * Store all the classical resources to be able to import them in the storage
      * @var array
      */
     protected $standardResources = array();
 
+    /**
+     * Override the addResource, so that we can keep tracking standard resources
+     *  but we don't call the parent method as we don't want to use them anymore
+     * @param string $format
+     * @param mixed $resource
+     * @param string $locale
+     * @param null $domain
+     */
+    public function addResource($format, $resource, $locale, $domain = null)
+    {
+        $this->standardResources[] = array(
+            'format'=>$format,
+            'path'=>$resource,
+            'locale'=>$locale,
+            'domain'=> $domain === null ? 'messages' : $domain
+        );
+    }
 
     /**
-     * Select the current working mode
-     *
-     * @param $newMode
-     * @throws \RuntimeException   In case of invalid mode
+     * Return the list of 'standard' resources
+     * @return array
      */
-    public function switchMode($newMode)
+    public function getStandardResources()
     {
-        if (!in_array($newMode, self::$validModes)){
-            throw new \RuntimeException("Invalid mode [$newMode], must be ".implode(' or ', self::$validModes));
-        }
-        $this->mode = $newMode;
-        $this->catalogues = array(); // Clear the loaded catalogues
+        return $this->standardResources;
     }
 
 
@@ -62,48 +63,21 @@ class DualModeTranslator extends Translator
         return $this->catalogues[$locale];
     }
 
-    /**
-     * Override the addResource, so that the resource list is available
-     * @param string $format
-     * @param mixed $resource
-     * @param string $locale
-     * @param null $domain
-     */
-    public function addResource($format, $resource, $locale, $domain = null)
-    {
-        $this->standardResources[] = array(
-            'format'=>$format,
-            'path'=>$resource,
-            'locale'=>$locale,
-            'domain'=> $domain === null ? 'messages' : $domain
-        );
-        parent::addResource($format, $resource  , $locale, $domain);
-    }
 
     /**
-     * Return the list of 'standard' resource that have been added to this translator
-     *
-     * @return array
-     */
-    public function getStandardResources()
-    {
-        return $this->standardResources;
-    }
-
-    /**
-     * Load a resources with on of the existing loaders
+     * Load a specific resource
      * @param $resource
-     * @return mixed
+     * @return MessageCatalogue
      * @throws \RuntimeException
      */
     public function loadResource($resource)
     {
-        // If possible use the liip loader
+        // If possible use our custom xliff loader, so we get metadata
         if (in_array($resource['format'], array('xliff', 'xlf'))) {
             return $this->container->get('liip.xliff.loader')->load($resource['path'], $resource['locale'], $resource['domain']);
         }
-        
-        // Search for an other service
+
+        // Search for an other services
         foreach ($this->loaderIds as $serviceId => $formats) {
             foreach ($formats as $format) {
                 if ($resource['format'] === $format) {
@@ -113,6 +87,23 @@ class DualModeTranslator extends Translator
         }
 
         throw new \RuntimeException("Not service found to load {$resource['path']}");
+    }
+
+
+    /**
+     * Initialize the translation before loading catalogues from the storage
+     */
+    protected function initialize()
+    {
+        // Register our custom loader
+        $this->addLoader('liip', $this->container->get('liip.translation.storage.loader'));
+
+        // Register all catalogues we have in the storage
+        foreach ($this->container->get('liip.translation.storage')->getTranslations() as $locale => $translations) {
+            foreach ($translations as $domain => $keyValues) {
+                parent::addResource('liip', 'intermediate.storage', $locale, $domain);
+            }
+        }
     }
 
 }

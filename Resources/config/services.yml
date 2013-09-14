@@ -1,5 +1,5 @@
 parameters:
-    translator.class: Liip\TranslationBundle\Translation\DualModeTranslator
+    translator.class: Liip\TranslationBundle\Translation\Translator
 
 services:
 
@@ -9,6 +9,10 @@ services:
 
     liip.translation.storage:
         class: Liip\TranslationBundle\Model\Storage\Storage
+
+    liip.translation.storage.loader:
+        class: Liip\TranslationBundle\Model\Storage\Loader
+        arguments: ["@liip.translation.storage"]
 
     liip.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader

@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Model;
 
-use Liip\TranslationBundle\Translation\DualModeTranslator;
+use Liip\TranslationBundle\Translation\Translator;
 use Liip\TranslationBundle\Model\Storage\Storage;
 use Symfony\Component\Translation\MessageCatalogue;
 
@@ -10,7 +10,7 @@ class Manager
 {
     protected $config = array();
 
-    /** @var DualModeTranslator */
+    /** @var Translator */
     protected $translator;
 
     protected $logger;

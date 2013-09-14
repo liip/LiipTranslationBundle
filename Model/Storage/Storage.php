@@ -9,6 +9,7 @@ namespace Liip\TranslationBundle\Model\Storage;
 
 use Liip\TranslationBundle\Model\Storage\Repository\FileRepository;
 use Liip\TranslationBundle\Model\Storage\Repository\RepositoryInterface;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class Storage {
 
@@ -67,4 +68,17 @@ class Storage {
         }
     }
 
+    public function getTranslations()
+    {
+        $this->load();
+        return $this->translations;
+    }
+
+    public function getDomainCatalogue($locale, $domain)
+    {
+        $this->load();
+        $catalogue = new MessageCatalogue($locale);
+        $catalogue->add($this->translations[$locale][$domain], $domain);
+        return $catalogue;
+    }
 }
