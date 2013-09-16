@@ -1,6 +1,10 @@
-non_regression:
-    pattern:  /non-regression
+non_regression_fallback:
+    pattern:  /non-regression/fallback
     defaults: { _controller: TestBundle:Test:fallbackTest }
+
+non_regression_override:
+    pattern:  /non-regression/override
+    defaults: { _controller: TestBundle:Test:overrideTest }
 
 liip_translation:
     resource: "@LiipTranslationBundle/Resources/config/routing.yml"

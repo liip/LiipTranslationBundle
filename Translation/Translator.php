@@ -42,6 +42,12 @@ class Translator extends BaseTranslator
      */
     public function getStandardResources()
     {
+        // Check validity
+        foreach ($this->standardResources as $resource) {
+            if (!file_exists($resource['path'])) {
+                throw new \RuntimeException('Ressources list is outdated, please run a cache:clear to update it');
+            }
+        }
         return $this->standardResources;
     }
 

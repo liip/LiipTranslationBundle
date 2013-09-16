@@ -32,13 +32,12 @@ class ListResourcesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("\n<comment>List of available translation resources:</comment>\n");
-        $projectDir = realpath($this->getContainer()->get('kernel')->getRootDir().'/..');
         $resources = $this->getContainer()->get('liip.translation.manager')->getStandardResources();
 
         if ( !$input->getOption('group') ) {
             foreach($resources as $resource) {
                 $path = $resource['path'];
-                $output->writeln("  ".substr(realpath($path), strlen($projectDir) + 1));
+                $output->writeln("  ".realpath($path));
             }
         }
         else {
@@ -46,7 +45,7 @@ class ListResourcesCommand extends ContainerAwareCommand
             foreach($resources as $resource) {
                 $pathParts = pathinfo(realpath($resource['path']));
                 list($domain, $locale) = explode('.', $pathParts['filename']);
-                $resource = substr($pathParts['dirname'], strlen($projectDir) + 1) . '/' . $domain;
+                $resource = $pathParts['dirname'] . '/' . $domain;
                 if ( ! array_key_exists($resource, $languageByResources)) {
                     $languageByResources[$resource] = array();
                 }

@@ -13,3 +13,6 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+
+#liip_translation:
+#    locale_list: [fr_CH, fr, en]

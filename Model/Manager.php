@@ -49,7 +49,8 @@ class Manager
      */
     public function checkIfResourceIsIgnored($resource)
     {
-        return false; // TODO
+        // TODO, implement something from the bundle config
+        return strpos($resource['path'], 'symfony/symfony') !== false;
     }
 
     public function processImportOfStandardResources($options)

@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('locale_list')
                     ->cannotBeEmpty()
-                    ->defaultValue(array('fr', 'fr_CH'))
+                    ->defaultValue(array('en', 'fr', 'fr_CH'))
                 ->end()
             ->end()
         ->end();
