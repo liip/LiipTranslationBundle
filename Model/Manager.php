@@ -63,6 +63,13 @@ class Manager
 
         $this->log("<info>Start importation for locales:</info> [".implode(', ', $locales)."]\n");
 
+        // Create all catalogues
+        $catalogues = array();
+        foreach ($locales as $locale) {
+            $catalogues[$locale] = new MessageCatalogue($locale);
+        }
+
+        // Import resources one by one
         foreach($this->getStandardResources() as $resource) {
 
             $this->log("Import resource <info>{$resource['path']}</info>");
@@ -77,22 +84,23 @@ class Manager
                 continue;
             }
 
-            /** @var MessageCatalogue $catalog */
-            $catalog = $this->translator->loadResource($resource);
-            $this->storage->load();
+            $catalogues[$resource['locale']]->addCatalogue($this->translator->loadResource($resource));
+        }
 
-            foreach ($catalog->all() as $domain => $translations) {
+        // Load translations into the intermediate storage
+        $this->storage->load();
+        foreach ($locales as $locale) {
+            foreach ($catalogues[$locale]->all() as $domain => $translations) {
                 $this->log("\n  Import catalog <comment>$domain</comment>\n");
                 foreach($translations as $key => $value) {
                     $this->log("    >> key [$key] with a base value of [$value]\n");
-                    $this->storage->createOrUpdateTranslationUnit($domain, $key, $catalog->getMetadata($key, $domain));
-                    $this->storage->setBaseTranslation($resource['locale'], $domain, $key , $value);
+                    $this->storage->createOrUpdateTranslationUnit($domain, $key, $catalogues[$locale]->getMetadata($key, $domain));
+                    $this->storage->setBaseTranslation($locale, $domain, $key , $value);
                 }
             }
-            $this->storage->save();
-            $this->log(" <info>Import success</info>\n");
-
         }
+        $this->storage->save();
+        $this->log(" <info>Import success</info>\n");
     }
 
     protected function log($msg) {
