@@ -18,12 +18,35 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+
         $treeBuilder->root('liip_translation')
             ->children()
-                ->scalarNode('locale_list')
+
+                ->arrayNode('locale_list')
+                    ->prototype('scalar')
                     ->cannotBeEmpty()
-                    ->defaultValue(array('en', 'fr', 'fr_CH'))
+                    ->defaultValue(array('en', 'en_US'))
                 ->end()
+
+//            ->arrayNode('parameters')
+//                ->arrayNode('persistence_layer')
+//                    ->isRequired()
+//                    ->prototype('array')
+//                    ->children()
+//                        ->scalarNode('class')
+//                            ->isRequired()
+//                            ->defaultValue('Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence')
+//                        ->end()
+//                        ->arrayNode('options')
+//                            ->children()
+//                                ->scalarNode('folder')
+//                                    ->default
+//                                ->end()
+//                            ->end()
+//                        ->end()
+//                    ->end()
+//                ->end()
+
             ->end()
         ->end();
 
