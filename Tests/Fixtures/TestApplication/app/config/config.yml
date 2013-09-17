@@ -14,5 +14,9 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 
-#liip_translation:
-#    locale_list: [fr_CH, fr, en]
+liip_translation:
+    locale_list: [fr_CH, fr, en]
+    persistence:
+        class: Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence
+        options:
+            folder: "%kernel.cache_dir%/translations"

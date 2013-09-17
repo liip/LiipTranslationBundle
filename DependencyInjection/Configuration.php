@@ -19,36 +19,32 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        $treeBuilder->root('liip_translation')
+        $treeBuilder->root('liip_translation', 'array')
             ->children()
 
                 ->arrayNode('locale_list')
-                    ->prototype('scalar')
-                    ->cannotBeEmpty()
                     ->defaultValue(array('en', 'en_US'))
+                    ->prototype('scalar')->end()
                 ->end()
 
-//            ->arrayNode('parameters')
-//                ->arrayNode('persistence_layer')
-//                    ->isRequired()
-//                    ->prototype('array')
-//                    ->children()
-//                        ->scalarNode('class')
-//                            ->isRequired()
-//                            ->defaultValue('Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence')
-//                        ->end()
-//                        ->arrayNode('options')
-//                            ->children()
-//                                ->scalarNode('folder')
-//                                    ->default
-//                                ->end()
-//                            ->end()
-//                        ->end()
-//                    ->end()
-//                ->end()
+                ->arrayNode('persistence')
+                    ->children()
+                        ->scalarNode('class')
+                            ->isRequired()
+                            ->defaultValue('Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence')
+                        ->end()
+                        ->arrayNode('options')
+                            ->children()
+                                ->scalarNode('folder')
+                                    ->defaultValue("%kernel.root_dir%/data/translations")
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
 
             ->end()
-        ->end();
+        ;
 
         return $treeBuilder;
     }

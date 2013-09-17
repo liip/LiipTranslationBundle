@@ -22,15 +22,9 @@ class LiipTranslationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        // Raw config until we fix the Configuration.php mess
-        $config['persistence_layer'] = array(
-            'class' => 'Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence',
-            'options' => array(
-                'folder' => "%kernel.root_dir%/data/translations"
-            )
-        );
-
         $container->setParameter('liip_translation_config', $config);
+        $container->setParameter('liip.translation.persistance.class', $config['persistence']['class']);
+        $container->setParameter('liip.translation.persistance.options', $config['persistence']['options']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

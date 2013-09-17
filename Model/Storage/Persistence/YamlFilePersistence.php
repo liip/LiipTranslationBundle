@@ -16,14 +16,16 @@ class YamlFilePersistence implements PersistenceInterface {
     public function __construct($options)
     {
         $this->directory = $options['folder'];
+        if (!is_dir($this->directory)) {
+            exec('mkdir -p '.$this->directory);
+            if (!is_dir($this->directory)) {
+                throw new \RuntimeException("Invalid folder [$this->directory] for translation persistence");
+            }
+        }
     }
 
     public function load()
     {
-        if (!is_dir($this->directory)){
-            throw new \RuntimeException("Invalid folder [$this->directory] for translation persistence");
-        }
-
         foreach(array('units', 'translations') as $dataType) {
             $file = $this->directory.'/'.$dataType;
             $this->$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
