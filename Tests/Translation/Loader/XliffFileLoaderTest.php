@@ -15,4 +15,12 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('id'=>2, 'minbytes'=>'10', 'maxbytes'=>'100'), $catalogue->getMetadata('with.metadata'));
     }
 
+    public function testNoteExtraction()
+    {
+        $loader = new XliffFileLoader();
+        $catalogue = $loader->load(__DIR__.'/../../Fixtures/test.xlf', 'en', 'messages');
+
+        $this->assertEquals(array('id'=>3, 'note'=>'Please edit it carefully'), $catalogue->getMetadata('with.note'));
+    }
+
 }

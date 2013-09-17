@@ -22,13 +22,22 @@ class XliffFileLoader extends BaseLoader
         $xml=simplexml_load_file($resource);
         $xml->registerXPathNamespace('xliff', 'urn:oasis:names:tc:xliff:document:1.2');
         foreach ($xml->xpath('//xliff:trans-unit') as $translation) {
+
+            // Read the attributes
             $attributes = (array)$translation->attributes();
             $attributes = $attributes['@attributes'];
             if (!(isset($attributes['resname']) || isset($translation->source)) || !isset($translation->target)) {
                 continue;
             }
             $key = isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source;
-            $catalogue->setMetadata((string)$key, (array)$attributes, $domain);
+            $metadata = (array)$attributes;
+
+            // read the notes
+            if (isset($translation->note)){
+                $metadata['note'] = (string) $translation->note;
+            }
+
+            $catalogue->setMetadata((string)$key, $metadata, $domain);
         }
 
         return $catalogue;

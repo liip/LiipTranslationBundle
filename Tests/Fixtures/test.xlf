@@ -10,6 +10,11 @@
                 <source>with.metadata</source>
                 <target>Min max metadata on this one</target>
             </trans-unit>
+            <trans-unit id="3">
+                <source>with.note</source>
+                <target>Trans unit with a note from a dev</target>
+                <note from="dev">Please edit it carefully</note>
+            </trans-unit>
         </body>
     </file>
 </xliff>
