@@ -16,24 +16,27 @@ use Symfony\Component\Translation\MessageCatalogue;
 class Storage {
 
     /** @var  PersistenceInterface */
-    protected $Persistence;
+    protected $persistence;
     protected $units;
     protected $translations;
 
+    public function __construct(PersistenceInterface $persistence) {
+        $this->persistence = $persistence;
+    }
+
     public function load() {
-        $this->Persistence = new YamlFilePersistence();
-        $this->Persistence->load();
-        $this->units = $this->Persistence->getUnits();
-        $this->translations = $this->Persistence->getTranslations();
+        $this->persistence->load();
+        $this->units = $this->persistence->getUnits();
+        $this->translations = $this->persistence->getTranslations();
     }
 
     /**
      * Save the current unit and translation into the Persistence
      */
     public function save() {
-        $this->Persistence->setTranslations($this->translations);
-        $this->Persistence->setUnits($this->units);
-        $this->Persistence->save();
+        $this->persistence->setTranslations($this->translations);
+        $this->persistence->setUnits($this->units);
+        $this->persistence->save();
     }
 
     /**

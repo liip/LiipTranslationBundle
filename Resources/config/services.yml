@@ -9,6 +9,11 @@ services:
 
     liip.translation.storage:
         class: Liip\TranslationBundle\Model\Storage\Storage
+        arguments: ["@liip.translation.persistance"]
+
+    liip.translation.persistance:
+        class: Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence
+        arguments: [folder: "%kernel.root_dir%/data/translations"]
 
     liip.translation.storage.loader:
         class: Liip\TranslationBundle\Model\Storage\Loader

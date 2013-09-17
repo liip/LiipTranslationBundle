@@ -8,13 +8,22 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFilePersistence implements PersistenceInterface {
 
-    protected $directory = '/Users/dj/Sites/i18n-sandbox/data/translations';
+    protected $directory;
     protected $loaded = false;
     protected $units = null;
     protected $translations = null;
 
-    function load()
+    public function __construct($options)
     {
+        $this->directory = $options['folder'];
+    }
+
+    public function load()
+    {
+        if (!is_dir($this->directory)){
+            throw new \RuntimeException("Invalid folder [$this->directory] for translation persistence");
+        }
+
         foreach(array('units', 'translations') as $dataType) {
             $file = $this->directory.'/'.$dataType;
             $this->$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
