@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1" minbytes="10" maxbytes="100">
+                <source>translation.interface.title</source>
+                <target>Interface de traduction</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>translation.interface.column.domain</source>
+                <target>Domain</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>translation.interface.column.key</source>
+                <target>Interface de traduction</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>translation.interface.column.help</source>
+                <target>Help / Description</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>translation.interface.column.value</source>
+                <target>Translation for [%locale%]</target>
+                <note from="developer">This element must contain a placeholder named %locale%</note>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

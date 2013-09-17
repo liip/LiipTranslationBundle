@@ -8,8 +8,9 @@ class TranslationController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('LiipTranslationBundle:Default:index.html.twig', array('translations' =>
-            array('key1' => 'translation1', 'key2' => 'translation2')
+        return $this->render('LiipTranslationBundle:Default:index.html.twig', array(
+            'items' => $this->get('liip.translation.storage')->getAllTranslationUnits(),
+            'columns' => $this->get('liip.translation.manager')->getLocaleList()
         ));
     }
 }

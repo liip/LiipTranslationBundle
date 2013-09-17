@@ -10,6 +10,7 @@ namespace Liip\TranslationBundle\Model\Storage;
 use Liip\TranslationBundle\Model\Storage\Persistence\FilePersistence;
 use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence;
+use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class Storage {
@@ -81,5 +82,27 @@ class Storage {
         $catalogue = new MessageCatalogue($locale);
         $catalogue->add($this->translations[$locale][$domain], $domain);
         return $catalogue;
+    }
+
+    public function getAllTranslationUnits()
+    {
+        $this->load();
+        $units = array();
+        foreach ($this->units as $domain => $unitData) {
+            foreach ($unitData as $key => $metadata) {
+                $unit = new Unit();
+                $unit->domain = $domain;
+                $unit->key = $key;
+                $unit->metadata = $metadata;
+                $units[] = $unit;
+                foreach($this->translations as $locale => $translations) {
+                    if (isset($translations[$domain][$key])){
+                        $unit->setTranslation($locale, $translations[$domain][$key]);
+                    }
+                }
+            }
+        }
+
+        return $units;
     }
 }
