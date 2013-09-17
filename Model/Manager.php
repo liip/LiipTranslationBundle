@@ -28,8 +28,16 @@ class Manager
     /**
      * Return the list of managed locales (defined in the bundle config)
      */
-    public function getLocaleList() {
+    public function getLocaleList()
+    {
         return $this->config['locale_list'];
+    }
+
+    public function clearSymfonyCache()
+    {
+        foreach($this->getLocaleList() as $locale) {
+            $this->translator->clearCacheForLocale($locale);
+        }
     }
 
     /**

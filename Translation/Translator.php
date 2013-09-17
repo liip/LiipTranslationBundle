@@ -110,4 +110,12 @@ class Translator extends BaseTranslator
         }
     }
 
+    public function clearCacheForLocale($locale)
+    {
+        $cacheFile = $this->options['cache_dir'].'/catalogue.'.$locale.'.php';
+        if (is_file($cacheFile)) {
+            unlink($cacheFile);
+        }
+    }
+
 }

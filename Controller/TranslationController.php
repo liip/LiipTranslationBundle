@@ -13,4 +13,12 @@ class TranslationController extends Controller
             'columns' => $this->get('liip.translation.manager')->getLocaleList()
         ));
     }
+
+    public function cacheClearAction()
+    {
+        $this->get('liip.translation.manager')->clearSymfonyCache();
+        $this->get('session')->getFlashBag()->set('success', 'Cache cleared');
+
+        return $this->redirect($this->generateUrl('liip_translation_interface'));
+    }
 }
