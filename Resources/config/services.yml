@@ -20,5 +20,9 @@ services:
         class: Liip\TranslationBundle\Model\Storage\Loader
         arguments: ["@liip.translation.storage"]
 
+    liip.translation.importer:
+        class: Liip\TranslationBundle\Model\Importer\Importer
+        arguments: ["@session", "@liip.translation.storage", "@translator"]
+
     liip.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader

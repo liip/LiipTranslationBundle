@@ -44,6 +44,8 @@ class ImportCommand extends ContainerAwareCommand
         /** @var Manager $translationManager */
         $translationManager =  $this->getContainer()->get('liip.translation.manager');
         $translationManager->processImportOfStandardResources($importOptions);
+
+        $translationManager->clearSymfonyCache();
     }
 
 }

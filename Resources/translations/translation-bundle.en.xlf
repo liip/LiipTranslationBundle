@@ -23,6 +23,15 @@
                 <target>Translation for [%locale%]</target>
                 <note from="developer">This element must contain a placeholder named %locale%</note>
             </trans-unit>
+            <trans-unit id="6">
+                <source>import.process.locale.button</source>
+                <target>Execute imports for [%locale%]</target>
+                <note from="developer">This element must contain a placeholder named %locale%</note>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>import.process.all.button</source>
+                <target>Execute imports for all locale</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

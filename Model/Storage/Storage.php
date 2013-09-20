@@ -6,10 +6,7 @@
 
 namespace Liip\TranslationBundle\Model\Storage;
 
-
-use Liip\TranslationBundle\Model\Storage\Persistence\FilePersistence;
 use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
-use Liip\TranslationBundle\Model\Storage\Persistence\YamlFilePersistence;
 use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\Translation\MessageCatalogue;
 
@@ -17,17 +14,27 @@ class Storage {
 
     /** @var  PersistenceInterface */
     protected $persistence;
+    protected $loaded = false;
     protected $units;
     protected $translations;
 
-    public function __construct(PersistenceInterface $persistence) {
+    public function __construct(PersistenceInterface $persistence)
+    {
         $this->persistence = $persistence;
     }
 
-    public function load() {
+    /**
+     * Load the data from the persistence layer
+     */
+    protected function load()
+    {
+        if ($this->loaded) {
+            return;
+        }
         $this->persistence->load();
         $this->units = $this->persistence->getUnits();
         $this->translations = $this->persistence->getTranslations();
+        $this->loaded = true;
     }
 
     /**
@@ -47,14 +54,12 @@ class Storage {
      */
     public function createOrUpdateTranslationUnit($domain, $key, $metadata)
     {
-        if (!array_key_exists($domain, $this->units)) {
-            $this->units[$domain] = array();
-        }
+        $this->load();
         $this->units[$domain][$key] = $metadata;
     }
 
     /**
-     * Set a translation value, only if it's currently empty
+     * Set a base translation value
      * @param $locale
      * @param $domain
      * @param $key
@@ -62,15 +67,8 @@ class Storage {
      */
     public function setBaseTranslation($locale, $domain, $key , $value)
     {
-        if (!array_key_exists($locale, $this->translations)) {
-            $this->translations[$locale] = array();
-        }
-        if (!array_key_exists($domain, $this->translations[$locale])) {
-            $this->translations[$locale][$domain] = array();
-        }
-        if (!array_key_exists($key, $this->translations[$locale][$domain])) {
-            $this->translations[$locale][$domain][$key] = $value;
-        }
+        $this->load();
+        $this->translations[$locale][$domain][$key] = $value;
     }
 
     public function getTranslations()
@@ -85,6 +83,12 @@ class Storage {
         $catalogue = new MessageCatalogue($locale);
         $catalogue->add($this->translations[$locale][$domain], $domain);
         return $catalogue;
+    }
+
+    public function getTranslation($locale, $domain, $key)
+    {
+        $this->load();
+        return array_key_exists($locale, $this->translations) && array_key_exists($domain, $this->translations[$locale]) && array_key_exists($key, $this->translations[$locale][$domain]) ? $this->translations[$locale][$domain][$key] : null;
     }
 
     public function getAllTranslationUnits()
@@ -108,4 +112,15 @@ class Storage {
 
         return $units;
     }
+
+    public function addNewTranslation($locale, $domain, $key, $newValue) {
+        $this->load();
+        $this->translations[$locale][$domain][$key] = $newValue;
+    }
+
+    public function updateTranslation($locale, $domain, $key, $value) {
+        $this->load();
+        $this->translations[$locale][$domain][$key] = $value;
+    }
+
 }

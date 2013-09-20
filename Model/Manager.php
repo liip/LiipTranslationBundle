@@ -96,7 +96,6 @@ class Manager
         }
 
         // Load translations into the intermediate storage
-        $this->storage->load();
         foreach ($locales as $locale) {
             foreach ($catalogues[$locale]->all() as $domain => $translations) {
                 $this->log("\n  Import catalog <comment>$domain</comment>\n");
