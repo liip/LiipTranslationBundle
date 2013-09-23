@@ -1,13 +1,11 @@
-{% trans_default_domain 'translation-bundle' %}
-
-<h1>{{ 'translation.interface.title' | trans }}</h1>
+<h1>{{ 'translation.interface.title' | trans({}, 'translation-bundle') }}</h1>
 <table>
     <tr>
-        <th>{{ 'translation.interface.column.domain' | trans }}</th>
-        <th>{{ 'translation.interface.column.key' | trans }}</th>
-        <th>{{ 'translation.interface.column.help' | trans }}</th>
+        <th>{{ 'translation.interface.column.domain' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'translation.interface.column.key' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'translation.interface.column.help' | trans({}, 'translation-bundle') }}</th>
         {% for locale in columns %}
-            <th>{{ 'translation.interface.column.value' | trans({'%locale%': locale}) }}</th>
+            <th>{{ 'translation.interface.column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
         {% endfor %}
     </tr>
     {% for item in items %}

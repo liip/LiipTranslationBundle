@@ -1,6 +1,4 @@
-{% trans_default_domain 'translation-bundle' %}
-
-<h1>{{ 'import.interface.title' | trans }}</h1>
+<h1>{{ 'import.interface.title' | trans({}, 'translation-bundle') }}</h1>
 
 {% for type, messages in flashMessages %}
     <ul>
@@ -12,7 +10,7 @@
 
 <form action="{{ path('liip_translation_import_file') }}" method="POST" {{ form_enctype(form) }}>
     {{ form_rest(form) }}
-    <input type="submit" value="{{ 'import.file-input.sumbit' | trans }}">
+    <input type="submit" value="{{ 'import.file-input.sumbit' | trans({}, 'translation-bundle') }}">
 </form>
 
 {{ translations }}
@@ -57,7 +55,7 @@
     {% endif %}
 
     <form action="{{ path('liip_translation_import_process', { 'locale': locale }) }}" method="post" style="float: right;">
-        <input type="submit" value="{{ 'import.process.locale.button' | trans({'locale': locale}) }}">
+        <input type="submit" value="{{ 'import.process.locale.button' | trans({'locale': locale}, 'translation-bundle') }}">
     </form>
 
 {% else %}
@@ -68,6 +66,6 @@
 
 {% if translations | length %}
     <form action="{{ path('liip_translation_import_process', { 'locale': 'all' }) }}" method="post" style="float: right;">
-        <input type="submit" value="{{ 'import.process.all.button' | trans }}">
+        <input type="submit" value="{{ 'import.process.all.button' | trans({}, 'translation-bundle') }}">
     </form>
 {% endif %}
