@@ -18,36 +18,19 @@ use Symfony\Component\Form\AbstractType;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-if(interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
-    class FileImportType extends AbstractType
+class FileImportType extends CompatibleAbstractType
+{
+    public function compatibleBuildForm($builder, array $options)
     {
-        public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
-        {
-            $builder
-                ->add('file', 'file', array(
-                    'label' => 'import.file-input.label',
-                    'translation_domain' => 'translation-bundle',
-                    'required' => true
-                ))
-            ;
+        $opt = array(
+            'label' => 'import.file-input.label',
+            'required' => true
+        );
+        if(isset($options['translation_domain'])) {
+            $opt['translation_domain'] = 'translation-bundle';
         }
 
-        public function getName()
-        {
-            return 'translation_file_import';
-        }
-    }
-} else {
-    class FileImportType extends AbstractType
-{
-    public function buildForm(\Symfony\Component\Form\FormBuilder $builder, array $options)
-    {
-        $builder
-            ->add('file', 'file', array(
-                'label' => 'import.file-input.label',
-                'required' => true
-            ))
-        ;
+        $builder->add('file', 'file', $opt);
     }
 
     public function getName()
@@ -55,5 +38,3 @@ if(interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
         return 'translation_file_import';
     }
 }
-}
-
