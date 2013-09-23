@@ -13,7 +13,8 @@ liip_translation_import:
 liip_translation_import_file:
     pattern: /translations/import/upload
     defaults: { _controller: LiipTranslationBundle:Import:upload }
-    methods: [POST]
+    requirements:
+        _method:  POST
 
 liip_translation_import_remove_entry:
     pattern: /translations/import/remove-entry/{locale}/{domain}/{key}
@@ -22,4 +23,5 @@ liip_translation_import_remove_entry:
 liip_translation_import_process:
     pattern: /translations/import/process-locale/{locale}
     defaults: { _controller: LiipTranslationBundle:Import:process }
-    methods: [POST]
+    requirements:
+        _method:  POST
