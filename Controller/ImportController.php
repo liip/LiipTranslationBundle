@@ -9,8 +9,6 @@ class ImportController extends BaseController
 {
     public function indexAction()
     {
-        $this->securityCheck();
-
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
             'flashMessages' => $this->getFlashMessages(),
             'form' => $this->createForm(new FileImportType())->createView(),
@@ -43,7 +41,7 @@ class ImportController extends BaseController
 
     public function removeEntryAction($locale, $domain, $key)
     {
-        $this->securityCheck();
+        $this->securityCheck($domain, $locale);
 
         $this->get('liip.translation.importer')->removeEntry($locale, $domain, $key);
         $this->addFlashMessage('success', 'Entry removed');
@@ -53,7 +51,7 @@ class ImportController extends BaseController
 
     public function processAction($locale)
     {
-        $this->securityCheck();
+        $this->securityCheck(null, $locale);
 
         $this->get('liip.translation.importer')->processImport($locale);
         $this->addFlashMessage('success', 'Import success');

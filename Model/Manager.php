@@ -25,6 +25,26 @@ class Manager
         $this->storage = $storage;
     }
 
+    public function isSecuredByDomain()
+    {
+        return $this->config['security']['by_domain'];
+    }
+
+    public function isSecuredByLocale()
+    {
+        return $this->config['security']['by_locale'];
+    }
+
+    public function getRoleForLocale($locale)
+    {
+        return 'ROLE_TRANSLATION_LOCALE_'.strtoupper($locale);
+    }
+
+    public function getRoleForDomain($domain)
+    {
+        return 'ROLE_TRANSLATION_DOMAIN_'.strtoupper($domain);
+    }
+
     /**
      * Return the list of managed locales (defined in the bundle config)
      */

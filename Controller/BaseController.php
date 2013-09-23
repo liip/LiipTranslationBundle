@@ -3,18 +3,10 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class BaseController extends Controller
 {
-
-    public function securityCheck($domain = null, $locale = null)
-    {
-//        if (isset($domain) && $this->get('liip.translation.manager')->isSecuredByDomain()) {
-//            if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
-//                return new AccessDeniedHttpException("You don't have permissions to work on XXX translations");
-//            }
-//        }
-    }
 
     /**
      * Sets a flash message. This is here to avoid compatibility issues between
@@ -48,15 +40,31 @@ class BaseController extends Controller
             $session->getFlashes();
         }
     }
+
+    /**
+     * Process security for the provided locale or domain
+     *
+     * @param string $domain
+     * @param string $locale
+     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+     */
+    public function securityCheck($domain = null, $locale = null)
+    {
+        if (isset($domain) && $this->get('liip.translation.manager')->isSecuredByDomain()) {
+            $domainRole = $this->get('liip.translation.manager')->getRoleForDomain($domain);
+            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATION_ALL_DOMAINS') || !$this->get('security.context')->isGranted($domainRole)
+            ) {
+                throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
+            }
+        }
+
+        if (isset($locale) && $this->get('liip.translation.manager')->isSecuredByLocale()) {
+            $localeRole = $this->get('liip.translation.manager')->getRoleForLocale($locale);
+            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATION_ALL_LOCALES') || !$this->get('security.context')->isGranted($localeRole)
+            ) {
+                throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");
+            }
+        }
+    }
+
 }
-
-
-//security:
-//role_hierarchy:
-//ROLE_TRANSLATION_ADMIN:
-//- ROLE_TRANSLATION_ALL_DOMAINS
-//- ROLE_TRANSLATION_ALL_LOCALES
-//        ROLE_TRANSLATION_ALL_DOMAINS:
-//          - ROLE_TRANSLATION_DOMAIN_*
-//          ROLE_TRANSLATION_ALL_LOCALES:
-//          - ROLE_TRANSLATION_LOCALE_*

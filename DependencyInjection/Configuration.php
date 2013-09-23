@@ -43,6 +43,17 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
+                ->arrayNode('security')
+                    ->children()
+                        ->booleanNode('by_domain')
+                            ->defaultValue(false)
+                        ->end()
+                        ->booleanNode('by_locale')
+                            ->defaultValue(false)
+                        ->end()
+                    ->end()
+                ->end()
+
             ->end()
         ;
 
