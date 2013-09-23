@@ -16,11 +16,15 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.0"
     },
     "require-dev": {
-        "symfony/symfony": "~2.0",
-        "symfony/framework-bundle": "~2.0"
+        "twig/twig": ">=1.0,<2.0-dev",
+        "symfony/symfony": "~2.0"
+    },
+    "suggest": {
+        "twig/twig": ">=1.0,<2.0-dev"
     },
     "autoload": {
         "psr-0": { "Liip\\TranslationBundle": "" }

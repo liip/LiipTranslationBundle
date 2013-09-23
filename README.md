@@ -1,7 +1,7 @@
 LiipTranslationBundle
 =====================
 
-This Bundle provide various tools to ease translation management of a Sf2 app.
+This Bundle provide various tools to ease translations management of a Sf2 app.
 
 Installation
 ------------
@@ -11,12 +11,15 @@ Installation
           composer require liip/translation-bundle master-dev
 
 
-Contribute
-----------
+Contributing
+------------
 
-  This bundle in fully tested with PHPUnit, the tests suit can be run standalone or in a SF2 project context. Here are the
-  instructions on how to run them:
+Pull requests are welcome. Please see our [CONTRIBUTING](https://github.com/liip/LiipTranslationBundle/blob/master/CONTRIBUTING.md) guide.
+
+This bundle in fully tested with PHPUnit, the tests suite can be run using the following commands :
 
           git clone git@github.com:liip/LiipTranslationBundle.git && cd LiipTranslationBundle
           composer install --dev
           phpunit
+
+Thanks to [everyone who has contributed](https://github.com/liip/LiipTranslationBundle/graphs/contributors) already.
