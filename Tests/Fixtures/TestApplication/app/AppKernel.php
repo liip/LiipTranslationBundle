@@ -22,11 +22,11 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
-        return sys_get_temp_dir().'/LiipTranslationBundleTest/cache';
+        return __DIR__.'/cache';
     }
 
     public function getLogDir()
     {
-        return sys_get_temp_dir().'/LiipTranslationBundleTest/logs';
+        return __DIR__.'/logs';
     }
 }
