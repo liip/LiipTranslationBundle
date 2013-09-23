@@ -4,11 +4,19 @@ namespace Liip\TranslationBundle\Controller;
 
 class TranslationController extends BaseController
 {
-    public function indexAction()
+    public function indexAction($locales = null)
     {
-        return $this->render('LiipTranslationBundle:Default:index.html.twig', array(
+        $authorizedLocales = $this->get('liip.translation.manager')->getLocaleList();
+        if(is_null($locales)) {
+            $locales = $authorizedLocales;
+        } else {
+            $locales = explode('~', $locales);
+            $locales = array_intersect($locales, $authorizedLocales);
+        }
+
+        return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $this->get('liip.translation.storage')->getAllTranslationUnits(),
-            'columns' => $this->get('liip.translation.manager')->getLocaleList()
+            'columns' => $locales
         ));
     }
 

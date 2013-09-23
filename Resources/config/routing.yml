@@ -1,6 +1,6 @@
 liip_translation_interface:
-    pattern:  /translations
-    defaults: { _controller: LiipTranslationBundle:Translation:index }
+    pattern:  /translations/{locales}
+    defaults: { _controller: LiipTranslationBundle:Translation:index, locales: null }
 
 liip_translation_cache_clear:
     pattern:  /translations/cache-clear

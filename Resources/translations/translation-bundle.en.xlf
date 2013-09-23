@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="1" minbytes="10" maxbytes="100">
                 <source>translation.interface.title</source>
-                <target>Interface de traduction</target>
+                <target>Translation interface</target>
             </trans-unit>
             <trans-unit id="2">
                 <source>translation.interface.column.domain</source>
@@ -12,7 +12,7 @@
             </trans-unit>
             <trans-unit id="3">
                 <source>translation.interface.column.key</source>
-                <target>Interface de traduction</target>
+                <target>Key</target>
             </trans-unit>
             <trans-unit id="4">
                 <source>translation.interface.column.help</source>

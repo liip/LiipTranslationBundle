@@ -26,22 +26,6 @@ class BaseController extends Controller
     }
 
     /**
-     * Gets the flash messages. This is here to avoid compatibility issues between
-     * Symfony 2.0 and 2.3.
-     *
-     * @return array
-     */
-    public function getFlashMessages()
-    {
-        $session = $this->get('session');
-        if (method_exists($session, 'getFlashBag')) {
-            $session->getFlashBag()->all();
-        } else {
-            $session->getFlashes();
-        }
-    }
-
-    /**
      * Process security for the provided locale or domain
      *
      * @param string $domain
@@ -68,3 +52,4 @@ class BaseController extends Controller
     }
 
 }
+

@@ -10,7 +10,6 @@ class ImportController extends BaseController
     public function indexAction()
     {
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
-            'flashMessages' => $this->getFlashMessages(),
             'form' => $this->createForm(new FileImportType())->createView(),
             'translations' => $this->get('liip.translation.importer')->getCurrentTranslations(),
         ));

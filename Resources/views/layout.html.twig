@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liip Translation Bundle : Standalone mode</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ path('liip_translation_interface') }}">Translation</a></li>
+                <li><a href="{{ path('liip_translation_import') }}">Import</a></li>
+                <li><a href="{{ path('liip_translation_cache_clear') }}">Cache clear</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% for type, messages in app.session.flashbag.all() | default(app.session.flashes) %}
+        <ul>
+            {% if not messages is iterable %}
+                {# their can ben only one message of each type within Sf 2.0 #}
+                {% set messages = [ messages ] %}
+            {% endif %}
+            {% for message in messages %}
+                <li class='alert alert-{{ type }}'>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    {% block translation_bundle_content %}
+    {% endblock %}
+
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
