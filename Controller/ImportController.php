@@ -23,7 +23,12 @@ class ImportController extends BaseController
         $this->securityCheck();
 
         $form = $this->createForm(new FileImportType());
-        $data = $form->handleRequest($this->getRequest())->getData();
+        if(method_exists($form, 'handleRequest')) {
+            $data = $form->handleRequest($this->getRequest())->getData();
+        } else {
+            $form->bindRequest($this->getRequest());
+            $data = $form->getData();
+        }
 
         try {
             $this->get('liip.translation.importer')->handleUploadedFile($data['file']);
