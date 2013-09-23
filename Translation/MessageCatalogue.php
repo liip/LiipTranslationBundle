@@ -2,7 +2,7 @@
 
 namespace Symfony\Component\Translation;
 
-if (! interface_exists('MetadataAwareInterface')) {
+if (! interface_exists('Symfony\Component\Translation\MetadataAwareInterface')) {
     interface MetadataAwareInterface
     {
         public function getMetadata($key = '', $domain = 'messages');
