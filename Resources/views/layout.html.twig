@@ -17,7 +17,7 @@
         </div>
     </nav>
 
-    {% for type, messages in app.session.flashbag.all() | default(app.session.flashes) %}
+    {% for type, messages in app.session.flashbag.all() | default(app.session.flashes | default(false)) %}
         <ul>
             {% if not messages is iterable %}
                 {# their can ben only one message of each type within Sf 2.0 #}
