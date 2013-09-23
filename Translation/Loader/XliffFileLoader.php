@@ -2,8 +2,8 @@
 
 namespace Liip\TranslationBundle\Translation\Loader;
 
+use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Loader\XliffFileLoader as BaseLoader;
-use Symfony\Component\Translation\MessageCatalogue;
 
 class XliffFileLoader extends BaseLoader
 {
@@ -16,7 +16,9 @@ class XliffFileLoader extends BaseLoader
     public function load($resource, $locale, $domain = 'messages')
     {
         /** @var MessageCatalogue $catalogue */
-        $catalogue = parent::load($resource, $locale, $domain);
+        $base_catalogue = parent::load($resource, $locale, $domain);
+        $catalogue = new MessageCatalogue($locale);
+        $catalogue->addCatalogue($base_catalogue);
 
         // Process a second pass over the file to collect metadata
         $xml=simplexml_load_file($resource);

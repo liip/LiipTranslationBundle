@@ -2,9 +2,9 @@
 
 namespace Liip\TranslationBundle\Model;
 
+use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 use Liip\TranslationBundle\Model\Storage\Storage;
-use Symfony\Component\Translation\MessageCatalogue;
 
 class Manager
 {
