@@ -14,6 +14,7 @@ if (! interface_exists('Symfony\Component\Translation\MetadataAwareInterface')) 
 namespace Liip\TranslationBundle\Translation;
 
 use Symfony\Component\Translation\MessageCatalogue as BaseMessageCatalogue;
+use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\MetadataAwareInterface;
 
 /**
@@ -37,19 +38,60 @@ if(in_array('Symfony\Component\Translation\MetadataAwareInterface', class_implem
 } else {
     class MessageCatalogue extends BaseMessageCatalogue implements MetadataAwareInterface
     {
+        private $metadata = array();
+
+        public function addCatalogue(MessageCatalogueInterface $catalogue)
+        {
+            parent::addCatalogue($catalogue);
+
+            if ($catalogue instanceof MetadataAwareInterface) {
+                $metadata = $catalogue->getMetadata('', '');
+                $this->addMetadata($metadata);
+            }
+        }
+
         public function getMetadata($key = '', $domain = 'messages')
         {
-            // TODO: Implement getMetadata() method.
+            if ('' == $domain) {
+                return $this->metadata;
+            }
+
+            if (isset($this->metadata[$domain])) {
+                if ('' == $key) {
+                    return $this->metadata[$domain];
+                }
+
+                if (isset($this->metadata[$domain][$key])) {
+                    return $this->metadata[$domain][$key];
+                }
+            }
+
+            return null;
         }
 
         public function setMetadata($key, $value, $domain = 'messages')
         {
-            // TODO: Implement setMetadata() method.
+            $this->metadata[$domain][$key] = $value;
         }
 
         public function deleteMetadata($key = '', $domain = 'messages')
         {
-            // TODO: Implement deleteMetadata() method.
+            if ('' == $domain) {
+                $this->metadata = array();
+            } elseif ('' == $key) {
+                unset($this->metadata[$domain]);
+            } else {
+                unset($this->metadata[$domain][$key]);
+            }
+        }
+
+        private function addMetadata(array $values)
+        {
+            foreach ($values as $domain => $keys) {
+                foreach ($keys as $key => $value) {
+                    $this->setMetadata($key, $value, $domain);
+                }
+            }
         }
     }
 }
