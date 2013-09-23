@@ -22,7 +22,10 @@
                     <td class="translation-key">{{ item.key }}</td>
                     <td class="translation-help">{{ item.help }}</td>
                     {% for locale in columns %}
-                        <td class="translation-value">{{ item.translation(locale) }}</td>
+                        <td class="translation-content">
+                            <span class="translation-value">{{ item.translation(locale).value | default('') }}</span>
+                            <a class="translation-edit" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.key, locale: locale}) }}">edit</a>
+                        </td>
                     {% endfor %}
                 </tr>
             {% endblock %}

@@ -20,6 +20,15 @@ class TranslationController extends BaseController
         ));
     }
 
+    public function editAction($locale, $domain, $key)
+    {
+        $translation = $this->get('liip.translation.storage')->getTranslation($locale, $domain, $key);
+
+        return $this->render('LiipTranslationBundle:Translation:edition.html.twig', array(
+            'translation' => $translation
+        ));
+    }
+
     public function cacheClearAction()
     {
         $this->get('liip.translation.manager')->clearSymfonyCache();
