@@ -6,19 +6,17 @@
 
 namespace Liip\TranslationBundle\Model\Importer;
 
-
 use Liip\TranslationBundle\Model\Storage\Storage;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class Importer {
 
     protected $session;
     protected $translator;
 
-    public function __construct(Session $session, Storage $storage, Translator $translator)
+    public function __construct($session, Storage $storage, Translator $translator)
     {
         $this->session = $session;
         $this->storage = $storage;
