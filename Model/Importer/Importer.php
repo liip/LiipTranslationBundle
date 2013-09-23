@@ -26,13 +26,29 @@ class Importer {
     }
 
     /**
+     * Return the UploadedFile original extension. This is here for
+     * compatibility reason with Symfony 2.0.
+     *
+     * @param UploadedFile $file
+     * @return string
+     */
+    protected function getFileExtension(UploadedFile $file)
+    {
+        if(method_exists($file, 'getClientOriginalExtension')) {
+            return $file->getClientOriginalExtension();
+        } else {
+            return pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        }
+    }
+
+    /**
      * Take care of uploaded files (including zip) for importing resources
      *
      * @param UploadedFile $file
      */
     public function handleUploadedFile(UploadedFile $file)
     {
-        if ($file->getClientOriginalExtension() === 'zip') {
+        if ($this->getFileExtension($file) === 'zip') {
             $tempFolder = sys_get_temp_dir().md5(time());
             mkdir($tempFolder);
             $zip = new \ZipArchive;
