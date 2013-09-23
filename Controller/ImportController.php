@@ -3,13 +3,14 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\Form\FileImportType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class ImportController extends Controller
+class ImportController extends BaseController
 {
     public function indexAction()
     {
+        $this->securityCheck();
+
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
             'form' => $this->createForm(new FileImportType())->createView(),
             'translations' => $this->get('liip.translation.importer')->getCurrentTranslations(),
@@ -18,6 +19,8 @@ class ImportController extends Controller
 
     public function uploadAction()
     {
+        $this->securityCheck();
+
         $form = $this->createForm(new FileImportType());
         $data = $form->handleRequest($this->getRequest())->getData();
 
@@ -34,6 +37,8 @@ class ImportController extends Controller
 
     public function removeEntryAction($locale, $domain, $key)
     {
+        $this->securityCheck();
+
         $this->get('liip.translation.importer')->removeEntry($locale, $domain, $key);
         $this->get('session')->getFlashBag()->set('success', 'Entry removed');
 
@@ -42,9 +47,12 @@ class ImportController extends Controller
 
     public function processAction($locale)
     {
+        $this->securityCheck();
+
         $this->get('liip.translation.importer')->processImport($locale);
         $this->get('session')->getFlashBag()->set('success', 'Import success');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
+
 }

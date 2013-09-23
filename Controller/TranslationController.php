@@ -2,9 +2,7 @@
 
 namespace Liip\TranslationBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class TranslationController extends Controller
+class TranslationController extends BaseController
 {
     public function indexAction()
     {
