@@ -1,27 +1,27 @@
 liip_translation_interface:
-    pattern:  /translations/{locales}
+    pattern:  /list/{locales}
     defaults: { _controller: LiipTranslationBundle:Translation:index, locales: null }
 
 liip_translation_cache_clear:
-    pattern:  /translations/cache-clear
+    pattern:  /cache-clear
     defaults: { _controller: LiipTranslationBundle:Translation:cacheClear }
 
 liip_translation_import:
-    pattern:  /translations/import
+    pattern:  /import
     defaults: { _controller: LiipTranslationBundle:Import:index }
 
 liip_translation_import_file:
-    pattern: /translations/import/upload
+    pattern: /import/upload
     defaults: { _controller: LiipTranslationBundle:Import:upload }
     requirements:
         _method:  POST
 
 liip_translation_import_remove_entry:
-    pattern: /translations/import/remove-entry/{locale}/{domain}/{key}
+    pattern: /import/remove-entry/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Import:removeEntry }
 
 liip_translation_import_process:
-    pattern: /translations/import/process-locale/{locale}
+    pattern: /translations/import/process/{locale}
     defaults: { _controller: LiipTranslationBundle:Import:process }
     requirements:
         _method:  POST
