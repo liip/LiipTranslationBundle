@@ -1,8 +1,6 @@
 <?php
 
-namespace Liip\TranslationBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Liip\TranslationBundle\Storage\Persistence;
 
 /**
  * To be completed
@@ -18,6 +16,15 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class LiipTranslationBundle extends Bundle
+interface PersistenceInterface
 {
+    public function load();
+
+    public function getUnits();
+    public function setUnits($units);
+
+    public function getTranslations();
+    public function setTranslations($translations);
+
+    public function save();
 }

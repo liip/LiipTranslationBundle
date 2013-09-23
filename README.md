@@ -1,7 +1,7 @@
 LiipTranslationBundle
 =====================
 
-This Bundle provide various tools to ease translation management of a SF2 app.
+This Bundle provide various tools to ease translation management of a Sf2 app.
 
 Installation
 ------------

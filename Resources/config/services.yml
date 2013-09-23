@@ -1,9 +1,7 @@
 parameters:
-
     translator.class: Liip\TranslationBundle\Translation\Translator
 
 services:
-
     liip.translation.manager:
         class: Liip\TranslationBundle\Model\Manager
         arguments: ["%liip_translation_config%", "@translator", "@liip.translation.storage"]

@@ -1,10 +1,24 @@
 <?php
 
-namespace Liip\TranslationBundle\Model\Storage\Persistence;
+namespace Liip\TranslationBundle\Storage\Persistence;
 
 use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * To be completed
+ *
+ * This file is part of the LiipTranslationBundle. For more information concerning
+ * the bundle, see the README.md file at the project root.
+ *
+ * @package Liip\TranslationBundle\Storage\Persistence
+ * @version 0.0.1
+ *
+ * @license http://opensource.org/licenses/MIT MIT License
+ * @author David Jeanmonod <david.jeanmonod@liip.ch>
+ * @author Gilles Meier <gilles.meier@liip.ch>
+ * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
+ */
 
 class YamlFilePersistence implements PersistenceInterface {
 

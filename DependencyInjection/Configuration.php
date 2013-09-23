@@ -9,6 +9,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This is the class that validates and merges configuration from your app/config files
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
+ *
+ * This file is part of the LiipTranslationBundle. For more information concerning
+ * the bundle, see the README.md file at the project root.
+ *
+ * @package Liip\TranslationBundle\DependencyInjection
+ * @version 0.0.1
+ *
+ * @license http://opensource.org/licenses/MIT MIT License
+ * @author David Jeanmonod <david.jeanmonod@liip.ch>
+ * @author Gilles Meier <gilles.meier@liip.ch>
+ * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 class Configuration implements ConfigurationInterface
 {
