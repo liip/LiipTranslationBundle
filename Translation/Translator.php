@@ -83,6 +83,9 @@ class Translator extends BaseTranslator
 
         // Search for an other services
         foreach ($this->loaderIds as $serviceId => $formats) {
+            if(! is_array($formats)) {
+                $formats = array($formats);
+            }
             foreach ($formats as $format) {
                 if ($resource['format'] === $format) {
                     return $this->container->get($serviceId)->load($resource['path'], $resource['locale'], $resource['domain']);
