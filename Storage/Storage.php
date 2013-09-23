@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Storage;
 
-use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Storage\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\Translation\MessageCatalogue;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace Liip\TranslationBundle\Translation\Loader;
+namespace Liip\TranslationBundle\Translation;
 
-use Liip\TranslationBundle\Model\Storage\Storage;
+use Liip\TranslationBundle\Storage\Storage;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Storage\Persistence;
 
-use Liip\TranslationBundle\Model\Storage\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Storage\Persistence\PersistenceInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**

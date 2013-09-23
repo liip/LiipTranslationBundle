@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Model\Importer;
 
-use Liip\TranslationBundle\Model\Storage\Storage;
+use Liip\TranslationBundle\Storage\Storage;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

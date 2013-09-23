@@ -112,7 +112,7 @@ class Translator extends BaseTranslator
     protected function initialize()
     {
         // Register our custom loader
-        $this->addLoader('liip', $this->container->get('liip.translation.storage.loader'));
+        $this->addLoader('liip', $this->container->get('liip.translation.loader'));
 
         // Register all catalogues we have in the storage
         foreach ($this->container->get('liip.translation.storage')->getTranslations() as $locale => $translations) {

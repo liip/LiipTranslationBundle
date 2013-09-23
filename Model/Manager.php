@@ -4,7 +4,7 @@ namespace Liip\TranslationBundle\Model;
 
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
-use Liip\TranslationBundle\Model\Storage\Storage;
+use Liip\TranslationBundle\Storage\Storage;
 
 /**
  * To be completed
