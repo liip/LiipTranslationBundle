@@ -13,8 +13,6 @@
     <input type="submit" value="{{ 'import.file-input.sumbit' | trans({}, 'translation-bundle') }}">
 </form>
 
-{{ translations }}
-
 {% for locale, localeTranslations in translations %}
 
     <h2>Locale [{{ locale }}]</h2>
