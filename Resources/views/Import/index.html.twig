@@ -2,7 +2,7 @@
 
 <h1>{{ 'import.interface.title' | trans }}</h1>
 
-{% for type, messages in app.session.flashBag.all %}
+{% for type, messages in flashMessages %}
     <ul>
     {% for message in messages %}
         <li class='flash {{ type }}'>{{ message }}</li>

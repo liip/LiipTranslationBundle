@@ -15,6 +15,39 @@ class BaseController extends Controller
 //            }
 //        }
     }
+
+    /**
+     * Sets a flash message. This is here to avoid compatibility issues between
+     * Symfony 2.0 and 2.3.
+     *
+     * @param $type string
+     * @param $message string
+     */
+    public function addFlashMessage($type, $message)
+    {
+        $session = $this->get('session');
+        if(method_exists($session, 'getFlashBag')) {
+            $session->getFlashBag()->set($type, $message);
+        } else {
+            $session->setFlash($type, $message);
+        }
+    }
+
+    /**
+     * Gets the flash messages. This is here to avoid compatibility issues between
+     * Symfony 2.0 and 2.3.
+     *
+     * @return array
+     */
+    public function getFlashMessages()
+    {
+        $session = $this->get('session');
+        if (method_exists($session, 'getFlashBag')) {
+            $session->getFlashBag()->all();
+        } else {
+            $session->getFlashes();
+        }
+    }
 }
 
 

@@ -15,7 +15,7 @@ class TranslationController extends BaseController
     public function cacheClearAction()
     {
         $this->get('liip.translation.manager')->clearSymfonyCache();
-        $this->get('session')->getFlashBag()->set('success', 'Cache cleared');
+        $this->addFlashMessage('success', 'Cache cleared');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }

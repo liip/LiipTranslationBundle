@@ -12,6 +12,7 @@ class ImportController extends BaseController
         $this->securityCheck();
 
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
+            'flashMessages' => $this->getFlashMessages(),
             'form' => $this->createForm(new FileImportType())->createView(),
             'translations' => $this->get('liip.translation.importer')->getCurrentTranslations(),
         ));
@@ -26,10 +27,10 @@ class ImportController extends BaseController
 
         try {
             $this->get('liip.translation.importer')->handleUploadedFile($data['file']);
-            $this->get('session')->getFlashBag()->set('success', 'File import success');
+            $this->addFlashMessage('success', 'File import success');
         }
         catch (\Exception $e) {
-            $this->get('session')->getFlashBag()->set('error', 'Error while trying to import thr file: '.$e->getMessage());
+            $this->addFlashMessage('error', 'Error while trying to import thr file: '.$e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
@@ -40,7 +41,7 @@ class ImportController extends BaseController
         $this->securityCheck();
 
         $this->get('liip.translation.importer')->removeEntry($locale, $domain, $key);
-        $this->get('session')->getFlashBag()->set('success', 'Entry removed');
+        $this->addFlashMessage('success', 'Entry removed');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
@@ -50,7 +51,7 @@ class ImportController extends BaseController
         $this->securityCheck();
 
         $this->get('liip.translation.importer')->processImport($locale);
-        $this->get('session')->getFlashBag()->set('success', 'Import success');
+        $this->addFlashMessage('success', 'Import success');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
