@@ -50,7 +50,7 @@ class BaseController extends Controller
     {
         if (isset($domain) && $this->get('liip.translation.manager')->isSecuredByDomain()) {
             $domainRole = $this->get('liip.translation.manager')->getRoleForDomain($domain);
-            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATION_ALL_DOMAINS') || !$this->get('security.context')->isGranted($domainRole)
+            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_DOMAINS') || !$this->get('security.context')->isGranted($domainRole)
             ) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
             }
@@ -58,7 +58,7 @@ class BaseController extends Controller
 
         if (isset($locale) && $this->get('liip.translation.manager')->isSecuredByLocale()) {
             $localeRole = $this->get('liip.translation.manager')->getRoleForLocale($locale);
-            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATION_ALL_LOCALES') || !$this->get('security.context')->isGranted($localeRole)
+            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_LOCALES') || !$this->get('security.context')->isGranted($localeRole)
             ) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");
             }

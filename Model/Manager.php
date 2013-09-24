@@ -51,12 +51,12 @@ class Manager
 
     public function getRoleForLocale($locale)
     {
-        return 'ROLE_TRANSLATION_LOCALE_'.strtoupper($locale);
+        return 'ROLE_TRANSLATOR_LOCALE_'.strtoupper($locale);
     }
 
     public function getRoleForDomain($domain)
     {
-        return 'ROLE_TRANSLATION_DOMAIN_'.strtoupper($domain);
+        return 'ROLE_TRANSLATOR_DOMAIN_'.strtoupper($domain);
     }
 
     /**
