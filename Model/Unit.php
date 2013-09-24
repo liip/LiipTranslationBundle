@@ -19,13 +19,20 @@ namespace Liip\TranslationBundle\Model;
 class Unit implements \IteratorAggregate, \ArrayAccess
 {
     /** @var string */
-    public $domain;
+    private $domain;
     /** @var string */
-    public $key;
+    private $key;
     /** @var array */
-    public $metadata = array();
+    private $metadata = array();
     /** @var Translation[] translations in various locales */
-    protected $translations = array();
+    private $translations = array();
+
+    public function __construct($d, $k, array $m = array())
+    {
+        $this->domain = $d;
+        $this->key = $k;
+        $this->metadata = $m;
+    }
 
     public function setTranslation($locale, $translation)
     {

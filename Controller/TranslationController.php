@@ -2,6 +2,10 @@
 
 namespace Liip\TranslationBundle\Controller;
 
+use Liip\TranslationBundle\Form\TranslationType;
+use Liip\TranslationBundle\Model\Translation;
+use Liip\TranslationBundle\Model\Unit;
+
 /**
  * To be completed
  *
@@ -36,10 +40,29 @@ class TranslationController extends BaseController
 
     public function editAction($locale, $domain, $key)
     {
+        // FIXME getTranslation should return the Translation directly
         $translation = $this->get('liip.translation.storage')->getTranslation($locale, $domain, $key);
 
+        $unit = new Unit($domain, $key, array());
+        $translation = new Translation($translation, $locale, $unit);
+
+        $form = $this->createForm(new TranslationType(), $translation, array());
+        if ($this->getRequest()->getMethod() === 'POST') {
+            /** @var Translation $data */
+            $data = $this->handleForm($form);
+            if($form->isValid()) {
+                // FIXME storage should know how to manage Translation directly
+                $this->get('liip.translation.storage')->updateTranslation($data->getLocale(), $data->getDomain(), $data->getKey(), $data->getValue());
+                $this->get('liip.translation.storage')->save();
+
+                $this->addFlashMessage('success', 'Translation was successfully edited.');
+                return $this->redirect($this->generateUrl('liip_translation_interface'));
+            }
+        }
+
         return $this->render('LiipTranslationBundle:Translation:edition.html.twig', array(
-            'translation' => $translation
+            'translation' => $translation,
+            'form' => $form->createView()
         ));
     }
 

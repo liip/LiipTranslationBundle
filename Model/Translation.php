@@ -46,6 +46,11 @@ class Translation {
         $this->value = $t;
     }
 
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
     public function getUnit()
     {
         return $this->unit;

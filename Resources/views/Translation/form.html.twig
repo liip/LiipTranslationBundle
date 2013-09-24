@@ -1,1 +1,18 @@
-{{ translation }}
+{% set form_url = path('liip_translation_edit', { locale: translation.locale, domain: translation.domain, key: translation.key }) %}
+
+<form action="{{ form_url }}" method="POST" {{ form_enctype(form) }} class="form-inline" role="form">
+    <div>
+        <label for="translation-domain">Domain</label>
+        <span id="translation-domain">{{ translation.domain }}</span>
+    </div>
+    <div>
+        <label for="translation-locale">Locale</label>
+        <span id="translation-locale">{{ translation.locale }}</span>
+    </div>
+    <div>
+        <label for="translation-key">Key</label>
+        <span id="translation-key">{{ translation.key }}</span>
+    </div>
+    {{ form_rest(form) }}
+    <input type="submit" class="btn btn-default" value="{{ 'import.file-input.sumbit' | trans({}, 'translation-bundle') }}">
+</form>

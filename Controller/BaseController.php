@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -21,6 +22,23 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 class BaseController extends Controller
 {
+    /**
+     * Handle a form submission. This is here to avoid compatibility issues
+     * between Symfony 2.0 and 2.1.
+     *
+     * @param Form $form
+     * @return mixed
+     */
+    public function handleForm(Form $form)
+    {
+        if (method_exists($form, 'handleRequest')) {
+            $data = $form->handleRequest($this->getRequest())->getData();
+        } else {
+            $form->bindRequest($this->getRequest());
+            $data = $form->getData();
+        }
+        return $data;
+    }
 
     /**
      * Sets a flash message. This is here to avoid compatibility issues between

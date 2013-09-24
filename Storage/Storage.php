@@ -107,10 +107,10 @@ class Storage {
         $units = array();
         foreach ($this->units as $domain => $unitData) {
             foreach ($unitData as $key => $metadata) {
-                $unit = new Unit();
-                $unit->domain = $domain;
-                $unit->key = $key;
-                $unit->metadata = $metadata;
+                if (is_null($metadata)) {
+                    $metadata = array();
+                }
+                $unit = new Unit($domain, $key, $metadata);
                 $units[] = $unit;
                 foreach($this->translations as $locale => $translations) {
                     if (isset($translations[$domain][$key])){
