@@ -105,8 +105,18 @@ class Storage {
     {
         $this->load();
         $catalogue = new MessageCatalogue($locale);
-        $translations = $this->getTranslations();
-        $catalogue->add($translations[$locale][$domain], $domain);
+        $translations = array();
+        foreach ($this->unitsPerDomainAndKey as $keys) {
+            foreach ($keys as $unit) {
+                foreach ($unit->getTranslations() as $t) {
+                    if($t->getLocale() == $locale && $t->getDomain() == $domain) {
+                        $translations[$t->getKey()] = $t->getValue();
+                    }
+                }
+            }
+        }
+
+        $catalogue->add($translations, $domain);
         return $catalogue;
     }
 

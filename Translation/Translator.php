@@ -115,9 +115,11 @@ class Translator extends BaseTranslator
         $this->addLoader('liip', $this->container->get('liip.translation.loader'));
 
         // Register all catalogues we have in the storage
-        foreach ($this->container->get('liip.translation.storage')->getTranslations() as $locale => $translations) {
-            foreach ($translations as $domain => $keyValues) {
-                parent::addResource('liip', 'intermediate.storage', $locale, $domain);
+        foreach ($this->container->get('liip.translation.storage')->getTranslations() as $domain => $keys) {
+            foreach ($keys as $key => $locales) {
+                foreach($locales as $locale => $value) {
+                    parent::addResource('liip', 'intermediate.storage', $locale, $domain);
+                }
             }
         }
     }
