@@ -24,7 +24,9 @@ class TranslationController extends BaseController
 {
     public function indexAction($locales = null)
     {
-        $authorizedLocales = $this->get('liip.translation.manager')->getLocaleList();
+        $authorizedLocales = $this->get('liip.translation.manager')->getAuthorizedLocaleList(
+            $this->get('security.context')
+        );
         if(is_null($locales)) {
             $locales = $authorizedLocales;
         } else {

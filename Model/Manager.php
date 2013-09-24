@@ -5,6 +5,8 @@ namespace Liip\TranslationBundle\Model;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 use Liip\TranslationBundle\Storage\Storage;
+use Symfony\Component\Security\Core\SecurityContext;
+
 
 /**
  * To be completed
@@ -61,10 +63,32 @@ class Manager
 
     /**
      * Return the list of managed locales (defined in the bundle config)
+     *
+     * @return array
      */
     public function getLocaleList()
     {
         return $this->config['locale_list'];
+    }
+
+    /**
+     * Return the list of locales authorized by the provided security context
+     *
+     * @param SecurityContext $securityContext
+     * @return array
+     */
+    public function getAuthorizedLocaleList(SecurityContext $securityContext)
+    {
+        if (!$this->isSecuredByLocale()) {
+            return $this->getLocaleList();
+        }
+
+        $authorizedLocaleList = array();
+        foreach ($this->getLocaleList() as $locale) {
+            if ($securityContext->isGranted($this->getRoleForLocale($locale))) {
+                $authorizedLocaleList[] = $locale;
+            }
+        }
     }
 
     public function clearSymfonyCache()
