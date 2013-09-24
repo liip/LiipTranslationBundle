@@ -27,6 +27,8 @@ class Translator extends BaseTranslator
      */
     protected $standardResources = array();
 
+    protected $initialized = false;
+
     /**
      * Override the addResource, so that we can keep tracking standard resources
      *  but we don't call the parent method as we don't want to use them anymore
@@ -111,17 +113,22 @@ class Translator extends BaseTranslator
      */
     protected function initialize()
     {
+        if ($this->initialized) {
+            return;
+        }
+
         // Register our custom loader
         $this->addLoader('liip', $this->container->get('liip.translation.loader'));
 
         // Register all catalogues we have in the storage
-        foreach ($this->container->get('liip.translation.storage')->getTranslations() as $domain => $keys) {
-            foreach ($keys as $key => $locales) {
-                foreach($locales as $locale => $value) {
-                    parent::addResource('liip', 'intermediate.storage', $locale, $domain);
-                }
+        $locales = $this->container->get('liip.translation.manager')->getLocaleList();
+        foreach ($this->container->get('liip.translation.storage')->getAllDomains() as $domain) {
+            foreach ($locales as $locale) {
+                parent::addResource('liip', 'intermediate.storage', $locale, $domain);
             }
         }
+
+        $this->initialized = true;
     }
 
     public function clearCacheForLocale($locale)

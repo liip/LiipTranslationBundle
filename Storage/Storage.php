@@ -28,6 +28,9 @@ class Storage {
     protected $loaded = false;
     /** @var Unit[] $units */
     protected $unitsPerDomainAndKey = array();
+    /** @var string[] */
+    protected $allDomains = array();
+
 
     public function __construct(PersistenceInterface $persistence)
     {
@@ -43,9 +46,12 @@ class Storage {
             return;
         }
         $units = $this->persistence->getUnits();
-        foreach($units as $u) {
-            $this->unitsPerDomainAndKey[$u->getDomain()][$u->getTranslationKey()] = $u;
+        foreach($units as $unit) {
+            $this->unitsPerDomainAndKey[$unit->getDomain()][$unit->getTranslationKey()] = $unit;
+            $this->allDomains[$unit->getDomain()] = true;
         }
+        $this->allDomains = array_keys($this->allDomains);
+
         $this->loaded = true;
     }
 
@@ -99,6 +105,12 @@ class Storage {
             }
         }
         return $translations;
+    }
+
+    public function getAllDomains()
+    {
+        $this->load();
+        return $this->allDomains;
     }
 
     public function getDomainCatalogue($locale, $domain)
