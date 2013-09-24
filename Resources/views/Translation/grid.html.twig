@@ -19,12 +19,12 @@
             {% block table_row %}
                 <tr>
                     <td class="translation-domain">{{ item.domain }}</td>
-                    <td class="translation-key">{{ item.key }}</td>
+                    <td class="translation-key">{{ item.translationKey }}</td>
                     <td class="translation-help">{{ item.help }}</td>
                     {% for locale in columns %}
                         <td class="translation-content">
                             <span class="translation-value">{{ item.translation(locale).value | default('') }}</span>
-                            <a class="translation-edit" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.key, locale: locale}) }}">edit</a>
+                            <a class="translation-edit" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">edit</a>
                         </td>
                     {% endfor %}
                 </tr>
