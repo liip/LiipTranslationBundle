@@ -151,6 +151,8 @@ class Manager
             }
 
             $catalogues[$resource['locale']]->addCatalogue($this->translator->loadResource($resource));
+            $this->log("  >> <comment>OK</comment>\n");
+
         }
 
         // Load translations into the intermediate storage
