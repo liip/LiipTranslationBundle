@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * To be completed
@@ -48,10 +49,11 @@ class NonRegressionTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/non-regression/override');
-        $this->assertEquals(
-            "  override-key1: value_1_app\n  override-key2: value_2_bundle_in_app\n  override-key3: value_3_bundle\n",
-            $client->getResponse()->getContent(),
-            "Assert the override system: bundle => bundle in app => app"
-        );
+
+        // In SF2.0 there is only one level of overriding, so we have to adapt the expected result
+        $expectedResult = Kernel::MINOR_VERSION > 0 ?
+            "  override-key1: value_1_app\n  override-key2: value_2_bundle_in_app\n  override-key3: value_3_bundle\n" :
+            "  override-key1: value_1_app\n  override-key2: value_2_bundle\n  override-key3: value_3_bundle\n";
+        $this->assertEquals($expectedResult, $client->getResponse()->getContent(), "Assert the override system: bundle => bundle in app => app");
     }
 }
