@@ -24,14 +24,18 @@ class TranslationController extends BaseController
 {
     public function indexAction($locales = null)
     {
-        $authorizedLocales = $this->get('liip.translation.manager')->getAuthorizedLocaleList(
-            $this->get('security.context')
-        );
+        if ($this->has('security.context')) {
+            $baseLocales = $this->get('liip.translation.manager')->getAuthorizedLocaleList($this->get('security.context'));
+        }
+        else {
+            $baseLocales = $this->get('liip.translation.manager')->getLocaleList();
+        }
+
         if(is_null($locales)) {
-            $locales = $authorizedLocales;
+            $locales = $baseLocales;
         } else {
             $locales = explode('~', $locales);
-            $locales = array_intersect($locales, $authorizedLocales);
+            $locales = array_intersect($locales, $baseLocales);
         }
 
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(

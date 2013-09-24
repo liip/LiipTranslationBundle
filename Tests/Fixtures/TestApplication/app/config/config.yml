@@ -20,3 +20,6 @@ liip_translation:
         class: Liip\TranslationBundle\Storage\Persistence\YamlFilePersistence
         options:
             folder: "%kernel.cache_dir%/translations"
+    security:
+        by_domain: false
+        by_locale: false

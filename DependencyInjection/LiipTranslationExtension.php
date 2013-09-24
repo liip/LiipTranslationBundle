@@ -37,8 +37,9 @@ class LiipTranslationExtension extends Extension
         $container->setParameter('liip.translation.persistance.class', $config['persistence']['class']);
         $container->setParameter('liip.translation.persistance.options', $config['persistence']['options']);
 
-
-        $this->defineSecurityRoles($config, $container);
+        if ($config['security']['by_locale'] || $config['security']['by_domain']) {
+            $this->defineSecurityRoles($config, $container);
+        }
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
