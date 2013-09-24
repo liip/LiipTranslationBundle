@@ -43,9 +43,13 @@ class TranslateCommand extends ContainerAwareCommand
     {
         /** @var TranslatorInterface $translator */
         $translator = $this->getContainer()->get('translator');
-        $output->writeln($translator->trans(
-            $input->getArgument('key'), array(), $input->getOption('domain'), $input->getOption('locale')
-        ));
+        $key = $input->getArgument('key');
+        $domain = $input->getOption('domain');
+        $locale = $input->getOption('locale');
+        $output->writeln(
+            "Translation in [<comment>$locale</comment>] for key [<comment>$key</comment>] in domain [<comment>$domain</comment>] is: ".
+            '<info>'.$translator->trans($key, array(), $domain, $locale).'</info>'
+        );
     }
 
 }
