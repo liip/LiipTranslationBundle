@@ -124,9 +124,9 @@ class Storage {
     {
         $this->load();
         $translations = $this->getTranslations();
-        return array_key_exists($locale, $translations) &&
-               array_key_exists($domain, $translations[$locale]) &&
-               array_key_exists($key, $translations[$locale][$domain]) ? $translations[$locale][$domain][$key] : null;
+        return array_key_exists($domain, $translations) &&
+               array_key_exists($key, $translations[$domain]) &&
+               array_key_exists($locale, $translations[$domain][$key]) ? $translations[$domain][$key][$locale] : null;
     }
 
     public function getAllTranslationUnits()
