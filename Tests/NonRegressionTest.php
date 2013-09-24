@@ -37,7 +37,7 @@ class NonRegressionTest extends WebTestCase
         $client->request('GET', '/non-regression/fallback');
         $this->assertEquals(
             "  fallback-key1: value_1_fr_CH\n  fallback-key2: value_2_fr\n  fallback-key3: value_3_en\n  fallback-key4: fallback-key4\n",
-            $client->getResponse()->getContent(),
+            substr($client->getResponse()->getContent(),0,1000),
             "Assert the fallback system: fr_CH => fr => en => raw_key"
         );
     }
@@ -54,6 +54,10 @@ class NonRegressionTest extends WebTestCase
         $expectedResult = Kernel::MINOR_VERSION > 0 ?
             "  override-key1: value_1_app\n  override-key2: value_2_bundle_in_app\n  override-key3: value_3_bundle\n" :
             "  override-key1: value_1_app\n  override-key2: value_2_bundle\n  override-key3: value_3_bundle\n";
-        $this->assertEquals($expectedResult, $client->getResponse()->getContent(), "Assert the override system: bundle => bundle in app => app");
+        $this->assertEquals(
+            $expectedResult,
+            substr($client->getResponse()->getContent(),0,1000),
+            "Assert the override system: bundle => bundle in app => app"
+        );
     }
 }
