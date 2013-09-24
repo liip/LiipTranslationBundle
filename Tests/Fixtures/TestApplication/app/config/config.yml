@@ -4,7 +4,6 @@ framework:
     form:            true
     csrf_protection: true
     session:         ~
-    default_locale:  en
     translator:      { fallback: en }
     profiler:        { only_exceptions: false }
     templating:
