@@ -23,6 +23,6 @@ class TranslationControllerTest extends WebTestCase
     public function testIndex()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/translations');
+        $crawler = $client->request('GET', '/list');
     }
 }
