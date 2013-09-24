@@ -159,7 +159,8 @@ class Manager
                 $this->log("\n  Import catalog <comment>$domain</comment>\n");
                 foreach($translations as $key => $value) {
                     $this->log("    >> key [$key] with a base value of [$value]\n");
-                    $this->storage->createOrUpdateTranslationUnit($domain, $key, $catalogues[$locale]->getMetadata($key, $domain));
+                    $metadata = $catalogues[$locale]->getMetadata($key, $domain);
+                    $this->storage->createOrUpdateTranslationUnit($domain, $key, is_null($metadata) ? array() : $metadata);
                     $this->storage->setBaseTranslation($locale, $domain, $key , $value);
                 }
             }

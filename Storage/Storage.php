@@ -4,6 +4,7 @@ namespace Liip\TranslationBundle\Storage;
 
 use Liip\TranslationBundle\Storage\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Model\Unit;
+use Symfony\Component\Serializer\Exception\RuntimeException;
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
@@ -25,8 +26,8 @@ class Storage {
     /** @var  PersistenceInterface */
     protected $persistence;
     protected $loaded = false;
-    protected $units;
-    protected $translations;
+    /** @var Unit[] $units */
+    protected $unitsPerDomainAndKey = array();
 
     public function __construct(PersistenceInterface $persistence)
     {
@@ -41,9 +42,10 @@ class Storage {
         if ($this->loaded) {
             return;
         }
-        $this->persistence->load();
-        $this->units = $this->persistence->getUnits();
-        $this->translations = $this->persistence->getTranslations();
+        $units = $this->persistence->getUnits();
+        foreach($units as $u) {
+            $this->unitsPerDomainAndKey[$u->getDomain()][$u->getTranslationKey()] = $u;
+        }
         $this->loaded = true;
     }
 
@@ -51,9 +53,7 @@ class Storage {
      * Save the current unit and translation into the Persistence
      */
     public function save() {
-        $this->persistence->setTranslations($this->translations);
-        $this->persistence->setUnits($this->units);
-        $this->persistence->save();
+        $this->persistence->saveUnits($this->getAllTranslationUnits());
     }
 
     /**
@@ -62,10 +62,14 @@ class Storage {
      * @param $key
      * @param $metadata
      */
-    public function createOrUpdateTranslationUnit($domain, $key, $metadata)
+    public function createOrUpdateTranslationUnit($domain, $key, array $metadata = array())
     {
         $this->load();
-        $this->units[$domain][$key] = $metadata;
+        if(isset($this->unitsPerDomainAndKey[$domain][$key])) {
+            $this->unitsPerDomainAndKey[$domain][$key]->setMetadata($metadata);
+        } else {
+            $this->unitsPerDomainAndKey[$domain][$key] = new Unit($domain, $key, $metadata);
+        }
     }
 
     /**
@@ -78,59 +82,67 @@ class Storage {
     public function setBaseTranslation($locale, $domain, $key , $value)
     {
         $this->load();
-        $this->translations[$locale][$domain][$key] = $value;
+        if (isset($this->unitsPerDomainAndKey[$domain][$key])) {
+            $this->unitsPerDomainAndKey[$domain][$key]->setTranslation($locale, $value);
+        }
     }
 
     public function getTranslations()
     {
         $this->load();
-        return $this->translations;
+        $translations = array();
+        foreach($this->unitsPerDomainAndKey as $domain => $keys) {
+            foreach($keys as $key => $unit) {
+                foreach($unit->getTranslations() as $t) {
+                    $translations[$domain][$key][$t->getLocale()] = $t->getValue();
+                }
+            }
+        }
+        return $translations;
     }
 
     public function getDomainCatalogue($locale, $domain)
     {
         $this->load();
         $catalogue = new MessageCatalogue($locale);
-        $catalogue->add($this->translations[$locale][$domain], $domain);
+        $translations = $this->getTranslations();
+        $catalogue->add($translations[$locale][$domain], $domain);
         return $catalogue;
     }
 
     public function getTranslation($locale, $domain, $key)
     {
         $this->load();
-        return array_key_exists($locale, $this->translations) && array_key_exists($domain, $this->translations[$locale]) && array_key_exists($key, $this->translations[$locale][$domain]) ? $this->translations[$locale][$domain][$key] : null;
+        $translations = $this->getTranslations();
+        return array_key_exists($locale, $translations) &&
+               array_key_exists($domain, $translations[$locale]) &&
+               array_key_exists($key, $translations[$locale][$domain]) ? $translations[$locale][$domain][$key] : null;
     }
 
     public function getAllTranslationUnits()
     {
         $this->load();
         $units = array();
-        foreach ($this->units as $domain => $unitData) {
-            foreach ($unitData as $key => $metadata) {
-                if (is_null($metadata)) {
-                    $metadata = array();
-                }
-                $unit = new Unit($domain, $key, $metadata);
+        foreach ($this->unitsPerDomainAndKey as $domain => $keys) {
+            foreach($keys as $key => $unit) {
                 $units[] = $unit;
-                foreach($this->translations as $locale => $translations) {
-                    if (isset($translations[$domain][$key])){
-                        $unit->setTranslation($locale, $translations[$domain][$key]);
-                    }
-                }
             }
         }
 
         return $units;
     }
 
-    public function addNewTranslation($locale, $domain, $key, $newValue) {
-        $this->load();
-        $this->translations[$locale][$domain][$key] = $newValue;
+    public function addNewTranslation($locale, $domain, $key, $value) {
+        $this->updateTranslation($locale, $domain, $key, $value);
     }
 
     public function updateTranslation($locale, $domain, $key, $value) {
         $this->load();
-        $this->translations[$locale][$domain][$key] = $value;
+        if (isset($this->unitsPerDomainAndKey[$domain][$key])) {
+            $this->unitsPerDomainAndKey[$domain][$key]->setTranslation($locale, $value);
+        } else {
+            throw new RuntimeException("This unit does not exists");
+        }
     }
 
 }

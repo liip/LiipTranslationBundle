@@ -2,7 +2,9 @@
 
 namespace Liip\TranslationBundle\Storage\Persistence;
 
+use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Storage\Persistence\PersistenceInterface;
+use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,11 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 
 class YamlFilePersistence implements PersistenceInterface {
-
     protected $directory;
-    protected $loaded = false;
-    protected $units = null;
-    protected $translations = null;
 
     public function __construct($options)
     {
@@ -38,49 +36,52 @@ class YamlFilePersistence implements PersistenceInterface {
         }
     }
 
-    public function load()
-    {
-        foreach(array('units', 'translations') as $dataType) {
-            $file = $this->directory.'/'.$dataType;
-            $this->$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
-        }
-        $this->loaded = true;
-    }
-
     public function getUnits()
     {
-        if (!$this->loaded) {
-            throw new \RuntimeException("Data not loaded");
-        }
+        $units = array();
+        $translations = array();
 
-        return $this->units;
-    }
-
-    public function setUnits($units)
-    {
-        $this->units = $units;
-    }
-
-
-    public function getTranslations()
-    {
-        if (!$this->loaded) {
-            throw new \RuntimeException("Data not loaded");
-        }
-
-        return $this->translations;
-    }
-
-    public function setTranslations($translations)
-    {
-        $this->translations = $translations;
-    }
-
-    function save()
-    {
         foreach(array('units', 'translations') as $dataType) {
-            file_put_contents($this->directory.'/'.$dataType, Yaml::dump($this->$dataType, 4));
+            $file = $this->directory.'/'.$dataType;
+            $$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
         }
+
+        $ret = array();
+        foreach($units as $domain => $keys) {
+            foreach($keys as $key => $metadata) {
+                $unit = new Unit($domain, $key, is_null($metadata) ? array() : $metadata);
+
+                if(isset($translations[$domain][$key])) {
+                    foreach($translations[$domain][$key] as $locale => $value) {
+                        $unit->setTranslation($locale, $value);
+                    }
+                }
+                $ret[] = $unit;
+            }
+        }
+
+        return $ret;
     }
 
+    public function saveUnits(array $objectUnits)
+    {
+        $translations = array();
+        $units = array();
+        foreach ($objectUnits as $u) {
+            foreach ($u->getTranslations() as $t) {
+                $translations[$t->getDomain()][$t->getKey()][$t->getLocale()] = $t->getValue();
+            }
+            $units[$u->getDomain()][$u->getTranslationKey()] = $u->getMetadata();
+        }
+
+        foreach (array('units', 'translations') as $dataType) {
+            file_put_contents($this->directory.'/'.$dataType, Yaml::dump($$dataType, 4));
+        }
+
+    }
+
+    public function saveUnit(Unit $unit)
+    {
+        throw new NotImplementedException("implement me !");
+    }
 }

@@ -2,6 +2,8 @@
 
 namespace Liip\TranslationBundle\Storage\Persistence;
 
+use Liip\TranslationBundle\Model\Unit;
+
 /**
  * To be completed
  *
@@ -18,13 +20,26 @@ namespace Liip\TranslationBundle\Storage\Persistence;
  */
 interface PersistenceInterface
 {
-    public function load();
-
+    /**
+     * Retrieve all persisted units from the persistence layer..
+     *
+     * @return Unit[]
+     */
     public function getUnits();
-    public function setUnits($units);
 
-    public function getTranslations();
-    public function setTranslations($translations);
+    /**
+     * Save the given Units to the persistence layer.
+     *
+     * @param Unit[] $units
+     * @return bool
+     */
+    public function saveUnits(array $units);
 
-    public function save();
+    /**
+     * Save the given Unit to the persistence layer.
+     *
+     * @param Unit $unit
+     * @return bool
+     */
+    public function saveUnit(Unit $unit);
 }

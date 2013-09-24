@@ -31,7 +31,17 @@ class Unit implements \IteratorAggregate, \ArrayAccess
     {
         $this->domain = $d;
         $this->key = $k;
+        $this->setMetadata($m);
+    }
+
+    public function setMetadata(array $m = array())
+    {
         $this->metadata = $m;
+    }
+
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 
     public function setTranslation($locale, $translation)
@@ -55,6 +65,11 @@ class Unit implements \IteratorAggregate, \ArrayAccess
     public function getTranslationKey()
     {
         return $this->key;
+    }
+
+    public function getTranslations()
+    {
+        return $this->translations;
     }
 
     public function getTranslation($locale)
