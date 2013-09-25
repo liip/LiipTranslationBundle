@@ -93,9 +93,12 @@ class FileImporter
      */
     protected function import($filePath, $fileName = null)
     {
-        // File parsing
+        // Filename parsing
         if ($fileName == null){
             $fileName = basename($filePath);
+        }
+        if (!preg_match('/\w+\.\w+\.\w+/', $fileName)){
+            throw new \RuntimeException("Invalid filename [$fileName], all translation files must be named: domain.locale.format (ex: messages.en.yml)");
         }
         list($domain, $locale, $format) = explode('.', $fileName, 3);
         $catalogue = $this->translator->loadResource(array(

@@ -43,7 +43,7 @@ class ImportController extends BaseController
             $this->addFlashMessage('success', 'File import success');
         }
         catch (\Exception $e) {
-            $this->addFlashMessage('error', 'Error while trying to import thr file: '.$e->getMessage());
+            $this->addFlashMessage('error', 'Error while trying to import: '.$e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
