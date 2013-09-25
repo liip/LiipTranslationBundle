@@ -18,9 +18,13 @@ services:
         class: Liip\TranslationBundle\Translation\Loader
         arguments: ["@liip.translation.repository"]
 
-    liip.translation.importer:
+    liip.translation.file_importer:
         class: Liip\TranslationBundle\Import\FileImporter
         arguments: ["@liip.translation.repository", "@session", "@translator"]
+
+    liip.translation.symfony_importer:
+        class: Liip\TranslationBundle\Import\SymfonyImporter
+        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence"]
 
     liip.translation.exporter:
         class: Liip\TranslationBundle\Export\ZipExporter
