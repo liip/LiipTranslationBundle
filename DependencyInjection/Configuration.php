@@ -23,6 +23,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const SESSION_PREFIX = 'liip.translation.';
+
     /**
      * {@inheritDoc}
      */

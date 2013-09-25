@@ -5,6 +5,7 @@ namespace Liip\TranslationBundle\Import;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\Translator;
+use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -117,7 +118,7 @@ class FileImporter {
             }
         }
 
-        $this->session->set('import-list', $translations);
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
     }
 
     /**
@@ -127,7 +128,7 @@ class FileImporter {
      */
     public function getCurrentTranslations()
     {
-        return $this->session->get('import-list', array());
+        return $this->session->get(Configuration::SESSION_PREFIX.'import-list', array());
     }
 
     public function remove($domain, $key, $locale)
@@ -135,7 +136,7 @@ class FileImporter {
         $translations = $this->getCurrentTranslations();
         unset($translations[$locale]['new'][$domain][$key]);
         unset($translations[$locale]['updated'][$domain][$key]);
-        $this->session->set('import-list', $translations);
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
     }
 
     public function persists(PersistenceInterface $persistence, $locale = null)
@@ -163,7 +164,7 @@ class FileImporter {
         }
 
         unset($translations[$locale]);
-        $this->session->set('import-list', $translations);
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
 
         $persistence->saveUnits($units);
     }
@@ -173,6 +174,6 @@ class FileImporter {
      */
     public function clear()
     {
-        $this->session->set('import-list', null);
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', null);
     }
 }
