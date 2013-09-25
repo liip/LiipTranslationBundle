@@ -1,0 +1,49 @@
+<table class="translations table table-striped table-bordered table-hover table-condensed">
+    <thead>
+    {% block table_header %}
+        <tr>
+            <th>{{ 'translation.interface.column.domain' | trans({}, 'translation-bundle') }}</th>
+            <th>{{ 'translation.interface.column.key' | trans({}, 'translation-bundle') }}</th>
+            <th>{{ 'translation.interface.column.help' | trans({}, 'translation-bundle') }}</th>
+            {% for locale in columns %}
+                <th>{{ 'translation.interface.column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+            {% endfor %}
+        </tr>
+    {% endblock %}
+    </thead>
+    <tbody>
+    {% for item in items %}
+        {% block table_row %}
+            <tr>
+                <td class="translation-domain">{{ item.domain }}</td>
+                <td class="translation-key">{{ item.translationKey }}</td>
+                <td class="translation-help">{{ item.help }}</td>
+                {% for locale in columns %}
+                    <td class="translation-content">
+                        {% set has_value = item.translation(locale).value | default('') | length > 0 %}
+                        {% if has_value %}
+                            <span class="translation-value">{{ item.translation(locale).value }}</span>
+                        {% else %}
+                            <span class="translation-fallback text-muted">{{ item.translationKey | trans({}, item.domain, locale) }}</span>
+                        {% endif %}
+                        <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
+                            <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
+                            {{ has_value ? 'translation.interface.edit-link' | trans({}, 'translation-bundle')  : 'translation.interface.override-link' | trans({}, 'translation-bundle') }}
+                        </a>
+                        {% if has_value %}
+                            <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
+                                <span class="glyphicon glyphicon-trash"></span> remove
+                            </a>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endblock %}
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    {% block table_footer %}
+        {{ block('table_header') }}
+    {% endblock %}
+    </tfoot>
+</table>
