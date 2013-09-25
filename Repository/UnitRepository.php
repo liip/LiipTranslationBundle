@@ -279,4 +279,11 @@ class UnitRepository
         $catalogue->add($translations, $domain);
         return $catalogue;
     }
+
+    public function removeTranslation($domain, $key, $locale)
+    {
+        $unit = $this->findByDomainAndTranslationKey($domain, $key);
+        unset($unit[$locale]);
+        $this->persist($unit);
+    }
 }
