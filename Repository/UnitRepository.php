@@ -191,7 +191,8 @@ class UnitRepository
         foreach($this->units as $u) {
             $status = true;
             foreach($columns as $column => $value) {
-                $status &= call_user_func(array($u, 'get' . ucfirst($column))) == $value;
+                $unitValue = call_user_func(array($u, 'get' . ucfirst($column)));
+                $status &= is_array($value) ? in_array($unitValue, $value) : $unitValue == $value;
             }
             if($status) {
                 $result[] = $u;

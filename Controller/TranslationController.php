@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Controller;
 
+use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
@@ -22,20 +23,44 @@ use Liip\TranslationBundle\Model\Unit;
  */
 class TranslationController extends BaseController
 {
-    public function indexAction($locales = null)
+    public function indexAction()
     {
         $context = $this->has('security.context') ? $this->get('security.context') : null;
         $baseLocales = $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
 
-        if(is_null($locales)) {
+        $filters = $this->get('session')->get(Configuration::SESSION_PREFIX.'filters', array());
+
+        if(! isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
             $locales = $baseLocales;
         } else {
-            $locales = explode('~', $locales);
-            $locales = array_intersect($locales, $baseLocales);
+            if(! is_array($filters['locale'])) {
+                $filters['locale'] = array($filters['locale']);
+            }
+            $locales = array_intersect($filters['locale'], $baseLocales);
         }
 
+        /** @var Unit[] $units */
+        if(!isset($filters['domain']) || is_null($filters['domain'])) {
+            $units = $this->get('liip.translation.repository')->findAll();
+        } else {
+            $units = $this->get('liip.translation.repository')->findByDomain($filters['domain']);
+        }
+
+        foreach($units as $k => $u) {
+            $count = 0;
+            foreach($locales as $l) {
+                if(! isset($u[$l]) || strlen(trim($u[$l]->getValue())) == 0) {
+                    ++$count;
+                }
+            }
+            if(isset($filters['empty']) && $count == 0) {
+                unset($units[$k]);
+            }
+        }
+
+
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
-            'items' => $this->get('liip.translation.repository')->findAll(),
+            'items' => $units,
             'columns' => $locales
         ));
     }

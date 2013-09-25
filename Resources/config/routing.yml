@@ -1,6 +1,6 @@
 liip_translation_interface:
-    pattern:  /list/{locales}
-    defaults: { _controller: LiipTranslationBundle:Translation:index, locales: null }
+    pattern:  /list
+    defaults: { _controller: LiipTranslationBundle:Translation:index }
 
 liip_translation_edit:
     pattern:  /edit/{locale}/{domain}/{key}
