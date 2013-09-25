@@ -108,6 +108,9 @@ class TranslationController extends BaseController
         $this->getRepository()->removeTranslation($locale, $domain, $key);
         $this->addFlashMessage('success', 'Translation was successfully deleted.');
 
+        // Cache must be cleared, so that the fallback translation get display again on the list
+        $this->getTranslator()->clearCacheForLocale($locale);
+
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
