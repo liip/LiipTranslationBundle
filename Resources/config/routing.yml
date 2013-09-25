@@ -8,6 +8,10 @@ liip_translation_filter:
     requirements:
         _method:  POST
 
+liip_translation_resetfilter:
+    pattern:  /filter-reset
+    defaults: { _controller: LiipTranslationBundle:Translation:clearFilter }
+
 liip_translation_edit:
     pattern:  /edit/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Translation:edit }

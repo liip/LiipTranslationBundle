@@ -1,6 +1,7 @@
 {% block filter_form %}
     <form action="{{ path('liip_translation_filter') }}" method="POST" {{ form_enctype(filter_form) }} class="form-inline" role="form">
         {{ form_rest(filter_form) }}
+        <a class="reset-filter" href="{{path('liip_translation_resetfilter') }}" >Reset</a>
         <input type="submit" class="btn btn-default" value="{{ 'translation.interface.button_filter' | trans({}, 'translation-bundle') }}">
     </form>
 {% endblock %}

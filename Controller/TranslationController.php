@@ -76,6 +76,13 @@ class TranslationController extends BaseController
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
+    public function clearFilterAction()
+    {
+        $this->getSession()->set(Configuration::SESSION_PREFIX.'filters', null);
+
+        return $this->redirect($this->generateUrl('liip_translation_interface'));
+    }
+
     public function editAction($locale, $domain, $key)
     {
         $unit = $this->getRepository()->findByDomainAndTranslationKey($domain, $key);
