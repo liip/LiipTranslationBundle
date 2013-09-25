@@ -8,9 +8,9 @@ use Liip\TranslationBundle\Import\SymfonyImporter;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Security\Security;
+use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -57,7 +57,8 @@ abstract class BaseController extends Controller
      */
     public function addFlashMessage($type, $message)
     {
-        $session = $this->get('session');
+        $session = $this->getSession();
+
         if(method_exists($session, 'getFlashBag')) {
             $session->getFlashBag()->set($type, $message);
         } else {
@@ -71,22 +72,18 @@ abstract class BaseController extends Controller
      *
      * @param string $domain domain to check for
      * @param string $locale locale to check for
-     * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+     * @throws AccessDeniedHttpException
      */
     public function securityCheck($domain = null, $locale = null)
     {
-        if (isset($domain) && $this->get('liip.translation.security')->isSecuredByDomain()) {
-            $domainRole = $this->get('liip.translation.security')->getRoleForDomain($domain);
-            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_DOMAINS') || !$this->get('security.context')->isGranted($domainRole)
-            ) {
+        if (isset($domain) && $this->getSecurity()->isSecuredByDomain()) {
+            if (!$this->get('security.context')->isGranted($this->getSecurity()->getRoleForDomain($domain))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
             }
         }
 
-        if (isset($locale) && $this->get('liip.translation.security')->isSecuredByLocale()) {
-            $localeRole = $this->get('liip.translation.security')->getRoleForLocale($locale);
-            if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_LOCALES') || !$this->get('security.context')->isGranted($localeRole)
-            ) {
+        if (isset($locale) && $this->getSecurity()->isSecuredByLocale()) {
+            if (!$this->get('security.context')->isGranted($this->get('liip.translation.security')->getRoleForLocale($locale))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");
             }
         }
@@ -150,11 +147,19 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * @return Session
+     * @return \Symfony\Component\HttpFoundation\Session|Symfony\Component\HttpFoundation\Session\Session
      */
     protected function getSession()
     {
         return $this->get('session');
+    }
+
+    /**
+     * @return Translator
+     */
+    protected function getTranslator()
+    {
+        return $this->get('translator');
     }
 }
 

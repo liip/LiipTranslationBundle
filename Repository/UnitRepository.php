@@ -25,11 +25,19 @@ use Liip\TranslationBundle\Translation\Translator;
  */
 class UnitRepository
 {
+    /** @var array $config The injected config */
     protected $config = array();
+
     /** @var Translator */
     protected $translator;
+
     /** @var PersistenceInterface $persistence */
     protected $persistence;
+
+    /** @var Unit[] $units  */
+    private $units = null;
+
+    private $loaded = false;
 
     public function __construct($config, Translator $translator, PersistenceInterface $persistence)
     {
@@ -48,9 +56,6 @@ class UnitRepository
         return $this->config['locale_list'];
     }
 
-    /** @var Unit[] $units  */
-    private $units = null;
-    private $loaded = false;
 
     protected function load() {
         if($this->loaded) {
