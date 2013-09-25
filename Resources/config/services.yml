@@ -22,5 +22,8 @@ services:
         class: Liip\TranslationBundle\Import\FileImporter
         arguments: ["@liip.translation.repository", "@session", "@translator"]
 
+    liip.translation.exporter:
+        class: Liip\TranslationBundle\Export\ZipExporter
+
     liip.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader

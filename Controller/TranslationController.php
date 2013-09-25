@@ -7,6 +7,7 @@ use Liip\TranslationBundle\Form\FilterType;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * To be completed
@@ -123,6 +124,21 @@ class TranslationController extends BaseController
         $this->addFlashMessage('success', 'Translation was successfully deleted.');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
+    }
+
+    public function exportAction()
+    {
+        $response = new Response();
+
+        $exporter = $this->get('liip.translation.exporter');
+        $exporter->setUnits($this->get('liip.translation.repository')->findAll());
+        $zipContent = $exporter->createZipContent();
+
+        $response->setContent($zipContent);
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment; filename="vca-translations.zip"');
+
+        return $response;
     }
 
     public function cacheClearAction()

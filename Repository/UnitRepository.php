@@ -280,7 +280,7 @@ class UnitRepository
         return $catalogue;
     }
 
-    public function removeTranslation($domain, $key, $locale)
+    public function removeTranslation($locale, $domain, $key)
     {
         $unit = $this->findByDomainAndTranslationKey($domain, $key);
         unset($unit[$locale]);

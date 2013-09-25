@@ -24,7 +24,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class FileImporter {
+class FileImporter
+{
     /** @var UnitRepository $repository */
     protected $repository;
     /** @var Session $session */

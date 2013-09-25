@@ -20,6 +20,10 @@ liip_translation_cache_clear:
     pattern:  /cache-clear
     defaults: { _controller: LiipTranslationBundle:Translation:cacheClear }
 
+liip_translation_export:
+    pattern:  /export
+    defaults: { _controller: LiipTranslationBundle:Translation:export }
+
 liip_translation_import:
     pattern:  /import
     defaults: { _controller: LiipTranslationBundle:Import:index }
