@@ -43,6 +43,8 @@ class TranslationController extends BaseController
         $baseLocales = $this->getAuthorizedLocale();
         $filters = $this->get('session')->get(Configuration::SESSION_PREFIX.'filters', array());
 
+        var_dump($filters);
+
         if(! isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
             $locales = $baseLocales;
         } else {
@@ -66,7 +68,7 @@ class TranslationController extends BaseController
                     ++$count;
                 }
             }
-            if(isset($filters['empty']) && $count == 0) {
+            if(isset($filters['empty']) && $filters['empty'] && $count == 0) {
                 unset($units[$k]);
             }
         }

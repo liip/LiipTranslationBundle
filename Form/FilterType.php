@@ -38,6 +38,7 @@ class FilterType extends CompatibleAbstractType
     public function compatibleBuildForm($builder, array $options)
     {
         $builder
+            ->add('empty', 'checkbox', $this->decorateOption(array('required' => false), $options))
             ->add('domain', 'choice', $this->decorateOption(array(
                 'choices' => $this->domains,
                 'multiple' => true,
