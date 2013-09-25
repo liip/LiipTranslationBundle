@@ -39,58 +39,31 @@ class TranslationController extends BaseController
         return $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
     }
 
-    public function indexAction()
+    protected function getFilter()
     {
-        $baseLocales = $this->getAuthorizedLocale();
-        $filters = $this->get('session')->get(Configuration::SESSION_PREFIX.'filters', array());
+        $filters = $this->get('session')->get(Configuration::SESSION_PREFIX . 'filters', array());
 
-        if(! isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
-            $locales = $baseLocales;
+        $authorizedLocales = $this->getAuthorizedLocale();
+        if (!isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
+            $filters['locale'] = $authorizedLocales;
         } else {
-            if(! is_array($filters['locale'])) {
+            if (!is_array($filters['locale'])) {
                 $filters['locale'] = array($filters['locale']);
             }
-            $locales = array_intersect($filters['locale'], $baseLocales);
+            $filters['locale'] = array_intersect($filters['locale'], $authorizedLocales);
         }
+        return $filters;
+    }
 
-        /** @var Unit[] $units */
-        if(!isset($filters['domain']) || is_null($filters['domain']) || empty($filters['domain'])) {
-            $units = $this->get('liip.translation.repository')->findAll();
-        } else {
-            $units = $this->get('liip.translation.repository')->findByDomain($filters['domain']);
-        }
-
-        foreach($units as $k => $u) {
-            $filterEmpty = isset($filters['empty']) && $filters['empty'];
-            $filterKey = isset($filters['key']) && strlen(trim($filters['key'])) > 0 ? trim($filters['key']) : null;
-            $filterValue = isset($filters['value']) && strlen(trim($filters['value'])) > 0 ? trim($filters['value']) : null;
-
-            if($filterKey && strpos($u->getTranslationKey(), $filterKey) === false) {
-                unset($units[$k]);
-                continue;
-            }
-
-            $count = 0;
-            $valueCount = 0;
-            foreach($locales as $l) {
-                $value = isset($u[$l]) ? trim($u[$l]->getValue()) : null;
-                if(! isset($u[$l]) || strlen($value) == 0) {
-                    ++$count;
-                }
-
-                if($filterValue && strpos($value, $filterValue) !== false) {
-                    ++$valueCount;
-                }
-            }
-            if(($filterEmpty && $count == 0) || ($filterValue && $valueCount == 0)) {
-                unset($units[$k]);
-            }
-        }
+    public function indexAction()
+    {
+        $filters = $this->getFilter();
+        $units = $this->get('liip.translation.repository')->findFiltered($filters);
 
         $filterForm = $this->getFilterForm($filters);
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $units,
-            'columns' => $locales,
+            'columns' => $filters['locale'],
             'filter_form' => $filterForm->createView()
         ));
     }
@@ -143,9 +116,11 @@ class TranslationController extends BaseController
     {
         $response = new Response();
 
-        $exporter = $this->get('liip.translation.exporter');
-        $exporter->setUnits($this->get('liip.translation.repository')->findAll());
-        $zipContent = $exporter->createZipContent();
+        $filters = $this->getFilter();
+        $units = $this->get('liip.translation.repository')->findFiltered($filters);
+
+        $this->get('liip.translation.exporter')->setUnits($units);
+        $zipContent = $this->get('liip.translation.exporter')->createZipContent();
 
         $response->setContent($zipContent);
         $response->headers->set('Content-Type', 'application/zip');
