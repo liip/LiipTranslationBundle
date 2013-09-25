@@ -24,12 +24,8 @@ class TranslationController extends BaseController
 {
     public function indexAction($locales = null)
     {
-        if ($this->has('security.context')) {
-            $baseLocales = $this->get('liip.translation.manager')->getAuthorizedLocaleList($this->get('security.context'));
-        }
-        else {
-            $baseLocales = $this->get('liip.translation.manager')->getLocaleList();
-        }
+        $context = $this->has('security.context') ? $this->get('security.context') : null;
+        $baseLocales = $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
 
         if(is_null($locales)) {
             $locales = $baseLocales;
@@ -39,28 +35,21 @@ class TranslationController extends BaseController
         }
 
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
-            'items' => $this->get('liip.translation.storage')->getAllTranslationUnits(),
+            'items' => $this->get('liip.translation.repository')->findAll(),
             'columns' => $locales
         ));
     }
 
     public function editAction($locale, $domain, $key)
     {
-        // FIXME getTranslation should return the Translation directly
-        $translation = $this->get('liip.translation.storage')->getTranslation($locale, $domain, $key);
-
-        $unit = new Unit($domain, $key, array());
-        $translation = new Translation($translation, $locale, $unit);
+        $translation = $this->get('liip.translation.repository')->findTranslation($domain, $key, $locale);
 
         $form = $this->createForm(new TranslationType(), $translation, array());
         if ($this->getRequest()->getMethod() === 'POST') {
             /** @var Translation $data */
-            $data = $this->handleForm($form);
+            $translation = $this->handleForm($form);
             if($form->isValid()) {
-                // FIXME storage should know how to manage Translation directly
-                $this->get('liip.translation.storage')->updateTranslation($data->getLocale(), $data->getDomain(), $data->getKey(), $data->getValue());
-                $this->get('liip.translation.storage')->save();
-
+                $this->get('liip.translation.repository')->persist($translation->getUnit());
                 $this->addFlashMessage('success', 'Translation was successfully edited.');
                 return $this->redirect($this->generateUrl('liip_translation_interface'));
             }
@@ -74,7 +63,7 @@ class TranslationController extends BaseController
 
     public function cacheClearAction()
     {
-        $this->get('liip.translation.manager')->clearSymfonyCache();
+        $this->get('liip.translation.repository')->clearSymfonyCache();
         $this->addFlashMessage('success', 'Cache cleared');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));

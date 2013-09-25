@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Command;
 
+use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,8 +48,8 @@ class ImportCommand extends ContainerAwareCommand
             $importOptions['locale_list'] = explode(',', $locales);
         }
 
-        /** @var Manager $translationManager */
-        $translationManager =  $this->getContainer()->get('liip.translation.manager');
+        /** @var UnitRepository $translationManager */
+        $translationManager =  $this->getContainer()->get('liip.translation.repository');
         $translationManager->processImportOfStandardResources($importOptions);
 
         $translationManager->clearSymfonyCache();

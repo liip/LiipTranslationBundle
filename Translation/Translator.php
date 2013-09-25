@@ -11,7 +11,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Storage\Persistence
+ * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -121,8 +121,8 @@ class Translator extends BaseTranslator
         $this->addLoader('liip', $this->container->get('liip.translation.loader'));
 
         // Register all catalogues we have in the storage
-        $locales = $this->container->get('liip.translation.manager')->getLocaleList();
-        foreach ($this->container->get('liip.translation.storage')->getAllDomains() as $domain) {
+        $locales = $this->container->get('liip.translation.security')->getLocaleList();
+        foreach ($this->container->get('liip.translation.repository')->getDomainList() as $domain) {
             foreach ($locales as $locale) {
                 parent::addResource('liip', 'intermediate.storage', $locale, $domain);
             }

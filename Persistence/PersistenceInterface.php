@@ -1,6 +1,6 @@
 <?php
 
-namespace Liip\TranslationBundle\Storage\Persistence;
+namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 
@@ -10,7 +10,7 @@ use Liip\TranslationBundle\Model\Unit;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Storage\Persistence
+ * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

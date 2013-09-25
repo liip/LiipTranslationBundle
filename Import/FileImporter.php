@@ -1,11 +1,13 @@
 <?php
 
-namespace Liip\TranslationBundle\Model\Importer;
+namespace Liip\TranslationBundle\Import;
 
-use Liip\TranslationBundle\Storage\Storage;
+use Liip\TranslationBundle\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * To be completed
@@ -13,7 +15,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Storage\Persistence
+ * @package Liip\TranslationBundle\Import
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -21,15 +23,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Importer {
-
+class FileImporter {
+    /** @var UnitRepository $repository */
+    protected $repository;
+    /** @var Session $session */
     protected $session;
+    /** @var Translator $translator */
     protected $translator;
 
-    public function __construct($session, Storage $storage, Translator $translator)
+    public function __construct(UnitRepository $repository, Session $session, Translator $translator)
     {
+        $this->repository = $repository;
         $this->session = $session;
-        $this->storage = $storage;
         $this->translator = $translator;
     }
 
@@ -65,13 +70,13 @@ class Importer {
             $zip->close();
             foreach(scandir($tempFolder) as $path) {
                 if (is_file($tempFolder.'/'.$path)) {
-                    $this->addFile($tempFolder.'/'.$path);
+                    $this->import($tempFolder.'/'.$path);
                 }
             }
             unset($tempFolder);
         }
         else {
-            $this->addFile($file->getRealPath(), $file->getClientOriginalName());
+            $this->import($file->getRealPath(), $file->getClientOriginalName());
         }
     }
 
@@ -81,7 +86,7 @@ class Importer {
      * @param string $filePath   The path to the file
      * @param string $fileName   Optional, the filename to parse to extract resources data
      */
-    public function addFile($filePath, $fileName = null)
+    protected function import($filePath, $fileName = null)
     {
         // File parsing
         if ($fileName == null){
@@ -102,13 +107,12 @@ class Importer {
         }
         foreach($catalogue->all() as $domain => $messages) {
             foreach ($messages as $key => $value) {
-                if (($trans = $this->storage->getTranslation($locale, $domain, $key)) === null) {
-                    $translations[$locale]['new'][$domain][$key] = $value;
-                }
-                else {
+                if ($trans = $this->repository->findTranslation($domain, $key, $locale)) {
                     if ($trans !== $value) {
-                        $translations[$locale]['updated'][$domain][$key] = array('old'=>$trans, 'new'=>$value);
+                        $translations[$locale]['updated'][$domain][$key] = array('old' => $trans, 'new' => $value);
                     }
+                } else {
+                    $translations[$locale]['new'][$domain][$key] = $value;
                 }
             }
         }
@@ -126,14 +130,7 @@ class Importer {
         return $this->session->get('import-list', array());
     }
 
-    /**
-     * Remove an entry from the buffer
-     *
-     * @param $locale
-     * @param $domain
-     * @param $key
-     */
-    public function removeEntry($locale, $domain, $key)
+    public function remove($domain, $key, $locale)
     {
         $translations = $this->getCurrentTranslations();
         unset($translations[$locale]['new'][$domain][$key]);
@@ -141,44 +138,40 @@ class Importer {
         $this->session->set('import-list', $translations);
     }
 
-    /**
-     * Process the import and remove the translationsfrom the buffer
-     *
-     * @param $locale
-     */
-    public function processImport($locale)
+    public function persists(PersistenceInterface $persistence, $locale = null)
     {
         $translations = $this->getCurrentTranslations();
 
+        $units = array();
         if ($locale == 'all') {
             foreach($translations as $locale => $data) {
-                $this->processImport($locale);
+                $this->persists($persistence, $locale);
             }
             return;
         }
 
         foreach ($translations[$locale]['new'] as $domain => $newTranslations) {
             foreach($newTranslations as $key => $value) {
-                $this->storage->addNewTranslation($locale, $domain, $key, $value);
+                $this->repository->findByDomainAndTranslationKey($domain, $key)->setTranslation($locale, $value);
             }
         }
 
         foreach ($translations[$locale]['updated'] as $domain => $newTranslations) {
             foreach($newTranslations as $key => $newValue) {
-                $this->storage->updateTranslation($locale, $domain, $key, $newValue);
+                $this->repository->findTranslation($domain, $key, $locale)->setValue($newValue);
             }
         }
 
         unset($translations[$locale]);
         $this->session->set('import-list', $translations);
 
-        $this->storage->save();
+        $persistence->saveUnits($units);
     }
 
     /**
      * Reset the buffer
      */
-    public function reset()
+    public function clear()
     {
         $this->session->set('import-list', null);
     }

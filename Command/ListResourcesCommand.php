@@ -41,7 +41,7 @@ class ListResourcesCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("\n<comment>List of available translation resources:</comment>\n");
-        $resources = $this->getContainer()->get('liip.translation.manager')->getStandardResources();
+        $resources = $this->getContainer()->get('liip.translation.repository')->getStandardResources();
 
         if ( !$input->getOption('group') ) {
             foreach($resources as $resource) {

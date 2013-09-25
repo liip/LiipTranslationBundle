@@ -1,9 +1,9 @@
 <?php
 
-namespace Liip\TranslationBundle\Storage\Persistence;
+namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
-use Liip\TranslationBundle\Storage\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -13,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Storage\Persistence
+ * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

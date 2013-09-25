@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Translation;
 
-use Liip\TranslationBundle\Storage\Storage;
+use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 
 /**
@@ -11,7 +11,7 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Storage\Persistence
+ * @package Liip\TranslationBundle\Translation
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -21,9 +21,11 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
  */
 class Loader implements LoaderInterface
 {
-    public function __construct(Storage $storage)
+    private $repository;
+
+    public function __construct(UnitRepository $repository)
     {
-        $this->storage = $storage;
+        $this->repository = $repository;
     }
 
     /**
@@ -34,7 +36,7 @@ class Loader implements LoaderInterface
      */
     public function load($resource, $locale, $domain = 'messages')
     {
-        return $this->storage->getDomainCatalogue($locale, $domain);
+        return $this->repository->getMessageCatalogues($locale, $domain);
     }
 
 }

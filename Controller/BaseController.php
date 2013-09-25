@@ -66,16 +66,16 @@ class BaseController extends Controller
      */
     public function securityCheck($domain = null, $locale = null)
     {
-        if (isset($domain) && $this->get('liip.translation.manager')->isSecuredByDomain()) {
-            $domainRole = $this->get('liip.translation.manager')->getRoleForDomain($domain);
+        if (isset($domain) && $this->get('liip.translation.security')->isSecuredByDomain()) {
+            $domainRole = $this->get('liip.translation.security')->getRoleForDomain($domain);
             if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_DOMAINS') || !$this->get('security.context')->isGranted($domainRole)
             ) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
             }
         }
 
-        if (isset($locale) && $this->get('liip.translation.manager')->isSecuredByLocale()) {
-            $localeRole = $this->get('liip.translation.manager')->getRoleForLocale($locale);
+        if (isset($locale) && $this->get('liip.translation.security')->isSecuredByLocale()) {
+            $localeRole = $this->get('liip.translation.security')->getRoleForLocale($locale);
             if (!$this->get('security.context')->isGranted('ROLE_TRANSLATOR_ALL_LOCALES') || !$this->get('security.context')->isGranted($localeRole)
             ) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");

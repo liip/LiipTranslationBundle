@@ -42,7 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('class')
                             ->isRequired()
-                            ->defaultValue('Liip\TranslationBundle\Storage\Persistence\YamlFilePersistence')
+                            ->defaultValue('Liip\TranslationBundle\Persistence\YamlFilePersistence')
                         ->end()
                         ->arrayNode('options')
                             ->children()

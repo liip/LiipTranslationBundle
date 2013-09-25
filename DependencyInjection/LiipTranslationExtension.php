@@ -34,8 +34,8 @@ class LiipTranslationExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('liip_translation_config', $config);
-        $container->setParameter('liip.translation.persistance.class', $config['persistence']['class']);
-        $container->setParameter('liip.translation.persistance.options', $config['persistence']['options']);
+        $container->setParameter('liip.translation.persistence.class', $config['persistence']['class']);
+        $container->setParameter('liip.translation.persistence.options', $config['persistence']['options']);
 
         if ($config['security']['by_locale'] || $config['security']['by_domain']) {
             $this->defineSecurityRoles($config, $container);

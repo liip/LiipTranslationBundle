@@ -61,7 +61,7 @@ class ImportController extends BaseController
     {
         $this->securityCheck(null, $locale);
 
-        $this->get('liip.translation.importer')->processImport($locale);
+        $this->get('liip.translation.importer')->persists($this->get('liip.translation.persistence'), $locale);
         $this->addFlashMessage('success', 'Import success');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));

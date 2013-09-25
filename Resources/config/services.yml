@@ -2,25 +2,25 @@ parameters:
     translator.class: Liip\TranslationBundle\Translation\Translator
 
 services:
-    liip.translation.manager:
-        class: Liip\TranslationBundle\Model\Manager
-        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.storage"]
+    liip.translation.repository:
+        class: Liip\TranslationBundle\Repository\UnitRepository
+        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence"]
 
-    liip.translation.storage:
-        class: Liip\TranslationBundle\Storage\Storage
-        arguments: ["@liip.translation.persistance"]
+    liip.translation.security:
+        class: Liip\TranslationBundle\Security\Security
+        arguments: ["%liip_translation_config%"]
 
-    liip.translation.persistance:
-        class: %liip.translation.persistance.class%
-        arguments: ["%liip.translation.persistance.options%"]
+    liip.translation.persistence:
+        class: %liip.translation.persistence.class%
+        arguments: ["%liip.translation.persistence.options%"]
 
     liip.translation.loader:
         class: Liip\TranslationBundle\Translation\Loader
-        arguments: ["@liip.translation.storage"]
+        arguments: ["@liip.translation.repository"]
 
     liip.translation.importer:
-        class: Liip\TranslationBundle\Model\Importer\Importer
-        arguments: ["@session", "@liip.translation.storage", "@translator"]
+        class: Liip\TranslationBundle\Import\FileImporter
+        arguments: ["@liip.translation.repository", "@session", "@translator"]
 
     liip.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader
