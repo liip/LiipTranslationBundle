@@ -44,8 +44,6 @@ class TranslationController extends BaseController
         $baseLocales = $this->getAuthorizedLocale();
         $filters = $this->get('session')->get(Configuration::SESSION_PREFIX.'filters', array());
 
-        var_dump($filters);
-
         if(! isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
             $locales = $baseLocales;
         } else {
