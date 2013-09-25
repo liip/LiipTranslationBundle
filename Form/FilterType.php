@@ -51,6 +51,8 @@ class FilterType extends CompatibleAbstractType
                 'expanded' => true,
                 'required' => false
             ), $options))
+            ->add('key', 'text', $this->decorateOption(array('required' => false), $options))
+            ->add('value', 'text', $this->decorateOption(array('required' => false), $options))
         ;
     }
 

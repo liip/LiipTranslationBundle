@@ -61,13 +61,28 @@ class TranslationController extends BaseController
         }
 
         foreach($units as $k => $u) {
+            $filterEmpty = isset($filters['empty']) && $filters['empty'];
+            $filterKey = isset($filters['key']) && strlen(trim($filters['key'])) > 0 ? trim($filters['key']) : null;
+            $filterValue = isset($filters['value']) && strlen(trim($filters['value'])) > 0 ? trim($filters['value']) : null;
+
+            if($filterKey && strpos($u->getTranslationKey(), $filterKey) === false) {
+                unset($units[$k]);
+                continue;
+            }
+
             $count = 0;
+            $valueCount = 0;
             foreach($locales as $l) {
-                if(! isset($u[$l]) || strlen(trim($u[$l]->getValue())) == 0) {
+                $value = isset($u[$l]) ? trim($u[$l]->getValue()) : null;
+                if(! isset($u[$l]) || strlen($value) == 0) {
                     ++$count;
                 }
+
+                if($filterValue && strpos($value, $filterValue) !== false) {
+                    ++$valueCount;
+                }
             }
-            if(isset($filters['empty']) && $filters['empty'] && $count == 0) {
+            if(($filterEmpty && $count == 0) || ($filterValue && $valueCount == 0)) {
                 unset($units[$k]);
             }
         }
