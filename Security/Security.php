@@ -74,5 +74,7 @@ class Security {
                 $authorizedLocaleList[] = $locale;
             }
         }
+
+        return $authorizedLocaleList;
     }
 }
