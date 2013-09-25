@@ -61,6 +61,15 @@ class TranslationController extends BaseController
         ));
     }
 
+    public function removeAction($locale, $domain, $key)
+    {
+        $unit = $this->get('liip.translation.repository')->findByDomainAndTranslationKey($domain, $key);
+        unset($unit[$locale]);
+        $this->get('liip.translation.repository')->persist($unit);
+        $this->addFlashMessage('success', 'Translation was successfully deleted.');
+        return $this->redirect($this->generateUrl('liip_translation_interface'));
+    }
+
     public function cacheClearAction()
     {
         $this->get('liip.translation.repository')->clearSymfonyCache();

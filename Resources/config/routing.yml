@@ -6,6 +6,10 @@ liip_translation_edit:
     pattern:  /edit/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Translation:edit }
 
+liip_translation_remove:
+    pattern:  /remove/{locale}/{domain}/{key}
+    defaults: { _controller: LiipTranslationBundle:Translation:remove }
+
 liip_translation_cache_clear:
     pattern:  /cache-clear
     defaults: { _controller: LiipTranslationBundle:Translation:cacheClear }
