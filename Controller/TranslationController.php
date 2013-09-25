@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\DependencyInjection\Configuration;
+use Liip\TranslationBundle\Form\FilterType;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
@@ -23,11 +24,23 @@ use Liip\TranslationBundle\Model\Unit;
  */
 class TranslationController extends BaseController
 {
-    public function indexAction()
+    protected function getFilterForm(array $filters = array())
+    {
+        return $this->createForm(new FilterType(
+            $this->getAuthorizedLocale(),
+            $this->get('liip.translation.repository')->getDomainList()
+        ), $filters);
+    }
+
+    protected function getAuthorizedLocale()
     {
         $context = $this->has('security.context') ? $this->get('security.context') : null;
-        $baseLocales = $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
+        return $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
+    }
 
+    public function indexAction()
+    {
+        $baseLocales = $this->getAuthorizedLocale();
         $filters = $this->get('session')->get(Configuration::SESSION_PREFIX.'filters', array());
 
         if(! isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
@@ -40,7 +53,7 @@ class TranslationController extends BaseController
         }
 
         /** @var Unit[] $units */
-        if(!isset($filters['domain']) || is_null($filters['domain'])) {
+        if(!isset($filters['domain']) || is_null($filters['domain']) || empty($filters['domain'])) {
             $units = $this->get('liip.translation.repository')->findAll();
         } else {
             $units = $this->get('liip.translation.repository')->findByDomain($filters['domain']);
@@ -58,11 +71,21 @@ class TranslationController extends BaseController
             }
         }
 
-
+        $filterForm = $this->getFilterForm($filters);
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $units,
-            'columns' => $locales
+            'columns' => $locales,
+            'filter_form' => $filterForm->createView()
         ));
+    }
+
+    public function filterAction()
+    {
+        $filterForm = $this->getFilterForm();
+        $filters = $this->handleForm($filterForm);
+        $this->get('session')->set(Configuration::SESSION_PREFIX.'filters', $filters);
+
+        return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
     public function editAction($locale, $domain, $key)

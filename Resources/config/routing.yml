@@ -2,6 +2,12 @@ liip_translation_interface:
     pattern:  /list
     defaults: { _controller: LiipTranslationBundle:Translation:index }
 
+liip_translation_filter:
+    pattern:  /filter
+    defaults: { _controller: LiipTranslationBundle:Translation:filter }
+    requirements:
+        _method:  POST
+
 liip_translation_edit:
     pattern:  /edit/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Translation:edit }

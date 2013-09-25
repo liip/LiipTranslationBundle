@@ -1,5 +1,12 @@
 <h1>{{ 'translation.interface.title' | trans({}, 'translation-bundle') }}</h1>
 
+{% block filter_form %}
+    <form action="{{ path('liip_translation_filter') }}" method="POST" {{ form_enctype(filter_form) }} class="form-inline" role="form">
+        {{ form_rest(filter_form) }}
+        <input type="submit" class="btn btn-default" value="{{ 'import.file-input.sumbit' | trans({}, 'translation-bundle') }}">
+    </form>
+{% endblock %}
+
 <div class="table-responsive">
     <table class="translations table table-striped table-bordered table-hover table-condensed">
         <thead>
