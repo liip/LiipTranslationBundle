@@ -2,11 +2,10 @@
 
 namespace Liip\TranslationBundle\Import;
 
+use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\Translator;
-use Liip\TranslationBundle\DependencyInjection\Configuration;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Session\Session;
 

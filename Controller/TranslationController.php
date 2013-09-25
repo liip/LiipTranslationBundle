@@ -6,7 +6,6 @@ use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Liip\TranslationBundle\Form\FilterType;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
-use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -29,19 +28,19 @@ class TranslationController extends BaseController
     {
         return $this->createForm(new FilterType(
             $this->getAuthorizedLocale(),
-            $this->get('liip.translation.repository')->getDomainList()
+            $this->getRepository()->getDomainList()
         ), $filters);
     }
 
     protected function getAuthorizedLocale()
     {
-        $context = $this->has('security.context') ? $this->get('security.context') : null;
-        return $this->get('liip.translation.security')->getAuthorizedLocaleList($context);
+        $context = $this->getSecurityContext();
+        return $this->getSecurity()->getAuthorizedLocaleList($context);
     }
 
     protected function getFilter()
     {
-        $filters = $this->get('session')->get(Configuration::SESSION_PREFIX . 'filters', array());
+        $filters = $this->getSession()->get(Configuration::SESSION_PREFIX . 'filters', array());
 
         $authorizedLocales = $this->getAuthorizedLocale();
         if (!isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
@@ -58,7 +57,7 @@ class TranslationController extends BaseController
     public function indexAction()
     {
         $filters = $this->getFilter();
-        $units = $this->get('liip.translation.repository')->findFiltered($filters);
+        $units = $this->getRepository()->findFiltered($filters);
 
         $filterForm = $this->getFilterForm($filters);
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
@@ -72,14 +71,14 @@ class TranslationController extends BaseController
     {
         $filterForm = $this->getFilterForm();
         $filters = $this->handleForm($filterForm);
-        $this->get('session')->set(Configuration::SESSION_PREFIX.'filters', $filters);
+        $this->getSession()->set(Configuration::SESSION_PREFIX.'filters', $filters);
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
     public function editAction($locale, $domain, $key)
     {
-        $unit = $this->get('liip.translation.repository')->findByDomainAndTranslationKey($domain, $key);
+        $unit = $this->getRepository()->findByDomainAndTranslationKey($domain, $key);
         if(isset($unit[$locale])) {
             $translation = $unit[$locale];
         } else {
@@ -92,7 +91,7 @@ class TranslationController extends BaseController
             /** @var Translation $data */
             $translation = $this->handleForm($form);
             if($form->isValid()) {
-                $this->get('liip.translation.repository')->persist($translation->getUnit());
+                $this->getRepository()->persist($translation->getUnit());
                 $this->addFlashMessage('success', 'Translation was successfully edited.');
                 return $this->redirect($this->generateUrl('liip_translation_interface'));
             }
@@ -106,7 +105,7 @@ class TranslationController extends BaseController
 
     public function removeAction($locale, $domain, $key)
     {
-        $this->get('liip.translation.repository')->removeTranslation($locale, $domain, $key);
+        $this->getRepository()->removeTranslation($locale, $domain, $key);
         $this->addFlashMessage('success', 'Translation was successfully deleted.');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
@@ -117,10 +116,10 @@ class TranslationController extends BaseController
         $response = new Response();
 
         $filters = $this->getFilter();
-        $units = $this->get('liip.translation.repository')->findFiltered($filters);
+        $units = $this->getRepository()->findFiltered($filters);
 
-        $this->get('liip.translation.exporter')->setUnits($units);
-        $zipContent = $this->get('liip.translation.exporter')->createZipContent();
+        $this->getExporter()->setUnits($units);
+        $zipContent = $this->getExporter()->createZipContent();
 
         $response->setContent($zipContent);
         $response->headers->set('Content-Type', 'application/zip');
@@ -131,7 +130,7 @@ class TranslationController extends BaseController
 
     public function cacheClearAction()
     {
-        $this->get('liip.translation.symfony_importer')->clearSymfonyCache();
+        $this->getSymfonyImporter()->clearSymfonyCache();
         $this->addFlashMessage('success', 'Cache cleared');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));

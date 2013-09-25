@@ -8,8 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Liip\TranslationBundle\Translation\Translator;
-
 
 /**
  * List all existing translations resources
@@ -31,7 +29,7 @@ class ListResourcesCommand extends ContainerAwareCommand
     {
         $this
             ->setName('translation:list-resources')
-            ->setDescription('List all existing translations resources found in the application')
+            ->setDescription('List all existing translations resources found in the application.')
             ->setDefinition(array(
                 new InputOption('group', 'g', InputOption::VALUE_NONE, 'Display a single entry for all languages')
             ))
@@ -43,29 +41,27 @@ class ListResourcesCommand extends ContainerAwareCommand
         $output->writeln("\n<comment>List of available translation resources:</comment>\n");
         $resources = $this->getContainer()->get('liip.translation.symfony_importer')->getStandardResources();
 
-        if ( !$input->getOption('group') ) {
+        if(! $input->getOption('group') ) {
             foreach($resources as $resource) {
                 $path = $resource['path'];
-                $output->writeln("  ".realpath($path));
+                $output->writeln("\t".realpath($path));
             }
-        }
-        else {
+        } else {
             $languageByResources = array();
             foreach($resources as $resource) {
                 $pathParts = pathinfo(realpath($resource['path']));
                 list($domain, $locale) = explode('.', $pathParts['filename']);
                 $resource = $pathParts['dirname'] . '/' . $domain;
-                if ( ! array_key_exists($resource, $languageByResources)) {
+                if(! array_key_exists($resource, $languageByResources)) {
                     $languageByResources[$resource] = array();
                 }
                 $languageByResources[$resource][] = $locale;
             }
 
             foreach ($languageByResources as $resource => $langauges) {
-                $output->writeln("  <info>$resource</info>");
-                $output->writeln("    available in [" . implode(', ',$langauges) . "]\n");
+                $output->writeln("\t<info>$resource</info>");
+                $output->writeln("\t\tavailable in [".implode(', ',$langauges)."]\n");
             }
         }
     }
-
 }

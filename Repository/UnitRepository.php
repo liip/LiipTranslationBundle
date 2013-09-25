@@ -7,7 +7,6 @@ use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
-use Symfony\Component\Security\Core\SecurityContext;
 
 
 /**

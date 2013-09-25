@@ -2,7 +2,6 @@
 
 // Because debugging in the browser is much easier than in phpunit...
 
-use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 $loader = require_once __DIR__.'/../../../bootstrap.php';

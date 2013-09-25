@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Export;
 
+use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\Yaml\Yaml;
 
@@ -54,7 +55,7 @@ class ZipExporter {
         return $content;
     }
 
-    protected function addYmlFiles($zip)
+    protected function addYmlFiles(\ZipArchive $zip)
     {
         foreach ($this->unitsByLocaleAndDomain as $locale => $translationDomains) {
             foreach ($translationDomains as $domain => $translations) {
@@ -63,6 +64,10 @@ class ZipExporter {
         }
     }
 
+    /**
+     * @param Translation[] $translations
+     * @return string
+     */
     protected function createYml($translations) {
         $flatArray = array();
         foreach($translations as $translation) {

@@ -6,7 +6,9 @@ use Liip\TranslationBundle\Form\FileImportType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * To be completed
+ * Controller used to handle file importation. When a file is imported, its content
+ * is first placed into the session so it can be validated or eventually modified.
+ * The user can then import it definitively into the managed translations.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -25,7 +27,7 @@ class ImportController extends BaseController
     {
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
             'form' => $this->createForm(new FileImportType())->createView(),
-            'translations' => $this->get('liip.translation.importer')->getCurrentTranslations(),
+            'translations' => $this->getImporter()->getCurrentTranslations(),
         ));
     }
 
@@ -37,7 +39,7 @@ class ImportController extends BaseController
         $data = $this->handleForm($form);
 
         try {
-            $this->get('liip.translation.importer')->handleUploadedFile($data['file']);
+            $this->getImporter()->handleUploadedFile($data['file']);
             $this->addFlashMessage('success', 'File import success');
         }
         catch (\Exception $e) {
@@ -51,7 +53,7 @@ class ImportController extends BaseController
     {
         $this->securityCheck($domain, $locale);
 
-        $this->get('liip.translation.importer')->removeEntry($locale, $domain, $key);
+        $this->getImporter()->remove($domain, $key, $locale);
         $this->addFlashMessage('success', 'Entry removed');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
@@ -61,7 +63,7 @@ class ImportController extends BaseController
     {
         $this->securityCheck(null, $locale);
 
-        $this->get('liip.translation.importer')->persists($this->get('liip.translation.persistence'), $locale);
+        $this->getImporter()->persists($this->getPersistence(), $locale);
         $this->addFlashMessage('success', 'Import success');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));

@@ -2,8 +2,6 @@
 
 namespace Liip\TranslationBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
-
 /**
  * To be completed
  *
