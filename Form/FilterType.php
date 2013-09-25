@@ -23,8 +23,8 @@ class FilterType extends CompatibleAbstractType
 
     public function __construct(array $locales, array $domains)
     {
-        $this->locales = array_combine($locales, $locales);
-        $this->domains = array_combine($domains, $domains);
+        $this->locales = count($locales) > 0 ? array_combine($locales, $locales) : array();
+        $this->domains = count($domains) > 0 ? array_combine($domains, $domains) : array();
     }
 
     protected function decorateOption($options, $possibilities)
