@@ -7,7 +7,6 @@ use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * To be completed
@@ -32,7 +31,12 @@ class FileImporter
     /** @var Translator $translator */
     protected $translator;
 
-    public function __construct(UnitRepository $repository, Session $session, Translator $translator)
+    /**
+     * @param UnitRepository $repository
+     * @param \Symfony\Component\HttpFoundation\Session|Symfony\Component\HttpFoundation\Session\Session $session
+     * @param Translator $translator
+     */
+    public function __construct(UnitRepository $repository, $session, Translator $translator)
     {
         $this->repository = $repository;
         $this->session = $session;
