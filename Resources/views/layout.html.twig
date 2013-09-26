@@ -33,5 +33,15 @@
 
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="{{ asset('bundles/liiptranslation/js/jquery.jeditable.js') }}"></script>
+    <script type="text/javascript">
+        $('.translation-value').editable({{ path('liip_translation_inline_edit') }}, {
+            indicator: 'Saving...',
+            tooltip: 'Click to edit...',
+            submit: 'Ok',
+            height: '24px',
+            width: '15em'
+        });
+    </script>
 </body>
 </html>

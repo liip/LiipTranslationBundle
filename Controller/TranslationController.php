@@ -126,6 +126,19 @@ class TranslationController extends BaseController
         ));
     }
 
+    public function inlineEditAction()
+    {
+        $value = $this->getRequest()->request->get('value');
+        $id = $this->getRequest()->request->get('id');
+        list($domain, $key, $locale) = explode('__', $id);
+
+        $unit = $this->getRepository()->findByDomainAndTranslationKey($domain, $key);
+        $unit->setTranslation($locale, $value);
+        $this->getRepository()->persist();
+
+        exit($value);
+    }
+
     public function removeAction($locale, $domain, $key)
     {
         $this->getRepository()->removeTranslation($locale, $domain, $key);

@@ -21,11 +21,14 @@
                 {% for locale in columns %}
                     <td class="translation-content">
                         {% set has_value = item.translation(locale).value | default('') | length > 0 %}
-                        {% if has_value %}
-                            <span class="translation-value">{{ item.translation(locale).value }}</span>
-                        {% else %}
-                            <span class="translation-value from-fallback text-muted">{{ item.translationKey | trans({}, item.domain, locale) }}</span>
-                        {% endif %}
+                        {% set translation_id = item.domain ~ '__' ~ item.translationKey ~ '__' ~ locale %}
+                        <span class="translation-value{% if not has_value %} translation-fallback text-muted{% endif %}" id="{{ translation_id }}">
+                            {%- if has_value -%}
+                                {{ item.translation(locale).value }}
+                            {%- else -%}
+                                {{ item.translationKey | trans({}, item.domain, locale) }}
+                            {%- endif -%}
+                        </span>
                         <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
                             <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
                             {{ (has_value ? 'link.edit' : 'link.override') | trans({}, 'translation-bundle') }}
