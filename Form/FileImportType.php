@@ -22,8 +22,7 @@ class FileImportType extends CompatibleAbstractType
     {
         $builder->add('file', 'file', $this->decorateOption(array(
             'label' => 'import.file-input.label',
-            'required' => true,
-            'translation_domain' => 'translation-bundle'
+            'required' => true
         ), $options));
     }
 
