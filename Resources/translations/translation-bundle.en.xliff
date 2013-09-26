@@ -162,6 +162,10 @@
                 <source>button.process_all</source>
                 <target>Import everything</target>
             </trans-unit>
+            <trans-unit id="button.10">
+                <source>button.translate</source>
+                <target>Translate</target>
+            </trans-unit>
 
             <trans-unit id="form.1">
                 <source>form.translation.value</source>
