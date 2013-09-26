@@ -117,7 +117,7 @@ class FileImporter
         foreach($catalogue->all() as $domain => $messages) {
             foreach ($messages as $key => $value) {
                 if ($trans = $this->repository->findTranslation($domain, $key, $locale)) {
-                    if ($trans !== $value) {
+                    if ($trans->getValue() !== $value) {
                         $translations[$locale]['updated'][$domain][$key] = array('old' => $trans, 'new' => $value);
                     }
                 } else {
