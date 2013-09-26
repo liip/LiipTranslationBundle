@@ -16,7 +16,7 @@ namespace Liip\TranslationBundle\Model;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Unit implements \IteratorAggregate, \ArrayAccess
+class Unit implements \Iterator, \ArrayAccess
 {
     /** @var string */
     private $domain;
@@ -82,11 +82,6 @@ class Unit implements \IteratorAggregate, \ArrayAccess
         return $this->offsetExists($locale);
     }
 
-    public function getIterator()
-    {
-        return $this;
-    }
-
     public function offsetExists($locale)
     {
         return array_key_exists($locale, $this->translations);
@@ -105,12 +100,11 @@ class Unit implements \IteratorAggregate, \ArrayAccess
         if($this->offsetExists($locale)) {
             $this->translations[$locale]->setValue($value);
         } else {
-            $t = new Translation($value, $locale, $this);
-            if($locale) {
-                $this->translations[$locale] = $t;
-            } else {
-                $this->translations[] = $t;
+            if (!$locale) {
+                throw new \RuntimeException("cannot set a translation without locale.");
             }
+            $t = new Translation($value, $locale, $this);
+            $this->translations[$locale] = $t;
         }
         return true;
     }
