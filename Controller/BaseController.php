@@ -89,6 +89,12 @@ abstract class BaseController extends Controller
         }
     }
 
+    protected function getAuthorizedLocale()
+    {
+        $context = $this->getSecurityContext();
+        return $this->getSecurity()->getAuthorizedLocaleList($context);
+    }
+
     /**
      * @return FileImporter
      */

@@ -32,12 +32,6 @@ class TranslationController extends BaseController
         ), $filters);
     }
 
-    protected function getAuthorizedLocale()
-    {
-        $context = $this->getSecurityContext();
-        return $this->getSecurity()->getAuthorizedLocaleList($context);
-    }
-
     protected function getFilter()
     {
         $filters = $this->getSession()->get(Configuration::SESSION_PREFIX . 'filters', array());

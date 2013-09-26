@@ -33,8 +33,6 @@ class ImportController extends BaseController
 
     public function uploadAction()
     {
-        $this->securityCheck();
-
         $form = $this->createForm(new FileImportType());
         $data = $this->handleForm($form);
 
@@ -61,8 +59,6 @@ class ImportController extends BaseController
 
     public function processAction($locale)
     {
-        $this->securityCheck(null, $locale);
-
         $this->getImporter()->persists($this->getPersistence(), $locale);
         $this->addFlashMessage('success', 'Import success');
 
