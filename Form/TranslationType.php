@@ -18,14 +18,6 @@ namespace Liip\TranslationBundle\Form;
  */
 class TranslationType extends CompatibleAbstractType
 {
-    protected function decorateOption($options, $possibilities)
-    {
-        if (isset($possibilities['translation_domain'])) {
-            $options['translation_domain'] = 'translation-bundle';
-        }
-        return $options;
-    }
-
     public function compatibleBuildForm($builder, array $options)
     {
         $builder->add('value', 'text', $this->decorateOption(array(), $options));

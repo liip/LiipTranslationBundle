@@ -27,18 +27,13 @@ class FilterType extends CompatibleAbstractType
         $this->domains = count($domains) > 0 ? array_combine($domains, $domains) : array();
     }
 
-    protected function decorateOption($options, $possibilities)
-    {
-        if (isset($possibilities['translation_domain'])) {
-            $options['translation_domain'] = 'translation-bundle';
-        }
-        return $options;
-    }
-
     public function compatibleBuildForm($builder, array $options)
     {
         $builder
-            ->add('empty', 'checkbox', $this->decorateOption(array('required' => false), $options))
+            ->add('empty', 'checkbox', $this->decorateOption(array(
+                'required' => false,
+                'label' => 'filter.empty-choice'
+            ), $options))
             ->add('domain', 'choice', $this->decorateOption(array(
                 'choices' => $this->domains,
                 'multiple' => true,
@@ -51,8 +46,12 @@ class FilterType extends CompatibleAbstractType
                 'expanded' => true,
                 'required' => false
             ), $options))
-            ->add('key', 'text', $this->decorateOption(array('required' => false), $options))
-            ->add('value', 'text', $this->decorateOption(array('required' => false), $options))
+            ->add('key', 'text', $this->decorateOption(array(
+                'required' => false
+            ), $options))
+            ->add('value', 'text', $this->decorateOption(
+                array('required' => false)
+            , $options))
         ;
     }
 

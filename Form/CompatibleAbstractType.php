@@ -19,7 +19,7 @@ use Symfony\Component\Form\AbstractType;
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 if (interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
-    abstract class CompatibleAbstractType extends AbstractType
+    abstract class CompatibleAbstractTypeBase extends AbstractType
     {
         /**
          * @param \Symfony\Component\Form\FormBuilderInterface|\Symfony\Component\Form\FormBuilder $builder
@@ -33,7 +33,7 @@ if (interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
         }
     }
 } else {
-    abstract class CompatibleAbstractType extends AbstractType
+    abstract class CompatibleAbstractTypeBase extends AbstractType
     {
         /**
          * @param \Symfony\Component\Form\FormBuilderInterface|\Symfony\Component\Form\FormBuilder $builder
@@ -45,5 +45,16 @@ if (interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
         {
             return $this->compatibleBuildForm($builder, $options);
         }
+    }
+}
+
+abstract class CompatibleAbstractType extends CompatibleAbstractTypeBase
+{
+    protected function decorateOption($options, $possibilities)
+    {
+        if (isset($possibilities['translation_domain'])) {
+            $options['translation_domain'] = 'translation-bundle';
+        }
+        return $options;
     }
 }

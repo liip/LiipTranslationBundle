@@ -20,15 +20,11 @@ class FileImportType extends CompatibleAbstractType
 {
     public function compatibleBuildForm($builder, array $options)
     {
-        $opt = array(
+        $builder->add('file', 'file', $this->decorateOption(array(
             'label' => 'import.file-input.label',
-            'required' => true
-        );
-        if(isset($options['translation_domain'])) {
-            $opt['translation_domain'] = 'translation-bundle';
-        }
-
-        $builder->add('file', 'file', $opt);
+            'required' => true,
+            'translation_domain' => 'translation-bundle'
+        ), $options));
     }
 
     public function getName()
