@@ -56,6 +56,25 @@ class TranslationController extends BaseController
         return $filters;
     }
 
+    protected function beautifyFilter($filters)
+    {
+        $result = array();
+        foreach($filters as $name => $value) {
+            // don't display empty filter or locale which is a synonym for languages
+            if(empty($value) || $name == 'locale') {
+                continue;
+            }
+
+            if(is_bool($value)) {
+                $value = $value ? 'translation.filters.value.true' : 'translation.filters.value.false';
+            } else if(is_array($value)) {
+                $value = implode(', ', $value);
+            }
+            $result['translation.filters.'.$name] = $value;
+        }
+        return $result;
+    }
+
     public function indexAction()
     {
         $filters = $this->getFilter();
@@ -65,7 +84,8 @@ class TranslationController extends BaseController
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $units,
             'columns' => $filters['locale'],
-            'filter_form' => $filterForm->createView()
+            'filter_form' => $filterForm->createView(),
+            'filters' => $this->beautifyFilter($filters)
         ));
     }
 

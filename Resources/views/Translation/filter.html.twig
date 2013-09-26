@@ -5,3 +5,14 @@
         <input type="submit" class="btn btn-default" value="{{ 'translation.interface.button_filter' | trans({}, 'translation-bundle') }}">
     </form>
 {% endblock %}
+
+{% block filter_description %}
+    <dl>
+        {% for name, value in filters %}
+            <dt>{{ name | trans({}, 'translation-bundle') }}</dt>
+            <dd>{{ value | trans({}, 'translation-bundle') }}</dd>
+        {% else %}
+            <dd>{{ 'translation.filters.nothing' | trans({}, 'translation-bundle') }}</dd>
+        {% endfor %}
+    </dl>
+{% endblock %}

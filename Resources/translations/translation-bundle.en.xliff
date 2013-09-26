@@ -32,6 +32,39 @@
                 <source>import.process.all.button</source>
                 <target>Execute imports for all locale</target>
             </trans-unit>
+
+            <trans-unit id="8">
+                <source>translation.filters.nothing</source>
+                <target>No filters selected</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>translation.filters.value.true</source>
+                <target>Yes</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>translation.filters.value.false</source>
+                <target>No</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>translation.filters.empty</source>
+                <target>Display only empty translations ?</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>translation.filters.domain</source>
+                <target>Display only domains :</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>translation.filters.languages</source>
+                <target>Display only locales :</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>translation.filters.key</source>
+                <target>Display only key containing :</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>translation.filters.value</source>
+                <target>Display only values containing :</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
