@@ -227,7 +227,7 @@ class UnitRepository
             $count = 0;
             $valueCount = 0;
             foreach ($u->getTranslations() as $t) {
-                if(! in_array($t->getLocale(), $filters['locale'])) {
+                if(! empty($filters['locale']) && ! in_array($t->getLocale(), $filters['locale'])) {
                     unset($u[$t->getLocale()]);
                     continue;
                 }

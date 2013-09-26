@@ -40,7 +40,7 @@ class FilterType extends CompatibleAbstractType
                 'expanded' => true,
                 'required' => false
             ), $options))
-            ->add('locale', 'choice', $this->decorateOption(array(
+            ->add('languages', 'choice', $this->decorateOption(array(
                 'choices' => $this->locales,
                 'multiple' => true,
                 'expanded' => true,

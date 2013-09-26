@@ -43,13 +43,15 @@ class TranslationController extends BaseController
         $filters = $this->getSession()->get(Configuration::SESSION_PREFIX . 'filters', array());
 
         $authorizedLocales = $this->getAuthorizedLocale();
-        if (!isset($filters['locale']) || is_null($filters['locale']) || empty($filters['locale'])) {
+        // we use two different keys so that the display of a full / empty selection doesn't affect the list
+        // of authorized locales that must be filtered anyway.
+        if (!isset($filters['languages']) || is_null($filters['languages']) || empty($filters['languages'])) {
             $filters['locale'] = $authorizedLocales;
         } else {
-            if (!is_array($filters['locale'])) {
-                $filters['locale'] = array($filters['locale']);
+            if (!is_array($filters['languages'])) {
+                $filters['languages'] = array($filters['languages']);
             }
-            $filters['locale'] = array_intersect($filters['locale'], $authorizedLocales);
+            $filters['locale'] = array_intersect($filters['languages'], $authorizedLocales);
         }
         return $filters;
     }
