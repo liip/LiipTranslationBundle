@@ -224,10 +224,15 @@ class UnitRepository
                 continue;
             }
 
+            if(empty($filters['locale'])) {
+                $filters['locale'] = $this->getLocaleList();
+            }
+
+            /** @var int $count number of non-empty translations */
             $count = 0;
             $valueCount = 0;
             foreach ($u->getTranslations() as $t) {
-                if(! empty($filters['locale']) && ! in_array($t->getLocale(), $filters['locale'])) {
+                if(! in_array($t->getLocale(), $filters['locale'])) {
                     unset($u[$t->getLocale()]);
                     continue;
                 }
@@ -240,7 +245,7 @@ class UnitRepository
                     ++$valueCount;
                 }
             }
-            if (($filterEmpty && $count == 0) || ($filterValue && $valueCount == 0)) {
+            if (($filterEmpty && $count == count($filters['locale'])) || ($filterValue && $valueCount == 0)) {
                 unset($units[$k]);
             }
         }
