@@ -1,0 +1,21 @@
+{% for locale, localeTranslations in translations %}
+
+    <h2>Locale [{{ locale }}]</h2>
+
+    {% if localeTranslations.new | length > 0  %}
+        <h3>New translations</h3>
+        {% include "LiipTranslationBundle:Import:list_table_new.html.twig" with {'translations': localeTranslations.new, 'locale' : locale } only %}
+    {% endif %}
+
+    {% if localeTranslations.updated | length > 0  %}
+        <h3>Updated translations</h3>
+        {% include "LiipTranslationBundle:Import:list_table_updated.html.twig" with {'translations': localeTranslations.updated, 'locale' : locale } only %}
+    {% endif %}
+
+    {% include "LiipTranslationBundle:Import:locale_buttons.html.twig" with {'locale': locale } only %}
+
+{% else %}
+
+    <span>Please, upload new files...</span>
+
+{% endfor %}

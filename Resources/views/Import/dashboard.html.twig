@@ -1,0 +1,9 @@
+<h1>{{ 'import.interface.title' | trans({}, 'translation-bundle') }}</h1>
+
+{% include "LiipTranslationBundle:Import:upload_form.html.twig" with {'form': upload_form } only %}
+
+{% include "LiipTranslationBundle:Import:list.html.twig" with {'translations': translations } only %}
+
+{% if translations | length %}
+    {% include "LiipTranslationBundle:Import:buttons.html.twig" %}
+{% endif %}

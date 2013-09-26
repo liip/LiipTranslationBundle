@@ -1,0 +1,13 @@
+<table>
+    <tr><th>Domain</th><th>Key</th><th>Value</th><th>Actions</th></tr>
+    {% for domain, domainTranslations in translations %}
+        {% for key, value in domainTranslations %}
+            <tr>
+                <td>{{ domain }}</td>
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+                <td><a href="{{ path('liip_translation_import_remove_entry', {'locale': locale, 'domain': domain, 'key': key}) }}">Remove</a></td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+</table>

@@ -1,3 +1,6 @@
+# Tranlsation interface
+#######################
+
 liip_translation_interface:
     pattern:  /list
     defaults: { _controller: LiipTranslationBundle:Translation:index }
@@ -28,7 +31,15 @@ liip_translation_export:
     pattern:  /export
     defaults: { _controller: LiipTranslationBundle:Translation:export }
 
+
+# Import interface
+##################
+
 liip_translation_import:
+    pattern:  /import
+    defaults: { _controller: LiipTranslationBundle:Import:index }
+
+liip_translation_import_reset:
     pattern:  /import
     defaults: { _controller: LiipTranslationBundle:Import:index }
 
