@@ -24,7 +24,7 @@
                         {% if has_value %}
                             <span class="translation-value">{{ item.translation(locale).value }}</span>
                         {% else %}
-                            <span class="translation-fallback text-muted">{{ item.translationKey | trans({}, item.domain, locale) }}</span>
+                            <span class="translation-value from-fallback text-muted">{{ item.translationKey | trans({}, item.domain, locale) }}</span>
                         {% endif %}
                         <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
                             <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
