@@ -31,7 +31,8 @@ class ImportCommand extends ContainerAwareCommand
             ->setName('translation:import')
             ->setDescription('Import all existing translations into the application storage.')
             ->setDefinition(array(
-                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'A comma separated list of locales ( --locales=en,fr,fr_CH')
+                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'A comma separated list of locales ( --locales=en,fr,fr_CH'),
+                new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations')
             ))
         ;
     }
@@ -45,7 +46,7 @@ class ImportCommand extends ContainerAwareCommand
 
         /** @var UnitRepository $translationManager */
         $importer = $this->getContainer()->get('liip.translation.symfony_importer');
-        $importer->processImportOfStandardResources($importOptions);
+        $importer->processImportOfStandardResources($importOptions, $input->getOption('override', false));
         // clear cache to ensure that new translations are taken into account.
         $importer->clearSymfonyCache();
     }

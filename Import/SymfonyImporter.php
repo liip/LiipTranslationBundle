@@ -12,6 +12,7 @@ namespace Liip\TranslationBundle\Import;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
+use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,16 +21,16 @@ class SymfonyImporter {
     private $config;
     /** @var Translator $translator */
     private $translator;
-    /** @var PersistenceInterface $persistence */
-    private $persistence;
+    /** @var UnitRepository $repository */
+    private $repository;
     /** @var OutputInterface $logger */
     private $logger;
 
-    public function __construct($config, Translator $translator, PersistenceInterface $persistence)
+    public function __construct($config, Translator $translator, UnitRepository $repository)
     {
         $this->config = $config;
         $this->translator = $translator;
-        $this->persistence = $persistence;
+        $this->repository = $repository;
     }
 
     /**
@@ -64,7 +65,7 @@ class SymfonyImporter {
         return strpos($resource['path'], 'symfony/symfony') !== false;
     }
 
-    public function processImportOfStandardResources($options)
+    public function processImportOfStandardResources($options, $override = false)
     {
         if (array_key_exists('logger', $options)){
             $this->logger = $options['logger'];
@@ -83,8 +84,7 @@ class SymfonyImporter {
 
         // Import resources one by one
         foreach($this->getStandardResources() as $resource) {
-
-            $this->log("Import resource <info>{$resource['path']}</info>");
+            $this->log("Import resource <fg=cyan>{$resource['path']}</fg=cyan>");
 
             if ($this->checkIfResourceIsIgnored($resource)) {
                 $this->log("  >> <comment>Skipped</comment> (due to ignore settings from the config)\n");
@@ -97,35 +97,40 @@ class SymfonyImporter {
             }
 
             $catalogues[$resource['locale']]->addCatalogue($this->translator->loadResource($resource));
-            $this->log("  >> <comment>OK</comment>\n");
+            $this->log("  >> <info>OK</info>\n");
 
         }
 
-        $unitsPerDomainAndKey = array();
         // Load translations into the intermediate persistence
+        $units = array();
         foreach ($locales as $locale) {
             foreach ($catalogues[$locale]->all() as $domain => $translations) {
-                $this->log("\n  Import catalog <comment>$domain</comment>\n");
+                $this->log("\nImport catalog <comment>$domain</comment>\n");
                 foreach($translations as $key => $value) {
-                    $this->log("    >> key [$key] with a base value of [$value]\n");
+                    $this->log("\t>> key [$key] with a base value of [$value]");
                     $metadata = $catalogues[$locale]->getMetadata($key, $domain);
 
-                    if(! isset($unitsPerDomainAndKey[$domain][$key])) {
-                        $unitsPerDomainAndKey[$domain][$key] = new Unit($domain, $key, is_null($metadata) ? array() : $metadata);
+                    $unit = $this->repository->findByDomainAndTranslationKey($domain, $key);
+                    if(! $unit) {
+                        $unit = $this->repository->createUnit($domain, $key, is_null($metadata) ? array() : $metadata);
                     }
-                    $unitsPerDomainAndKey[$domain][$key]->setTranslation($locale, $value);
+
+                    if($unit->offsetExists($locale)) {
+                        if($override) {
+                            $this->log(" <info>Imported</info> <comment>(overriden current value)</comment>\n");
+                        } else {
+                            $this->log(" <comment>Skipped (no override)</comment>\n");
+                            continue;
+                        }
+                    } else {
+                        $this->log(" <info>Imported</info>\n");
+                    }
+                    $unit->setTranslation($locale, $value);
                 }
             }
         }
 
-        $units = array();
-        foreach($unitsPerDomainAndKey as $keys) {
-            foreach($keys as $u) {
-                $units[] = $u;
-            }
-        }
-
-        $this->persistence->saveUnits($units);
+        $this->repository->persist();
         $this->log(" <info>Import success</info>\n");
     }
 

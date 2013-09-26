@@ -145,18 +145,13 @@ class UnitRepository
         return null;
     }
 
-    /**
-     * @param Unit|Unit[] $units persists the unit or units
-     */
-    public function persist($units) {
-        // FIXME : once the persistence is plainly functional, do the following
-        /*
-        if(! is_array($units)) {
-            $this->persistence->saveUnit($units);
-        } else {
-            $this->persistence->saveUnits($units);
-        }
-        */
+    public function createUnit($domain, $key, array $metadata) {
+        $u = new Unit($domain, $key, $metadata);
+        $this->units[] = $u;
+        return $u;
+    }
+
+    public function persist() {
         $this->persistence->saveUnits($this->units);
     }
 
