@@ -149,7 +149,7 @@ class UnitRepository
      * @param Unit|Unit[] $units persists the unit or units
      */
     public function persist($units) {
-        // FIXME : once the persistence is plainy functionnal, do the following
+        // FIXME : once the persistence is plainly functional, do the following
         /*
         if(! is_array($units)) {
             $this->persistence->saveUnit($units);

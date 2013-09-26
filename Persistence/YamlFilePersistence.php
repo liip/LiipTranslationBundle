@@ -63,6 +63,10 @@ class YamlFilePersistence implements PersistenceInterface {
         return $ret;
     }
 
+    /**
+     * @param Unit[] $objectUnits
+     * @return void
+     */
     public function saveUnits(array $objectUnits)
     {
         $translations = array();
@@ -77,7 +81,6 @@ class YamlFilePersistence implements PersistenceInterface {
         foreach (array('units', 'translations') as $dataType) {
             file_put_contents($this->directory.'/'.$dataType, Yaml::dump($$dataType, 4));
         }
-
     }
 
     public function saveUnit(Unit $unit)

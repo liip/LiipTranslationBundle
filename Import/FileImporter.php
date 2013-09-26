@@ -26,14 +26,14 @@ class FileImporter
 {
     /** @var UnitRepository $repository */
     protected $repository;
-    /** @var Session $session */
+    /** @var \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session $session */
     protected $session;
     /** @var Translator $translator */
     protected $translator;
 
     /**
      * @param UnitRepository $repository
-     * @param \Symfony\Component\HttpFoundation\Session|Symfony\Component\HttpFoundation\Session\Session $session
+     * @param \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session $session
      * @param Translator $translator
      */
     public function __construct(UnitRepository $repository, $session, Translator $translator)
@@ -90,6 +90,7 @@ class FileImporter
      *
      * @param string $filePath   The path to the file
      * @param string $fileName   Optional, the filename to parse to extract resources data
+     * @throws \RuntimeException
      */
     protected function import($filePath, $fileName = null)
     {

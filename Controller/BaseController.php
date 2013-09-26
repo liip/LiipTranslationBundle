@@ -77,13 +77,13 @@ abstract class BaseController extends Controller
     public function securityCheck($domain = null, $locale = null)
     {
         if (isset($domain) && $this->getSecurity()->isSecuredByDomain()) {
-            if (!$this->get('security.context')->isGranted($this->getSecurity()->getRoleForDomain($domain))) {
+            if (!$this->getSecurityContext()->isGranted($this->getSecurity()->getRoleForDomain($domain))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
             }
         }
 
         if (isset($locale) && $this->getSecurity()->isSecuredByLocale()) {
-            if (!$this->get('security.context')->isGranted($this->get('liip.translation.security')->getRoleForLocale($locale))) {
+            if (!$this->getSecurityContext()->isGranted($this->getSecurity()->getRoleForLocale($locale))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");
             }
         }
@@ -147,7 +147,7 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Session|Symfony\Component\HttpFoundation\Session\Session
+     * @return \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session
      */
     protected function getSession()
     {
