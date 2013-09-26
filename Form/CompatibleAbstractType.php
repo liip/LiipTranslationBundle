@@ -52,7 +52,7 @@ abstract class CompatibleAbstractType extends CompatibleAbstractTypeBase
 {
     protected function decorateOption($options, $possibilities)
     {
-        if (isset($possibilities['translation_domain'])) {
+        if (array_key_exists('translation_domain', $possibilities)) {
             $options['translation_domain'] = 'translation-bundle';
         }
         return $options;
