@@ -162,6 +162,35 @@
                 <source>button.process_all</source>
                 <target>Import everything</target>
             </trans-unit>
+
+            <trans-unit id="form.1">
+                <source>form.translation.value</source>
+                <target>Value</target>
+            </trans-unit>
+            <trans-unit id="form.2">
+                <source>form.import.file</source>
+                <target>File</target>
+            </trans-unit>
+            <trans-unit id="form.3">
+                <source>form.filter.empty</source>
+                <target>Keep only empty translation</target>
+            </trans-unit>
+            <trans-unit id="form.4">
+                <source>form.filter.domain</source>
+                <target>Domains</target>
+            </trans-unit>
+            <trans-unit id="form.5">
+                <source>form.filter.locale</source>
+                <target>Locales</target>
+            </trans-unit>
+            <trans-unit id="form.6">
+                <source>form.filter.key</source>
+                <target>Filter keys</target>
+            </trans-unit>
+            <trans-unit id="form.7">
+                <source>form.filter.value</source>
+                <target>Filter values</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

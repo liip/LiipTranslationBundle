@@ -21,7 +21,7 @@ class FileImportType extends CompatibleAbstractType
     public function compatibleBuildForm($builder, array $options)
     {
         $builder->add('file', 'file', $this->decorateOption(array(
-            'label' => 'import.file-input.label',
+            'label' => 'form.import.file',
             'required' => true
         ), $options));
     }
