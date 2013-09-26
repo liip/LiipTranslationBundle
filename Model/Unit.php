@@ -77,6 +77,11 @@ class Unit implements \IteratorAggregate, \ArrayAccess
         return $this->offsetGet($locale);
     }
 
+    public function hasTranslation($locale)
+    {
+        return $this->offsetExists($locale);
+    }
+
     public function getIterator()
     {
         return $this;
