@@ -10,8 +10,8 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="{{ path('liip_translation_interface') }}">Translation</a></li>
-                <li><a href="{{ path('liip_translation_import') }}">Import</a></li>
+                <li><a href="{{ path('liip_translation_interface') }}">{{ 'link.translate' | trans({}, 'translation-bundle') }}</a></li>
+                <li><a href="{{ path('liip_translation_import') }}">{{ 'link.import' | trans({}, 'translation-bundle') }}</a></li>
             </ul>
         </div>
     </nav>

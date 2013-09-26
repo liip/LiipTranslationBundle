@@ -1,4 +1,4 @@
-<a class="reset-import" href="{{path('liip_translation_import_reset') }}" >Reset</a>
-<form action="{{ path('liip_translation_import_process', { 'locale': 'all' }) }}" method="post" style="float: right;">
-    <input type="submit" value="{{ 'import.process.all.button' | trans({}, 'translation-bundle') }}">
+<a class="reset-import" href="{{path('liip_translation_import_reset') }}" >{{ 'link.reset-import' | trans({}, 'translation-bundle') }}</a>
+<form action="{{ path('liip_translation_import_process', { 'locale': 'all' }) }}" method="post">
+    <input type="submit" value="{{ 'button.process_all' | trans({}, 'translation-bundle') }}">
 </form>

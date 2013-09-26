@@ -66,11 +66,11 @@ class TranslationController extends BaseController
             }
 
             if(is_bool($value)) {
-                $value = $value ? 'translation.filters.value.true' : 'translation.filters.value.false';
+                $value = $value ? 'filters.value.true' : 'translation.filters.value.false';
             } else if(is_array($value)) {
                 $value = implode(', ', $value);
             }
-            $result['translation.filters.'.$name] = $value;
+            $result['filters.'.$name] = $value;
         }
         return $result;
     }

@@ -2,68 +2,165 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
-            <trans-unit id="1" minbytes="10" maxbytes="100">
-                <source>translation.interface.title</source>
+            <trans-unit id="interface.1" minbytes="10" maxbytes="100">
+                <source>interface.translation.title</source>
                 <target>Translation interface</target>
             </trans-unit>
-            <trans-unit id="2">
-                <source>translation.interface.column.domain</source>
+            <trans-unit id="interface.2" minbytes="10" maxbytes="100">
+                <source>interface.import.title</source>
+                <target>Importation interface</target>
+            </trans-unit>
+            <trans-unit id="interface.3" minbytes="10" maxbytes="100">
+                <source>interface.import.locale_title</source>
+                <target>Locale [%locale%]</target>
+            </trans-unit>
+            <trans-unit id="interface.4" minbytes="10" maxbytes="100">
+                <source>interface.import.new_translation</source>
+                <target>New translations</target>
+            </trans-unit>
+            <trans-unit id="interface.5" minbytes="10" maxbytes="100">
+                <source>interface.import.updated_translation</source>
+                <target>Updated translations</target>
+            </trans-unit>
+            <trans-unit id="interface.6" minbytes="10" maxbytes="100">
+                <source>interface.import.please_upload</source>
+                <target>Please upload a new file ...</target>
+            </trans-unit>
+
+            <trans-unit id="column.1">
+                <source>column.domain</source>
                 <target>Domain</target>
             </trans-unit>
-            <trans-unit id="3">
-                <source>translation.interface.column.key</source>
+            <trans-unit id="column.2">
+                <source>column.key</source>
                 <target>Key</target>
             </trans-unit>
-            <trans-unit id="4">
-                <source>translation.interface.column.help</source>
+            <trans-unit id="column.3">
+                <source>column.help</source>
                 <target>Help / Description</target>
             </trans-unit>
-            <trans-unit id="5">
-                <source>translation.interface.column.value</source>
+            <trans-unit id="column.4">
+                <source>column.value</source>
                 <target>Translation for [%locale%]</target>
                 <note from="developer">This element must contain a placeholder named %locale%</note>
             </trans-unit>
-            <trans-unit id="6">
-                <source>import.process.locale.button</source>
+            <trans-unit id="column.5">
+                <source>column.current_value</source>
+                <target>Old translation for [%locale%]</target>
+                <note from="developer">This element must contain a placeholder named %locale%</note>
+            </trans-unit>
+            <trans-unit id="column.6">
+                <source>column.new_value</source>
+                <target>New translation for [%locale%]</target>
+                <note from="developer">This element must contain a placeholder named %locale%</note>
+            </trans-unit>
+            <trans-unit id="column.7">
+                <source>column.action</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit id="column.8">
+                <source>column.locale</source>
+                <target>Locale</target>
+            </trans-unit>
+
+            <trans-unit id="filters.1">
+                <source>filters.nothing</source>
+                <target>No filters selected</target>
+            </trans-unit>
+            <trans-unit id="filters.2">
+                <source>filters.value.true</source>
+                <target>Yes</target>
+            </trans-unit>
+            <trans-unit id="filters.3">
+                <source>filters.value.false</source>
+                <target>No</target>
+            </trans-unit>
+            <trans-unit id="filters.4">
+                <source>filters.empty</source>
+                <target>Display only empty translations ?</target>
+            </trans-unit>
+            <trans-unit id="filters.5">
+                <source>filters.domain</source>
+                <target>Display only domains :</target>
+            </trans-unit>
+            <trans-unit id="filters.6">
+                <source>filters.languages</source>
+                <target>Display only locales :</target>
+            </trans-unit>
+            <trans-unit id="filters.7">
+                <source>filters.key</source>
+                <target>Display only key containing :</target>
+            </trans-unit>
+            <trans-unit id="filters.8">
+                <source>filters.value</source>
+                <target>Display only values containing :</target>
+            </trans-unit>
+
+            <trans-unit id="link.1">
+                <source>link.edit</source>
+                <target>edit</target>
+            </trans-unit>
+            <trans-unit id="link.2">
+                <source>link.override</source>
+                <target>override</target>
+            </trans-unit>
+            <trans-unit id="link.3">
+                <source>link.remove</source>
+                <target>remove</target>
+            </trans-unit>
+            <trans-unit id="link.4">
+                <source>link.translate</source>
+                <target>Translate</target>
+            </trans-unit>
+            <trans-unit id="link.5">
+                <source>link.import</source>
+                <target>Import</target>
+            </trans-unit>
+            <trans-unit id="link.6">
+                <source>link.ignore</source>
+                <target>ignore</target>
+            </trans-unit>
+            <trans-unit id="link.7">
+                <source>link.reset-import</source>
+                <target>Reset</target>
+            </trans-unit>
+
+            <trans-unit id="button.1">
+                <source>button.export</source>
+                <target>Export</target>
+            </trans-unit>
+            <trans-unit id="button.2">
+                <source>button.clear_cache</source>
+                <target>Clear cache</target>
+            </trans-unit>
+            <trans-unit id="button.3">
+                <source>button.filter</source>
+                <target>Filter</target>
+            </trans-unit>
+            <trans-unit id="button.4">
+                <source>button.process_locale</source>
                 <target>Execute imports for [%locale%]</target>
                 <note from="developer">This element must contain a placeholder named %locale%</note>
             </trans-unit>
-            <trans-unit id="7">
-                <source>import.process.all.button</source>
+            <trans-unit id="button.5">
+                <source>button.process_all</source>
                 <target>Execute imports for all locale</target>
             </trans-unit>
-
-            <trans-unit id="8">
-                <source>translation.filters.nothing</source>
-                <target>No filters selected</target>
+            <trans-unit id="button.6">
+                <source>button.import</source>
+                <target>Import</target>
             </trans-unit>
-            <trans-unit id="9">
-                <source>translation.filters.value.true</source>
-                <target>Yes</target>
+            <trans-unit id="button.7">
+                <source>button.reset-filter</source>
+                <target>Reset</target>
             </trans-unit>
-            <trans-unit id="10">
-                <source>translation.filters.value.false</source>
-                <target>No</target>
+            <trans-unit id="button.8">
+                <source>button.process_locale</source>
+                <target>Import %locale%</target>
             </trans-unit>
-            <trans-unit id="11">
-                <source>translation.filters.empty</source>
-                <target>Display only empty translations ?</target>
-            </trans-unit>
-            <trans-unit id="12">
-                <source>translation.filters.domain</source>
-                <target>Display only domains :</target>
-            </trans-unit>
-            <trans-unit id="13">
-                <source>translation.filters.languages</source>
-                <target>Display only locales :</target>
-            </trans-unit>
-            <trans-unit id="14">
-                <source>translation.filters.key</source>
-                <target>Display only key containing :</target>
-            </trans-unit>
-            <trans-unit id="15">
-                <source>translation.filters.value</source>
-                <target>Display only values containing :</target>
+            <trans-unit id="button.9">
+                <source>button.process_all</source>
+                <target>Import everything</target>
             </trans-unit>
         </body>
     </file>

@@ -1,21 +1,17 @@
 {% for locale, localeTranslations in translations %}
-
-    <h2>Locale [{{ locale }}]</h2>
+    <h2>{{ 'interface.import.locale_title' | trans({'%locale%': locale}, 'translation-bundle') }}</h2>
 
     {% if localeTranslations.new | length > 0  %}
-        <h3>New translations</h3>
+        <h3>{{ 'interface.import.new_translation' | trans({}, 'translation-bundle') }}</h3>
         {% include "LiipTranslationBundle:Import:list_table_new.html.twig" with {'translations': localeTranslations.new, 'locale' : locale } only %}
     {% endif %}
 
     {% if localeTranslations.updated | length > 0  %}
-        <h3>Updated translations</h3>
+        <h3>{{ 'interface.import.updated_translation' | trans({}, 'translation-bundle') }}</h3>
         {% include "LiipTranslationBundle:Import:list_table_updated.html.twig" with {'translations': localeTranslations.updated, 'locale' : locale } only %}
     {% endif %}
 
     {% include "LiipTranslationBundle:Import:locale_buttons.html.twig" with {'locale': locale } only %}
-
 {% else %}
-
-    <span>Please, upload new files...</span>
-
+    <span>{{ 'interface.import.please_upload' | trans({}, 'translation-bundle') }}</span>
 {% endfor %}

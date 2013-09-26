@@ -1,14 +1,28 @@
 <table>
-    <tr><th>Domain</th><th>Key</th><th>Current value</th><th>New value</th<th>Actions</th></tr>
-    {% for domain, domainTranslations in localeTranslations.updated %}
+    <thead>
+    <tr>
+        <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'column.current_value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+        <th>{{ 'column.new_value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+        <th>{{ 'column.action' | trans({}, 'translation-bundle') }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for domain, domainTranslations in translations %}
         {% for key, value in domainTranslations %}
             <tr>
                 <td>{{ domain }}</td>
                 <td>{{ key }}</td>
                 <td>{{ value.old }}</td>
                 <td>{{ value.new }}</td>
-                <td><a href="{{ path('liip_translation_import_remove_entry', {'locale': locale, 'domain': domain, 'key': key}) }}">Ignore</a></td>
+                <td>
+                    <a href="{{ path('liip_translation_import_remove_entry', {'locale': locale, 'domain': domain, 'key': key}) }}">
+                        <span class="glyphicon glyphicon-trash"></span> {{ 'link.ignore' | trans({}, 'translation-bundle') }}
+                    </a>
+                </td>
             </tr>
         {% endfor %}
     {% endfor %}
+    </tbody>
 </table>

@@ -2,11 +2,11 @@
     <thead>
     {% block table_header %}
         <tr>
-            <th>{{ 'translation.interface.column.domain' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'translation.interface.column.key' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'translation.interface.column.help' | trans({}, 'translation-bundle') }}</th>
+            <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
+            <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
+            <th>{{ 'column.help' | trans({}, 'translation-bundle') }}</th>
             {% for locale in columns %}
-                <th>{{ 'translation.interface.column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+                <th>{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
             {% endfor %}
         </tr>
     {% endblock %}
@@ -28,11 +28,11 @@
                         {% endif %}
                         <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
                             <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
-                            {{ has_value ? 'translation.interface.edit-link' | trans({}, 'translation-bundle')  : 'translation.interface.override-link' | trans({}, 'translation-bundle') }}
+                            {{ (has_value ? 'link.edit' : 'link.override') | trans({}, 'translation-bundle') }}
                         </a>
                         {% if has_value %}
                             <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
-                                <span class="glyphicon glyphicon-trash"></span> remove
+                                <span class="glyphicon glyphicon-trash"></span> {{ 'link.remove' | trans({}, 'translation-bundle') }}
                             </a>
                         {% endif %}
                     </td>

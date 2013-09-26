@@ -2,15 +2,15 @@
 
 <form action="{{ form_url }}" method="POST" {{ form_enctype(form) }} class="form-inline" role="form">
     <div>
-        <label for="translation-domain">Domain</label>
+        <label for="translation-domain">{{ 'column.domain' | trans({}, 'translation-bundle') }}</label>
         <span id="translation-domain">{{ translation.domain }}</span>
     </div>
     <div>
-        <label for="translation-locale">Locale</label>
+        <label for="translation-locale">{{ 'column.locale' | trans({}, 'translation-bundle') }}</label>
         <span id="translation-locale">{{ translation.locale }}</span>
     </div>
     <div>
-        <label for="translation-key">Key</label>
+        <label for="translation-key">{{ 'column.key' | trans({}, 'translation-bundle') }}</label>
         <span id="translation-key">{{ translation.key }}</span>
     </div>
     {{ form_rest(form) }}

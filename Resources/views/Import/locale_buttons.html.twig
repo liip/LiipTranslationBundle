@@ -1,3 +1,3 @@
-<form action="{{ path('liip_translation_import_process', { 'locale': locale }) }}" method="post" style="float: right;">
-    <input type="submit" value="{{ 'import.process.locale.button' | trans({'locale': locale}, 'translation-bundle') }}">
+<form action="{{ path('liip_translation_import_process', { 'locale': locale }) }}" method="post">
+    <input type="submit" value="{{ 'button.process_locale' | trans({'%locale%': locale}, 'translation-bundle') }}">
 </form>

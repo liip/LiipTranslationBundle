@@ -1,10 +1,10 @@
-<h1>{{ 'translation.interface.title' | trans({}, 'translation-bundle') }}</h1>
+<h1>{{ 'interface.translation.title' | trans({}, 'translation-bundle') }}</h1>
 
 {% include "LiipTranslationBundle:Translation:filter.html.twig" with {'form': filter_form, 'filters': filters } %}
 
 <div class="table-responsive">
     {% include "LiipTranslationBundle:Translation:table.html.twig" %}
 
-    <a class="translation-cache-clear" href="{{ path('liip_translation_cache_clear') }}">{{ 'translation.interface.button_clear_cache' | trans({}, 'translation-bundle') }}</a>
-    <a class="translation-export" href="{{ path('liip_translation_export') }}">{{ 'translation.interface.button_export' | trans({}, 'translation-bundle') }}</a>
+    <a class="translation-cache-clear" href="{{ path('liip_translation_cache_clear') }}">{{ 'button.clear_cache' | trans({}, 'translation-bundle') }}</a>
+    <a class="translation-export" href="{{ path('liip_translation_export') }}">{{ 'button.export' | trans({}, 'translation-bundle') }}</a>
 </div>
