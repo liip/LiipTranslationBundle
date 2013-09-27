@@ -88,4 +88,65 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($repo->findByTranslationKey('non-existing key'));
         $this->assertFalse($repo->findByDomainAndTranslationKey('non-existing domain', 'non-existing key'));
     }
+
+    public function testGetDomainList()
+    {
+        $domains = array(
+            new Unit('domain1', 'key1'),
+            new Unit('domain1', 'key2'),
+            new Unit('domain2', 'key1'),
+            new Unit('domain2', 'key2'),
+            new Unit('domain2', 'key3'),
+            new Unit('domain3', 'key1'),
+            new Unit('domain3', 'key2'),
+        );
+        $this->assertEquals(array('domain1', 'domain2', 'domain3'), $this->getRepository($domains)->getDomainList());
+    }
+
+    public function testCreateUnit()
+    {
+        // simply test the created unit
+        $repo = $this->getRepository(array());
+        $u = $repo->createUnit('domain', 'key', array());
+        $this->assertTrue($u instanceof Unit);
+        $this->assertEquals('domain', $u->getDomain());
+        $this->assertEquals('key', $u->getTranslationKey());
+        // test if the repository contains the unit (without prior load)
+        $this->assertContains($u, $repo->findAll());
+
+        // test if the repo already has a unit without prior load
+        $repo = $this->getRepository(array(new Unit('d', 'k', array())));
+        $u = $repo->createUnit('domain', 'key', array());
+        $this->assertContains($u, $repo->findAll());
+
+        // test without prior load empty repository
+        $repo = $this->getRepository(array());
+        $u = $repo->createUnit('domain', 'key', array());
+        $this->assertContains($u, $repo->findAll());
+
+        // test with prior load empty repository
+        $repo = $this->getRepository(array());
+        $repo->findAll();
+        $u = $repo->createUnit('domain', 'key', array());
+        $this->assertContains($u, $repo->findAll());
+
+        // test without prior load but with conflict
+        $repo = $this->getRepository(array(new Unit('domain', 'key', array('some data'))));
+        $u = $repo->createUnit('domain', 'key', array());
+        $this->assertNotContains($u, $repo->findAll());
+    }
+
+    public function testFindTranslation()
+    {
+        $u = new Unit('domain', 'key', array());
+        $u->setTranslation('en', 'some translation');
+        $u->setTranslation('fr', 'une traduction');
+
+        $repo = $this->getRepository(array($u));
+        $this->assertEquals('some translation', $repo->findTranslation('domain', 'key', 'en')->getValue());
+        $this->assertEquals('une traduction', $repo->findTranslation('domain', 'key', 'fr')->getValue());
+        $this->assertNull($repo->findTranslation('non-existing domain', 'key', 'en'));
+        $this->assertNull($repo->findTranslation('domain', 'non-existing key', 'en'));
+        $this->assertNull($repo->findTranslation('domain', 'key', 'non-existing locale'));
+    }
 }

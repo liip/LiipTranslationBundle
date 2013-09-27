@@ -62,7 +62,23 @@ class UnitRepository
             return;
         }
 
-        $this->units = $this->persistence->getUnits();
+        $units = $this->persistence->getUnits();
+        // if we already added units to the repository, those we get
+        // from the persistence should override the created ones
+        if(! is_null($this->units)) {
+            foreach($this->units as $u) {
+                $found = false;
+                foreach($units as $u2) {
+                    if($u->getDomain() == $u2->getDomain() && $u->getTranslationKey() == $u2->getTranslationKey()) {
+                        $found = true;
+                    }
+                }
+                if(! $found) {
+                    $units[] = $u;
+                }
+            }
+        }
+        $this->units = $units;
         $this->loaded = true;
     }
 
@@ -161,7 +177,7 @@ class UnitRepository
     public function getDomainList()
     {
         $this->load();
-        return array_unique(array_map(function(Unit $u) { return $u->getDomain(); }, $this->units));
+        return array_values(array_unique(array_map(function(Unit $u) { return $u->getDomain(); }, $this->units)));
     }
 
     /**
