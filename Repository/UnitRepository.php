@@ -155,8 +155,8 @@ class UnitRepository
     public function findTranslation($domain, $key, $locale)
     {
         $unit = $this->findByDomainAndTranslationKey($domain, $key);
-        if(isset($unit[$locale])) {
-            return $unit[$locale];
+        if($unit && $unit->hasTranslation($locale)) {
+            return $unit->getTranslation($locale);
         }
         return null;
     }

@@ -86,9 +86,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($unit->hasTranslation(self::LOCALE1));
         $this->assertTrue($unit->hasTranslation(self::LOCALE2));
 
+        $this->assertTrue($unit->getTranslation(self::LOCALE2) instanceof Translation);
         $this->assertEquals(self::TRANSLATION1, $unit->getTranslation(self::LOCALE1)->getValue());
         $this->assertEquals(self::TRANSLATION2, $unit->getTranslation(self::LOCALE2)->getValue());
-        $this->assertFalse($unit->getTranslation('non-existing locale'));
+        $this->assertNull($unit->getTranslation('non-existing locale'));
 
         $translations = $unit->getTranslations();
         $this->assertCount(2, $translations);
@@ -100,6 +101,16 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider getUnit
+     */
+    public function testAddTranslation(Unit $unit)
+    {
+        $t = new Translation(self::TRANSLATION1, self::LOCALE1, $unit);
+        $unit->addTranslation($t);
+        $this->assertEquals(self::TRANSLATION1, $unit->getTranslation(self::LOCALE1)->getValue());
+    }
+
+    /**
      * @dataProvider getUnitWithTranslation
      */
     public function testArrayAccess(Unit $unit)
@@ -108,6 +119,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($unit['non-existing locale']));
 
         $this->assertEquals(self::TRANSLATION2, $unit[self::LOCALE2]);
+        $this->assertFalse($unit[self::LOCALE2] instanceof Translation);
+        $this->assertTrue(is_string($unit[self::LOCALE2]));
+
+        $this->assertFalse($unit['non-existing locale']);
 
         $unit[self::LOCALE2] = self::TRANSLATION1;
         $this->assertEquals(self::TRANSLATION1, $unit[self::LOCALE2]);
