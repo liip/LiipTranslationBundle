@@ -286,13 +286,7 @@
                             /* check if given target is function */
                             if ($.isFunction(settings.target)) {
                                 var str = settings.target.apply(self, [input.val(), settings]);
-                                $(self).html(str);
-                                self.editing = false;
-                                callback.apply(self, [self.innerHTML, settings]);
-                                /* TODO: this is not dry */
-                                if (!$.trim($(self).html())) {
-                                    $(self).html(settings.placeholder);
-                                }
+                                self.updateContent(str, true);
                             } else {
                                 /* add edited content and id of edited element to POST */
                                 var submitdata = {};
@@ -320,14 +314,7 @@
                                     dataType: 'html',
                                     url: settings.target,
                                     success: function (result, status) {
-                                        if (ajaxoptions.dataType == 'html') {
-                                            $(self).html(result);
-                                        }
-                                        self.editing = false;
-                                        callback.apply(self, [result, settings]);
-                                        if (!$.trim($(self).html())) {
-                                            $(self).html(settings.placeholder);
-                                        }
+                                        self.updateContent(result, ajaxoptions.dataType == 'html');
                                     },
                                     error: function (xhr, status, error) {
                                         onerror.apply(form, [settings, self, xhr]);
@@ -348,6 +335,18 @@
             });
 
             /* privileged methods */
+            this.updateContent = function (result, html) {
+                if (typeof html != 'undefined' && html)
+                {
+                    $(self).html(result);
+                }
+                self.editing = false;
+                callback.apply(self, [result, settings]);
+                if (!$.trim($(self).html())) {
+                    $(self).html(settings.placeholder);
+                }
+            };
+
             this.reset = function (form) {
                 /* prevent calling reset twice when blurring */
                 if (this.editing) {
