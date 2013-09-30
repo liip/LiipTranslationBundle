@@ -18,19 +18,12 @@ use Liip\TranslationBundle\Tests\BaseWebTestCase;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class TranslationControllerTest extends BaseWebTestCase
+class ImportControllerTest extends BaseWebTestCase
 {
     public function testIndex()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
+        $crawler = $client->request('GET', $this->getUrl('liip_translation_import'));
         $this->assertNoError($client);
-    }
-
-    public function testClearCache()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', $this->getUrl('liip_translation_cache_clear'));
-        $this->assertRedirect($client);
     }
 }

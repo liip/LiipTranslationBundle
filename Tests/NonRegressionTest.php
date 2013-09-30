@@ -2,7 +2,6 @@
 
 namespace Liip\TranslationBundle\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
@@ -19,7 +18,7 @@ use Symfony\Component\HttpKernel\Kernel;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class NonRegressionTest extends WebTestCase
+class NonRegressionTest extends BaseWebTestCase
 {
     /**
      * Executes the given SF2 command.

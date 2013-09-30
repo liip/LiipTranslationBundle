@@ -9,12 +9,18 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        return array(
+        $bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Liip\TranslationBundle\LiipTranslationBundle(),
             new Liip\TranslationBundle\Tests\Fixtures\TestApplication\TestBundle\TestBundle()
         );
+
+        if (in_array($this->getEnvironment(), array('test'))) {
+            $bundles[] = new Liip\FunctionalTestBundle\LiipFunctionalTestBundle();
+        }
+
+        return $bundles;
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

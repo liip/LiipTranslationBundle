@@ -22,3 +22,5 @@ liip_translation:
     security:
         by_domain: false
         by_locale: false
+
+liip_functional_test: ~

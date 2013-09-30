@@ -22,7 +22,8 @@
     "require-dev": {
         "twig/twig": ">=1.0,<2.0-dev",
         "symfony/symfony": "~2.0",
-        "liip/rmt": "dev-master"
+        "liip/rmt": "dev-master",
+        "liip/functional-test-bundle": "dev-master"
     },
     "suggest": {
         "twig/twig": ">=1.0,<2.0-dev"
