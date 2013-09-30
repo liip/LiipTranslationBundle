@@ -101,6 +101,11 @@ class SymfonyImporter {
 
         }
 
+        $existingUnits = array();
+        foreach($this->repository->findAll() as $u) {
+            $existingUnits[$u->getDomain()][$u->getTranslationKey()] = $u;
+        }
+
         // Load translations into the intermediate persistence
         $units = array();
         foreach ($locales as $locale) {
@@ -110,10 +115,10 @@ class SymfonyImporter {
                     $this->log("\t>> key [$key] with a base value of [$value]");
                     $metadata = $catalogues[$locale]->getMetadata($key, $domain);
 
-                    $unit = $this->repository->findByDomainAndTranslationKey($domain, $key);
-                    if(! $unit) {
-                        $unit = $this->repository->createUnit($domain, $key, is_null($metadata) ? array() : $metadata);
+                    if(! isset($existingUnits[$domain][$key])) {
+                        $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key, is_null($metadata) ? array() : $metadata);
                     }
+                    $unit = $existingUnits[$domain][$key];
 
                     if($unit->hasTranslation($locale)) {
                         if($override) {
