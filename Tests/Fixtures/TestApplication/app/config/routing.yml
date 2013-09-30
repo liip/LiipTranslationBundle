@@ -6,6 +6,10 @@ non_regression_override:
     pattern:  /non-regression/override
     defaults: { _controller: TestBundle:Test:overrideTest }
 
+non_regression_no_import:
+    pattern:  /non-regression/no-import
+    defaults: { _controller: TestBundle:Test:noImportTest }
+
 liip_translation:
     resource: "@LiipTranslationBundle/Resources/config/routing.yml"
     prefix:   /

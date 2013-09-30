@@ -117,8 +117,17 @@ class Translator extends BaseTranslator
             return;
         }
 
+        parent::initialize();
+
         // Register our custom loader
         $this->addLoader('liip', $this->container->get('liip.translation.loader'));
+
+        // Add resources files directly, so that we still have translations
+        // event if we don't run translation:import
+        $standardResources = $this->getStandardResources();
+        foreach($standardResources as $resource) {
+            parent::addResource($resource['format'], $resource['path'], $resource['locale'], $resource['domain']);
+        }
 
         // Register all catalogues we have in the storage
         $locales = $this->container->get('liip.translation.security')->getLocaleList();

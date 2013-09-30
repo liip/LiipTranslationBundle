@@ -21,11 +21,30 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class NonRegressionTest extends WebTestCase
 {
-    public static function setUpBeforeClass()
+    /**
+     * Executes the given SF2 command.
+     */
+    protected static function executeCommand($cmd)
     {
         chdir(__DIR__.'/Fixtures/TestApplication');
-        exec('./app/console cache:clear --no-warmup');
-        exec('./app/console translation:import');
+        exec($cmd);
+    }
+
+    /**
+     * Runs the cache:clear command.
+     */
+    protected static function clearCache()
+    {
+        self::executeCommand('./app/console cache:clear --no-warmup');
+    }
+
+    /**
+     * Clears the cache and runs the translation:import command.
+     */
+    public static function importTranslations()
+    {
+        self::clearCache();
+        self::executeCommand('./app/console translation:import');
     }
 
     /**
@@ -33,6 +52,8 @@ class NonRegressionTest extends WebTestCase
      */
     public function testFallback()
     {
+        self::importTranslations();
+
         $client = static::createClient();
         $client->request('GET', '/non-regression/fallback');
         $this->assertEquals(
@@ -47,6 +68,8 @@ class NonRegressionTest extends WebTestCase
      */
     public function testOverriding()
     {
+        self::importTranslations();
+
         $client = static::createClient();
         $client->request('GET', '/non-regression/override');
 
@@ -58,6 +81,22 @@ class NonRegressionTest extends WebTestCase
             $expectedResult,
             substr($client->getResponse()->getContent(),0,1000),
             "Assert the override system: bundle => bundle in app => app"
+        );
+    }
+
+    /**
+     * Tests translations without running the translation:import command.
+     */
+    public function testNoImport()
+    {
+        self::clearCache();
+
+        $client = static::createClient();
+        $client->request('GET', '/non-regression/no-import');
+        $this->assertEquals(
+            "  no-import-key1: value_1_app\n  no-import-key2: no-import-key2\n",
+            substr($client->getResponse()->getContent(),0,1000),
+            "Assert that translations work even when the storage is empty"
         );
     }
 }

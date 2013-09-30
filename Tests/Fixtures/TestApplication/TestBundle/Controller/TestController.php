@@ -39,4 +39,13 @@ class TestController extends Controller
             'domain' => 'override-test'
         ));
     }
+
+    public function noImportTestAction()
+    {
+        $this->getRequest()->setLocale('en');
+        return $this->render('TestBundle:Test:keys_values.html.twig', array(
+            'keys' => array('no-import-key1', 'no-import-key2'),
+            'domain' => 'no-import-test'
+        ));
+    }
 }
