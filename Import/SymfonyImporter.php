@@ -115,7 +115,7 @@ class SymfonyImporter {
                         $unit = $this->repository->createUnit($domain, $key, is_null($metadata) ? array() : $metadata);
                     }
 
-                    if($unit->offsetExists($locale)) {
+                    if($unit->hasTranslation($locale)) {
                         if($override) {
                             $this->log(" <info>Imported</info> <comment>(overriden current value)</comment>\n");
                         } else {

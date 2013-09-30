@@ -102,12 +102,10 @@ class TranslationController extends BaseController
     public function editAction($locale, $domain, $key)
     {
         $unit = $this->getRepository()->findByDomainAndTranslationKey($domain, $key);
-        if(isset($unit[$locale])) {
-            $translation = $unit[$locale];
-        } else {
+        if(! $unit->hasTranslation($locale)) {
             $unit->setTranslation($locale, '');
-            $translation = $unit->getTranslation($locale);
         }
+        $translation = $unit->getTranslation($locale);
 
         $form = $this->createForm(new TranslationType(), $translation, array());
         if ($this->getRequest()->getMethod() === 'POST') {
