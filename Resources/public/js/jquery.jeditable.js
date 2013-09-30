@@ -344,8 +344,30 @@
                 callback.apply(self, [result, settings]);
                 if (!$.trim($(self).html())) {
                     $(self).html(settings.placeholder);
+                } else {
+                    self.overrideToEdit();
                 }
             };
+
+            this.overrideToEdit = function () {
+                var elem = $(self);
+                if (elem.hasClass('translation-fallback')) {
+                    elem.removeClass('translation-fallback');
+                    var edit = elem.parent().find('.translation-override').removeClass('translation-override');
+                    edit.find('span').removeClass('glyphicon-pencil');
+                    var remove = edit.clone();
+
+                    edit.addClass('translation-edit');
+                    edit.find('span').addClass('glyphicon-edit');
+                    edit.colorbox();
+
+                    remove.addClass('translation-remove');
+                    remove.find('span').addClass('glyphicon-trash');
+                    remove.attr('href', remove.attr('href').replace('/translations/edit/', '/translations/remove/'));
+
+                    remove.insertAfter(edit);
+                }
+            }
 
             this.reset = function (form) {
                 /* prevent calling reset twice when blurring */
