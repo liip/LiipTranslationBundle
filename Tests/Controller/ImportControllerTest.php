@@ -22,8 +22,6 @@ class ImportControllerTest extends BaseWebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', $this->getUrl('liip_translation_import'));
-        $this->assertNoError($client);
+        $content = $this->fetchContent($this->getUrl('liip_translation_import'));
     }
 }

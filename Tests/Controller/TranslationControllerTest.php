@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Tests\Controller;
 
+use Liip\TranslationBundle\Controller\TranslationController;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
 
 /**
@@ -22,9 +23,7 @@ class TranslationControllerTest extends BaseWebTestCase
 {
     public function testIndex()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
-        $this->assertNoError($client);
+        $content = $this->fetchContent($this->getUrl('liip_translation_interface'));
     }
 
     public function testClearCache()
