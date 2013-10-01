@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="default" namespace="Liip\TranslationBundle\Persistence\Propel" defaultIdMethod="native">
+
+    <table name="translation_unit" phpName="Unit">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="domain" type="varchar" size="255" required="true" />
+        <column name="key" type="varchar" size="255" required="true" />
+        <column name="metadata" type="array" />
+        <unique name="unit_domain_key">
+            <unique-column name="domain" />
+            <unique-column name="key" />
+        </unique>
+    </table>
+
+    <table name="translation_value" phpName="Translation">
+        <column name="unit_id" type="integer" required="true" primaryKey="true" />
+        <column name="locale" type="varchar" size="255" required="true" primaryKey="true" />
+        <column name="value" type="longvarchar" />
+        <column name="metadata" type="array" />
+        <unique name="value_unit_locale">
+            <unique-column name="unit_id" />
+            <unique-column name="locale" />
+        </unique>
+        <foreign-key foreignTable="translation_unit" onDelete="CASCADE">
+            <reference local="unit_id" foreign="id" />
+        </foreign-key>
+    </table>
+
+</database>
