@@ -39,20 +39,37 @@ class ZipExporter {
     }
 
     /**
-     * Set the units you want to export
+     * Create the data of a zip file from the current units
      *
      * @return string The zip file content
      */
     public function createZipContent()
     {
-        $zipFile = tempnam(sys_get_temp_dir(), 'temp-zip-');
-        $zip = new \ZipArchive();
-        $zip->open($zipFile, \ZipArchive::CREATE);
-        $this->addYmlFiles($zip);
-        $zip->close();
+        $zipFile = $this->createZipFile();
         $content = file_get_contents($zipFile);
         unlink($zipFile);
+
         return $content;
+    }
+
+    /**
+     * Create a zip file from the current units
+     *
+     * @param $path The pathname of the file o create. If not provided, file create a temporary file
+     *
+     * @return string The zip file content
+     */
+    public function createZipFile($path = null)
+    {
+        if ($path === null) {
+            $path = tempnam(sys_get_temp_dir(), 'temp-zip-');
+        }
+        $zip = new \ZipArchive();
+        $zip->open($path, \ZipArchive::CREATE);
+        $this->addYmlFiles($zip);
+        $zip->close();
+
+        return $path;
     }
 
     protected function addYmlFiles(\ZipArchive $zip)

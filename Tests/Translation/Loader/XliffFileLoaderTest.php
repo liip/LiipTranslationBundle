@@ -5,7 +5,7 @@ namespace Liip\TranslationBundle\Tests\Translation\Loader;
 use Liip\TranslationBundle\Translation\Loader\XliffFileLoader;
 
 /**
- * To be completed
+ * Test the custom XLIFF Loader
  *
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.

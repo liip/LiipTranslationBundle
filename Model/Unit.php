@@ -32,11 +32,11 @@ class Unit implements \Iterator, \ArrayAccess
     /** @var Translation[] translations in various locales */
     private $translations = array();
 
-    public function __construct($d, $k, array $m = array())
+    public function __construct($domain, $key, array $metadata = array())
     {
-        $this->domain = $d;
-        $this->key = $k;
-        $this->setMetadata($m);
+        $this->domain = $domain;
+        $this->key = $key;
+        $this->setMetadata($metadata);
     }
 
     /**
