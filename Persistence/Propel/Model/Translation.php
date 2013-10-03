@@ -1,8 +1,8 @@
 <?php
 
-namespace Liip\TranslationBundle\Persistence\Propel;
+namespace Liip\TranslationBundle\Persistence\Propel\Model;
 
-use Liip\TranslationBundle\Persistence\Propel\om\BaseTranslation;
+use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseTranslation;
 use Liip\TranslationBundle\Model\Translation as ModelTranslation;
 
 
@@ -28,10 +28,11 @@ class Translation extends BaseTranslation
      *
      * @param ModelTranslation $unit
      */
-    public function updateFromModel(ModelTranslation $unit)
+    public function updateFromModel(ModelTranslation $translation)
     {
-        $this->setLocale($unit->getLocale());
-        $this->setValue($unit->getValue());
+        $this->setLocale($translation->getLocale());
+        $this->setValue($translation->getValue());
+        $this->setMetadata($translation->getMetadata());
     }
 
 }

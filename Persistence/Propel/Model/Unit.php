@@ -1,9 +1,9 @@
 <?php
 
-namespace Liip\TranslationBundle\Persistence\Propel;
+namespace Liip\TranslationBundle\Persistence\Propel\Model;
 
-use Liip\TranslationBundle\Persistence\Propel\om\BaseUnit;
-use Liip\TranslationBundle\Persistence\Propel\Translation as PropelTranslation;
+use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseUnit;
+use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTranslation;
 use Liip\TranslationBundle\Model\Unit as ModelUnit;
 
 

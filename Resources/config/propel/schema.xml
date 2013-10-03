@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="default" namespace="Liip\TranslationBundle\Persistence\Propel" defaultIdMethod="native">
+<database name="default" namespace="Liip\TranslationBundle\Persistence\Propel\Model" defaultIdMethod="native">
 
     <table name="translation_unit" phpName="Unit">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />

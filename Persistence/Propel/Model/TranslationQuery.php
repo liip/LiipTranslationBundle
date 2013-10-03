@@ -1,8 +1,8 @@
 <?php
 
-namespace Liip\TranslationBundle\Persistence\Propel;
+namespace Liip\TranslationBundle\Persistence\Propel\Model;
 
-use Liip\TranslationBundle\Persistence\Propel\om\BaseTranslationQuery;
+use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseTranslationQuery;
 
 
 /**

@@ -1,4 +1,4 @@
 vendor/
 composer.lock
-Persistence/Propel/map
-Persistence/Propel/om
+Persistence/Propel/Model/map
+Persistence/Propel/Model/om
