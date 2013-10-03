@@ -33,7 +33,7 @@ class PropelPersistence implements PersistenceInterface
      */
     public function getUnit($domain, $key)
     {
-        $unit = UnitQuery::create()->joinWith('Translation')
+        $unit = UnitQuery::create()->leftJoinWith('Translation')
             ->filterByDomain($domain)->filterByKey($key)
             ->setFormatter(new UnitFormatter())
             ->findOne();
@@ -52,7 +52,7 @@ class PropelPersistence implements PersistenceInterface
      */
     public function getUnits()
     {
-        return UnitQuery::create()->joinWith('Translation')
+        return UnitQuery::create()->leftJoinWith('Translation')
             ->setFormatter(new UnitFormatter())
             ->find();
     }
