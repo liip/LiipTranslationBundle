@@ -36,7 +36,7 @@ class UnitRepository
     protected $persistence;
 
     /** @var Unit[] $allUnits  */
-    private $allUnits = null;
+    private $allUnits = array();
 
     /** @var Security $security */
     protected $security;
@@ -71,7 +71,7 @@ class UnitRepository
         $units = $this->persistence->getUnits();
         // if we already added units to the repository, those we get
         // from the persistence should override the created ones
-        if(! is_null($this->allUnits)) {
+        if(count($this->allUnits) > 0) {
             foreach($this->allUnits as $u) {
                 $found = false;
                 foreach($units as $u2) {

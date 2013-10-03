@@ -23,11 +23,14 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 
-class YamlFilePersistence implements PersistenceInterface {
+class YamlFilePersistence implements PersistenceInterface
+{
+
     protected $directory;
 
     public function __construct($options)
     {
+        // Handle folder location and create it if not exist
         $this->directory = $options['folder'];
         if (!is_dir($this->directory)) {
             exec('mkdir -p '.$this->directory);
@@ -37,34 +40,43 @@ class YamlFilePersistence implements PersistenceInterface {
         }
     }
 
+    /**
+     * @inheritdoc
+     * @return \Liip\TranslationBundle\Model\Unit[]
+     */
     public function getUnits()
     {
+        list($unitData, $translations) = $this->loadFiles();
+
         $units = array();
-        $translations = array();
-
-        foreach(array('units', 'translations') as $dataType) {
-            $file = $this->directory.'/'.$dataType;
-            $$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
-        }
-
-        $ret = array();
-        foreach($units as $domain => $keys) {
+        foreach($unitData as $domain => $keys) {
             foreach($keys as $key => $metadata) {
-                $unit = new Unit($domain, $key, is_null($metadata) ? array() : $metadata);
-
-                if(isset($translations[$domain][$key])) {
-                    foreach($translations[$domain][$key] as $locale => $value) {
-                        $unit->setTranslation($locale, $value, false);
-                    }
-                }
-                $ret[] = $unit;
+                $units[] = $this->createUnit($domain, $key, $metadata, $translations);
             }
         }
 
-        return $ret;
+        return $units;
     }
 
     /**
+     * @inheritdoc
+     * @return Unit
+     * @throw NotFoundException
+     */
+    public function getUnit($domain, $key)
+    {
+        list($units, $translations) = $this->loadFiles();
+
+        if (!isset($units[$domain][$key])) {
+            throw new NotFoundException($domain, $key);
+        }
+
+        return $this->createUnit($domain, $key, $units[$domain][$key], $translations);
+    }
+
+
+    /**
+     * @inheritdoc
      * @param Unit[] $objectUnits
      * @return void
      */
@@ -114,8 +126,30 @@ class YamlFilePersistence implements PersistenceInterface {
         throw new NotImplementedException("implement me !");
     }
 
-    public function getUnit($domain, $key)
+    protected function createUnit($domain, $key, $metadata, $translations)
     {
-        throw new NotImplementedException("implement me !");
+        $unit = new Unit($domain, $key, is_null($metadata) ? array() : $metadata);
+        if (isset($translations[$domain][$key])) {
+            foreach($translations as $locale => $value) {
+                $unit->setTranslation($locale, $value, false);
+            }
+        }
+
+        return $unit;
     }
+
+
+    protected function loadFiles()
+    {
+        $units = array();
+        $translations = array();
+
+        foreach(array('units', 'translations') as $dataType) {
+            $file = $this->directory.'/'.$dataType;
+            $$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
+        }
+
+        return array($units, $translations);
+    }
+
 }

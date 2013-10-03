@@ -4,6 +4,7 @@ namespace Liip\TranslationBundle\Tests;
 
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
+use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Repository\UnitRepository;
 
 /**
@@ -38,9 +39,18 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $translator = $translator->getMock();
 
         $persistence = $this->getMock('Liip\TranslationBundle\Persistence\PersistenceInterface');
-        if(! is_null($units)) {
-            $persistence->expects($this->once())->method('getUnits')->will($this->returnValue($units));
-        }
+        $persistence->expects($this->any())->method('getUnits')->will($this->returnValue($units));
+        $persistence->expects($this->any())->method('getUnit')->will(
+            $this->returnCallback(function($domain, $key) use ($units) {
+                foreach ($units as $unit) {
+                    if ($unit->getDomain() == $domain && $unit->getTranslationKey() == $key) {
+                        return $unit;
+                    }
+                }
+                throw new NotFoundException($domain, $key);
+            })
+        );
+
         return new UnitRepository($config, $translator, $persistence);
     }
 
@@ -86,7 +96,6 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEmpty($repo->findByDomain('non-existing domain'));
         $this->assertEmpty($repo->findByTranslationKey('non-existing key'));
-        $this->assertFalse($repo->findByDomainAndTranslationKey('non-existing domain', 'non-existing key'));
     }
 
     public function testGetDomainList()
@@ -145,8 +154,18 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $repo = $this->getRepository(array($u));
         $this->assertEquals('some translation', $repo->findTranslation('domain', 'key', 'en')->getValue());
         $this->assertEquals('une traduction', $repo->findTranslation('domain', 'key', 'fr')->getValue());
-        $this->assertNull($repo->findTranslation('non-existing domain', 'key', 'en'));
-        $this->assertNull($repo->findTranslation('domain', 'non-existing key', 'en'));
         $this->assertNull($repo->findTranslation('domain', 'key', 'non-existing locale'));
     }
+
+    /**
+     * @expectedException Liip\TranslationBundle\Persistence\NotFoundException
+     * @expectedMessage "No translation unit found for domain [non-existing domain] and key [key]"
+     */
+    public function testFindInvalidUnitTranslation()
+    {
+        $repo = $this->getRepository(array());
+        $repo->findTranslation('non-existing domain', 'key', 'en');
+    }
+
+
 }

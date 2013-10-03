@@ -27,8 +27,4 @@ class BaseWebTestCase extends WebTestCase {
         $this->assertTrue($client->getResponse()->isRedirection());
     }
 
-    public function getUrl($path, array $parameters = array())
-    {
-        return $this->getContainer()->get('router')->generate($path, $parameters);
-    }
 }
