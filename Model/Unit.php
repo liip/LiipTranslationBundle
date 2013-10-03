@@ -148,7 +148,7 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
 
     public function offsetExists($locale)
     {
-        return array_key_exists($locale, $this->translations);
+        return array_key_exists($locale, $this->translations) && ! $this->translations[$locale]->isDeleted;
     }
 
     public function offsetGet($locale)
