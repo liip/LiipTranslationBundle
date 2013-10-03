@@ -175,7 +175,7 @@ class UnitRepository
     public function persist($objects = null)
     {
         if ($objects === null){
-            $object = $this->allUnits;
+            $objects = $this->allUnits;
         }
         if ($objects instanceOf Unit) {
             $objects = array($objects);
@@ -344,14 +344,14 @@ class UnitRepository
 
     protected function checkDomainGrants($domain)
     {
-        if(!$this->security->isGrantedForDomain($domain)) {
+        if($this->security !== null && !$this->security->isGrantedForDomain($domain)) {
             throw new PermissionDeniedException();
         }
     }
 
     protected function checkLocaleGrants($locale)
     {
-        if(!$this->security->isGrantedForLocale($locale)) {
+        if($this->security !== null && !$this->security->isGrantedForLocale($locale)) {
             throw new PermissionDeniedException();
         }
     }

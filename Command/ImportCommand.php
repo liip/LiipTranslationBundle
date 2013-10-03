@@ -49,12 +49,14 @@ class ImportCommand extends ContainerAwareCommand
             $importOptions['locale_list'] = explode(',', $locales);
         }
 
-        $securityContext = $this->getContainer()->get('security.context');
-        $token = new UsernamePasswordToken(
-            'dummy_user', 'dummy_password', 'translation',
-            array('ROLE_TRANSLATOR_ADMIN')
-        );
-        $securityContext->setToken($token);
+        if($this->getContainer()->has('security.context')) {
+            $securityContext = $this->getContainer()->get('security.context');
+            $token = new UsernamePasswordToken(
+                'dummy_user', 'dummy_password', 'translation',
+                array('ROLE_TRANSLATOR_ADMIN')
+            );
+            $securityContext->setToken($token);
+        }
 
         /** @var UnitRepository $translationManager */
         $start = time();
