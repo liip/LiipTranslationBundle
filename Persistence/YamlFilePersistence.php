@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
+use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
@@ -85,17 +86,35 @@ class YamlFilePersistence implements PersistenceInterface {
 
     public function deleteUnits(array $objectUnits)
     {
+        throw new NotImplementedException("implement me !");
     }
 
     public function saveTranslations(array $objectTranslations)
     {
+        throw new NotImplementedException("implement me !");
     }
 
     public function deleteTranslations(array $objectTranslations)
     {
+        throw new NotImplementedException("implement me !");
+    }
+
+    public function deleteTranslation(Translation $translation)
+    {
+        throw new NotImplementedException("implement me !");
+    }
+
+    public function saveTranslation(Translation $translation)
+    {
+        throw new NotImplementedException("implement me !");
     }
 
     public function saveUnit(Unit $unit)
+    {
+        throw new NotImplementedException("implement me !");
+    }
+
+    public function getUnit($domain, $key)
     {
         throw new NotImplementedException("implement me !");
     }
