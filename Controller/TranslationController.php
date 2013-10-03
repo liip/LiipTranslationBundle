@@ -130,11 +130,10 @@ class TranslationController extends BaseController
         $id = $this->getRequest()->request->get('id');
         list($domain, $key, $locale) = explode('__', $id);
 
-        $unit = $this->getRepository()->findByDomainAndTranslationKey($domain, $key);
-        $unit->setTranslation($locale, $value);
-        $this->getRepository()->persist();
+        $this->getRepository()->updateTranslation($locale, $domain, $key, $value);
+        $this->addFlashMessage('success', 'Translation was successfully updated.');
 
-        exit($value);
+        return new Response($value);
     }
 
     public function removeAction($locale, $domain, $key)

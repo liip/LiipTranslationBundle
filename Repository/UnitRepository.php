@@ -8,9 +8,8 @@ use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 
-
 /**
- * To be completed
+ * Allow to retrieve, filter and persist translation unit
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -34,8 +33,8 @@ class UnitRepository
     /** @var PersistenceInterface $persistence */
     protected $persistence;
 
-    /** @var Unit[] $units  */
-    private $units = null;
+    /** @var Unit[] $allUnits  */
+    private $allUnits = null;
 
     private $loaded = false;
 
@@ -57,7 +56,8 @@ class UnitRepository
     }
 
 
-    protected function load() {
+    protected function loadAll()
+    {
         if($this->loaded) {
             return;
         }
@@ -65,8 +65,8 @@ class UnitRepository
         $units = $this->persistence->getUnits();
         // if we already added units to the repository, those we get
         // from the persistence should override the created ones
-        if(! is_null($this->units)) {
-            foreach($this->units as $u) {
+        if(! is_null($this->allUnits)) {
+            foreach($this->allUnits as $u) {
                 $found = false;
                 foreach($units as $u2) {
                     if($u->getDomain() == $u2->getDomain() && $u->getTranslationKey() == $u2->getTranslationKey()) {
@@ -78,7 +78,7 @@ class UnitRepository
                 }
             }
         }
-        $this->units = $units;
+        $this->allUnits = $units;
         $this->loaded = true;
     }
 
@@ -87,8 +87,8 @@ class UnitRepository
      */
     public function findAll()
     {
-        $this->load();
-        return $this->units;
+        $this->loadAll();
+        return $this->allUnits;
     }
 
     /**
@@ -98,14 +98,14 @@ class UnitRepository
      */
     public function findBy($columns, $value = null)
     {
-        $this->load();
+        $this->loadAll();
 
         if(! is_array($columns)) {
             $columns = array($columns => $value);
         }
 
         $result = array();
-        foreach($this->units as $u) {
+        foreach($this->allUnits as $u) {
             $status = true;
             foreach($columns as $column => $value) {
                 $unitValue = call_user_func(array($u, 'get' . ucfirst($column)));
@@ -142,8 +142,7 @@ class UnitRepository
      */
     public function findByDomainAndTranslationKey($domain, $key)
     {
-        $result = $this->findBy(array('translationKey' => $key, 'domain' => $domain));
-        return reset($result);
+        return $this->persistence->getUnit($domain, $key);
     }
 
     /**
@@ -163,12 +162,19 @@ class UnitRepository
 
     public function createUnit($domain, $key, array $metadata) {
         $u = new Unit($domain, $key, $metadata);
-        $this->units[] = $u;
+        $this->allUnits[] = $u;
         return $u;
     }
 
-    public function persist() {
-        $this->persistence->saveUnits($this->units);
+    public function persist($objects = null)
+    {
+        if ($objects === null){
+            $object = $this->allUnits;
+        }
+        if ($objects instanceOf Unit) {
+            $objects = array($objects);
+        }
+        $this->persistence->saveUnits($objects);
     }
 
     /**
@@ -176,8 +182,8 @@ class UnitRepository
      */
     public function getDomainList()
     {
-        $this->load();
-        return array_values(array_unique(array_map(function(Unit $u) { return $u->getDomain(); }, $this->units)));
+        $this->loadAll();
+        return array_values(array_unique(array_map(function(Unit $u) { return $u->getDomain(); }, $this->allUnits)));
     }
 
     /**
@@ -201,6 +207,7 @@ class UnitRepository
     }
 
     /**
+     * Remove a specific translation
      * @param $locale
      * @param $domain
      * @param $key
@@ -211,6 +218,20 @@ class UnitRepository
         unset($unit[$locale]);
         $this->persist($unit);
     }
+
+    /**
+     * Update a specific translation
+     * @param $locale
+     * @param $domain
+     * @param $key
+     */
+    public function updateTranslation($locale, $domain, $key, $value)
+    {
+        $unit = $this->findByDomainAndTranslationKey($domain, $key);
+        $unit->setTranslation($locale, $value);
+        $this->persist($unit);
+    }
+
 
     /**
      * @param $filters
