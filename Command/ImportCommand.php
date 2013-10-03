@@ -43,7 +43,7 @@ class ImportCommand extends ContainerAwareCommand
         $output->writeln('Importing new translation units...');
 
         $importOptions = array();
-        if ($input->getOption('verbose')){
+        if ($input->hasOption('verbose')){
             $importOptions['logger'] = $output;
         }
         if ($locales = $input->getOption('locales')) {
