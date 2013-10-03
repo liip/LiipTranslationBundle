@@ -227,10 +227,18 @@ class UnitRepository
 
         $this->persistence->deleteUnits($dirtyUnits['deleted']);
 
+        // Return statistics
         return array(
-            'deleted' => count($dirtyUnits['deleted']),
-            'created' => count($dirtyUnits['created']),
-            'updated' => count($dirtyUnits['modified']),
+            'units' => array(
+                'deleted' => count($dirtyUnits['deleted']),
+                'created' => count($dirtyUnits['created']),
+                'updated' => count($dirtyUnits['modified']),
+            ),
+            'translations' => array(
+                'deleted' => count($dirtyTranslations['deleted']),
+                'created' => count($dirtyTranslations['created']),
+                'updated' => count($dirtyTranslations['modified']),
+            )
         );
     }
 

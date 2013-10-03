@@ -55,15 +55,16 @@ class ImportCommand extends ContainerAwareCommand
             $securityContext->setToken(new AnonymousToken('cli', 'cli', array('ROLE_TRANSLATOR_ADMIN')));
         }
 
-        /** @var UnitRepository $translationManager */
         $start = time();
         $importer = $this->getContainer()->get('liip.translation.symfony_importer');
         $stats = $importer->processImportOfStandardResources($importOptions, $input->getOption('override', false));
         $duration = time() - $start;
 
         $output->writeln(sprintf(
-            "Importation done in %s[s] (%s created, %s modified and %s removed)",
-            $duration, $stats['created'], $stats['updated'], $stats['deleted']
+            "Importation done in %s[s] (Units: %s created, %s modified and %s removed. Translations: %s created, %s modified and %s removed)",
+            $duration,
+            $stats['units']['created'], $stats['units']['updated'], $stats['units']['deleted'],
+            $stats['translations']['created'], $stats['translations']['updated'], $stats['translations']['deleted']
         ));
     }
 }
