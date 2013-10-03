@@ -71,7 +71,8 @@ class SymfonyImporter {
             'locale_list' => null,
             'logger' => null,
             'import-translations' => false,
-            'override' => false
+            'override' => false,
+            'metadata_locale' => 'en'
         ), $options);
         if (array_key_exists('logger', $options)){
             $this->logger = $options['logger'];
@@ -120,28 +121,30 @@ class SymfonyImporter {
                     $this->log("    >> Key [$key] for domain [$domain]\n");
 
                     // Retrieved or create a unit
-                    if(! isset($existingUnits[$domain][$key])) {
+                    if(!isset($existingUnits[$domain][$key])) {
                         $this->log("\t>> Creation of a new Unit [$domain, $key]\n");
                         $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key);
                     }
                     $unit = $existingUnits[$domain][$key];
 
                     // Update it's metadata
-                    $metadata = $catalogues[$locale]->getMetadata($key, $domain);
-                    $unit->setMetadata(is_null($metadata) ? array() : $metadata);
-                    if ($unit->isModified()){
-                        $this->log("\t>> Metadata of the Unit [$domain, $key] updated\n");
+                    if ($locale == $options['metadata_locale']) {
+                        $catalogMetadata = $catalogues[$locale]->getMetadata($key, $domain);
+                        if ($catalogMetadata !== $unit->getMetadata()) {
+                            $unit->setMetadata(is_null($metadata) ? array() : $metadata);
+                            $this->log("\t>> Metadata of the Unit [$domain, $key] updated\n");
+                        }
                     }
 
                     // Update translation
                     if($options['import-translations']) {
                         if ($unit->hasTranslation($locale) && $options['override']) {
-                            $unit->setTranslation($locale, $value);
                             $this->log("\t>> Translation in [$locale] overridden\n");
+                            $unit->setTranslation($locale, $value);
                         }
                         if (!$unit->hasTranslation($locale)){
-                            $unit->setTranslation($locale, $value);
                             $this->log("\t>> Translation in [$locale] imported\n");
+                            $unit->setTranslation($locale, $value);
                         }
                     }
                 }

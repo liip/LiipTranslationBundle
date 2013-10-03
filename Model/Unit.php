@@ -46,9 +46,14 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
     /**
      * @param array $m the new metadata
      */
-    public function setMetadata(array $m = array())
+    public function setMetadata(array $metadata = array())
     {
-        $this->metadata = $m;
+        if ($metadata == $this->getMetadata()) {
+            return;
+        }
+
+        $this->metadata = $metadata;
+        $this->setIsModified(true);
     }
 
     /**
