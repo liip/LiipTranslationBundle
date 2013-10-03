@@ -230,7 +230,7 @@ class UnitRepository
         return array(
             'deleted' => count($dirtyUnits['deleted']),
             'created' => count($dirtyUnits['created']),
-            'updated' => count($dirtyUnits['updated']),
+            'updated' => count($dirtyUnits['modified']),
         );
     }
 

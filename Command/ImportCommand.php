@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 /**
  * Import all existing translations into the current translation storage
@@ -51,11 +52,7 @@ class ImportCommand extends ContainerAwareCommand
 
         if($this->getContainer()->has('security.context')) {
             $securityContext = $this->getContainer()->get('security.context');
-            $token = new UsernamePasswordToken(
-                'dummy_user', 'dummy_password', 'translation',
-                array('ROLE_TRANSLATOR_ADMIN')
-            );
-            $securityContext->setToken($token);
+            $securityContext->setToken(new AnonymousToken('cli', 'cli', array('ROLE_TRANSLATOR_ADMIN')));
         }
 
         /** @var UnitRepository $translationManager */
