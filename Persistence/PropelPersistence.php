@@ -58,19 +58,6 @@ class PropelPersistence implements PersistenceInterface
     }
 
     /**
-     * Save the given Units to the persistence layer.
-     *
-     * @param Unit[] $units
-     * @return bool
-     */
-    public function saveUnits(array $units)
-    {
-        foreach($units as $unit) {
-            $this->saveUnit($unit);
-        }
-    }
-
-    /**
      * Save the given Unit to the persistence layer.
      *
      * @param Unit $unit
@@ -86,15 +73,50 @@ class PropelPersistence implements PersistenceInterface
         $propelUnit->save();
     }
 
-    public function deleteUnits(array $units)
+    /**
+     * Save the given Units to the persistence layer.
+     *
+     * @param Unit[] $units
+     * @return bool
+     */
+    public function saveUnits(array $units)
     {
-        // TODO use a single query
+        // TODO save all at once
         foreach($units as $unit) {
-            UnitQuery::create()->findOneByDomainAndKey(
-                $unit->getDomain(), $unit->getTranslationKey()
-            )->delete();
+            $this->saveUnit($unit);
         }
     }
+
+    public function deleteUnit(Unit $unit)
+    {
+        UnitQuery::create()->findOneByDomainAndKey(
+            $unit->getDomain(), $unit->getTranslationKey()
+        )->delete();
+    }
+
+    public function deleteUnits(array $units)
+    {
+        foreach($units as $unit) {
+            $this->deleteUnit($unit);
+        }
+    }
+
+
+    public function deleteTranslation(Translation $translation)
+    {
+        $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
+            $translation->getUnit()->getDomain(),
+            $translation->getUnit()->getTranslationKey()
+        );
+
+        $propelTranslation = TranslationQuery::create()
+            ->filterByUnitId($propelUnit->getId())
+            ->filterByLocale($translation->getLocale())
+            ->findOne()
+            ->delete()
+        ;
+    }
+
 
     public function deleteTranslations(array $translations)
     {
@@ -104,19 +126,6 @@ class PropelPersistence implements PersistenceInterface
         }
     }
 
-    public function deleteTranslation(Translation $translation)
-    {
-        $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
-            $translation->getUnit()->getDomain(),
-            $translation->getUnit()->getTranslationKey()
-        );
-
-        $propelTranslation = TranslationQuery::create()->filterByUnitId(
-            $propelUnit->getId()
-        )->findOneByLocale(
-            $translation->getLocale()
-        )->delete();
-    }
 
     public function saveTranslations(array $translations)
     {
@@ -127,23 +136,27 @@ class PropelPersistence implements PersistenceInterface
 
     public function saveTranslation(Translation $translation)
     {
+        // Fetch the related unit
         $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
             $translation->getUnit()->getDomain(),
             $translation->getUnit()->getTranslationKey()
         );
 
-        $propelTranslation = TranslationQuery::create()->filterByUnitId(
-            $propelUnit->getId()
-        )->findOneByLocale(
-            $translation->getLocale()
-        );
-
-        if(!$propelTranslation) {
-            $propelTranslation = new PropelTranslation();
+        // Retrived or create the translation
+        $propelTranslationToUpdate = null;
+        foreach($propelUnit->getTranslations() as $propelTranslation) {
+            if ($propelTranslation->getLocale() == $translation->getLocale()) {
+                $propelTranslationToUpdate = $propelTranslation;
+                break;
+            }
+        }
+        if ($propelTranslationToUpdate === null){
+            $propelTranslationToUpdate = new PropelTranslation();
+            $propelTranslationToUpdate->setUnitId($propelUnit->getId());
         }
 
-        $propelTranslation->updateFromModel($translation);
-        $propelTranslation->save();
-
+        // Update and save
+        $propelTranslationToUpdate->updateFromModel($translation);
+        $propelTranslationToUpdate->save();
     }
 }

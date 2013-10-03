@@ -54,10 +54,6 @@ class Unit extends BaseUnit
         $this->setDomain($unit->getDomain());
         $this->setKey($unit->getTranslationKey());
         $this->setMetadata($unit->getMetadata());
-        foreach($unit->getTranslations() as $translation) {
-            $propelTranslation = $this->getOrCreateTranslationForLocale($translation->getLocale());
-            $propelTranslation->updateFromModel($translation);
-        }
     }
 
 
