@@ -47,10 +47,11 @@ class UnitFormatter extends \PropelFormatter {
     /**
      * {@inheritdoc}
      */
-    public function formatOne(PDOStatement $stmt)
+    public function formatOne(\PDOStatement $stmt)
     {
         $units = $this->format($stmt);
-        return reset($units);
+
+        return count($units)==0 ? null : reset($units);
     }
 
     /**

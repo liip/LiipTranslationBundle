@@ -5,7 +5,7 @@ namespace Liip\TranslationBundle\Persistence;
 use Liip\TranslationBundle\Model\Unit;
 
 /**
- * To be completed
+ * Define a common interface for persisting translation units
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -21,7 +21,17 @@ use Liip\TranslationBundle\Model\Unit;
 interface PersistenceInterface
 {
     /**
-     * Retrieve all persisted units from the persistence layer..
+     * Retrieve a single unit from the persistence layer.
+     *
+     * @param string $domain
+     * @param string $key
+     * @return Unit
+     * @throw NotFoundException
+     */
+    public function getUnit($domain, $key);
+
+    /**
+     * Retrieve all persisted units from the persistence layer.
      *
      * @return Unit[]
      */

@@ -22,8 +22,25 @@ use Liip\TranslationBundle\Persistence\Propel\Model\Unit as PropelUnit;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class PropelPersistence implements PersistenceInterface {
+class PropelPersistence implements PersistenceInterface
+{
 
+    /**
+     * @inheritdoc
+     */
+    public function getUnit($domain, $key)
+    {
+        $unit = UnitQuery::create()->joinWith('Translation')
+            ->filterByDomain($domain)->filterByKey($key)
+            ->setFormatter(new UnitFormatter())
+            ->findOne();
+
+        if ($unit == null) {
+            throw new NotFoundException($domain, $key);
+        }
+
+        return $unit;
+    }
 
     /**
      * Retrieve all persisted units from the persistence layer..
