@@ -51,7 +51,7 @@ class YamlFilePersistence implements PersistenceInterface
         $units = array();
         foreach($unitData as $domain => $keys) {
             foreach($keys as $key => $metadata) {
-                $units[] = $this->createUnit($domain, $key, $metadata, $translations);
+                $units[] = $this->createUnitObject($domain, $key, $metadata, $translations);
             }
         }
 
@@ -71,67 +71,89 @@ class YamlFilePersistence implements PersistenceInterface
             throw new NotFoundException($domain, $key);
         }
 
-        return $this->createUnit($domain, $key, $units[$domain][$key], $translations);
+        return $this->createUnitObject($domain, $key, $units[$domain][$key], $translations);
     }
 
 
-    /**
-     * @inheritdoc
-     * @param Unit[] $objectUnits
-     * @return void
-     */
-    public function saveUnits(array $objectUnits)
-    {
-        $translations = array();
-        $units = array();
-        foreach ($objectUnits as $u) {
-            foreach ($u->getTranslations() as $t) {
-                $translations[$t->getDomain()][$t->getKey()][$t->getLocale()] = $t->getValue();
-            }
-            $units[$u->getDomain()][$u->getTranslationKey()] = $u->getMetadata();
-        }
-
-        foreach (array('units', 'translations') as $dataType) {
-            file_put_contents($this->directory.'/'.$dataType, Yaml::dump($$dataType, 4));
-        }
-    }
-
-    public function deleteUnits(array $objectUnits)
-    {
-        throw new NotImplementedException("implement me !");
-    }
-
-    public function saveTranslations(array $objectTranslations)
-    {
-        throw new NotImplementedException("implement me !");
-    }
-
-    public function deleteTranslations(array $objectTranslations)
-    {
-        throw new NotImplementedException("implement me !");
-    }
-
-    public function deleteTranslation(Translation $translation)
-    {
-        throw new NotImplementedException("implement me !");
-    }
-
-    public function saveTranslation(Translation $translation)
-    {
-        throw new NotImplementedException("implement me !");
-    }
 
     public function saveUnit(Unit $unit)
     {
-        throw new NotImplementedException("implement me !");
+        echo 'save unit';
+        $this->saveUnits(array($unit));
     }
 
-    protected function createUnit($domain, $key, $metadata, $translations)
+    public function saveUnits(array $units)
     {
-        $unit = new Unit($domain, $key, is_null($metadata) ? array() : $metadata);
+        echo 'save units';
+        $existingUnits = $this->loadFile('units');
+        foreach ($units as $unit) {
+            $existingUnits[$unit->getDomain()][$unit->getTranslationKey()] = $unit->getMetadata();
+        }
+        $this->dumpFile('units', $existingUnits);
+    }
+
+
+    public function deleteUnit(Unit $unit)
+    {
+        echo 'delete unit';
+        $this->deleteUnits(array($unit));
+    }
+
+    public function deleteUnits(array $units)
+    {
+        echo 'delete units';
+        $existingUnits = $this->loadFile('units');
+        foreach ($units as $unit) {
+            unset($existingUnits[$unit->getDomain()][$unit->getTranslationKey()]);
+        }
+        $this->dumpFile('units', $existingUnits);
+    }
+
+
+
+    public function saveTranslation(Translation $translation)
+    {
+        echo 'save t';
+        $this->saveTranslations(array($translation));
+    }
+
+    public function saveTranslations(array $translations)
+    {
+        echo 'save ts '.count($translations);
+
+        $existingTranslations = $this->loadFile('translations');
+        foreach ($translations as $t) {
+            var_dump(array($t->getValue(), $t->getMetadata()));
+            $existingTranslations[$t->getDomain()][$t->getKey()][$t->getLocale()] = array($t->getValue(), $t->getMetadata());
+        }
+        $this->dumpFile('translations', $existingTranslations);
+    }
+
+
+    public function deleteTranslation(Translation $translation)
+    {
+        echo 'delete t';
+        $this->deleteTranslations(array($translation));
+    }
+
+    public function deleteTranslations(array $translations)
+    {
+        echo 'delete ts';
+        $existingTranslations = $this->loadFile('translations');
+        foreach ($translations as $t) {
+            unset($existingTranslations[$t->getDomain()][$t->getKey()][$t->getLocale()]);
+        }
+        $this->dumpFile('translations', $existingTranslations);
+    }
+
+
+    protected function createUnitObject($domain, $key, $metadata, $translations)
+    {
+        $unit = new Unit($domain, $key, $metadata);
         if (isset($translations[$domain][$key])) {
-            foreach($translations as $locale => $value) {
-                $unit->setTranslation($locale, $value, false);
+            foreach($translations[$domain][$key] as $locale => $data) {
+                list($value, $metadata) = $data;
+                $unit->addTranslation(new Translation($value, $locale, $unit, $metadata));
             }
         }
 
@@ -141,15 +163,18 @@ class YamlFilePersistence implements PersistenceInterface
 
     protected function loadFiles()
     {
-        $units = array();
-        $translations = array();
+        return array($this->loadFile('units'), $this->loadFile('translations'));
+    }
 
-        foreach(array('units', 'translations') as $dataType) {
-            $file = $this->directory.'/'.$dataType;
-            $$dataType = file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
-        }
+    protected function loadFile($name)
+    {
+        $file = $this->directory.'/'.$name;
+        return file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
+    }
 
-        return array($units, $translations);
+    protected function dumpFile($name, $data)
+    {
+        file_put_contents($this->directory.'/'.$name, Yaml::dump($data, 4));
     }
 
 }
