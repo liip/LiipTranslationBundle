@@ -3,7 +3,7 @@ LiipTranslationBundle
 
 [![Build Status](https://magnum.travis-ci.com/liip/LiipTranslationBundle.png?token=qRGqYhgyyFcdZKKPqBhb&branch=master)](https://magnum.travis-ci.com/liip/LiipTranslationBundle)
 
-This Bundle provide various tools to ease translations management of a Sf2 app.
+This Bundle provides various tools to ease translations management of a Sf2 app.
 
 Installation
 ------------
@@ -44,7 +44,7 @@ Contributing
 
 Pull requests are welcome. Please see our [CONTRIBUTING](https://github.com/liip/LiipTranslationBundle/blob/master/CONTRIBUTING.md) guide.
 
-This bundle in fully tested with PHPUnit, the tests suite can be run using the following commands :
+This bundle is fully tested with PHPUnit, the tests suite can be run using the following commands :
 
           git clone git@github.com:liip/LiipTranslationBundle.git && cd LiipTranslationBundle
           composer install --dev
