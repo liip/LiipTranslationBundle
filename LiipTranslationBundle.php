@@ -3,6 +3,8 @@
 namespace Liip\TranslationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Liip\TranslationBundle\DependencyInjection\Compiler\EnableSecurityPass;
 
 /**
  * To be completed
@@ -20,4 +22,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class LiipTranslationBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new EnableSecurityPass());
+    }
 }

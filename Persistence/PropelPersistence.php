@@ -3,10 +3,13 @@
 namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
+use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Persistence\Propel\Formatter\UnitFormatter;
 use Liip\TranslationBundle\Persistence\Propel\Model\UnitQuery;
 use Liip\TranslationBundle\Persistence\Propel\Model\Unit as PropelUnit;
+use Liip\TranslationBundle\Persistence\Propel\Model\TranslationQuery;
+use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTranslation;
 
 /**
  * Persistence layer based on Propel
@@ -81,5 +84,66 @@ class PropelPersistence implements PersistenceInterface
         }
         $propelUnit->updateFromModel($unit);
         $propelUnit->save();
+    }
+
+    public function deleteUnits(array $units)
+    {
+        // TODO use a single query
+        foreach($units as $unit) {
+            UnitQuery::create()->findOneByDomainAndKey(
+                $unit->getDomain(), $unit->getTranslationKey()
+            )->delete();
+        }
+    }
+
+    public function deleteTranslations(array $translations)
+    {
+        // TODO use a single query
+        foreach($translations as $translation) {
+            $this->deleteTranslation($translation);
+        }
+    }
+
+    public function deleteTranslation(Translation $translation)
+    {
+        $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
+            $translation->getUnit()->getDomain(),
+            $translation->getUnit()->getTranslationKey()
+        );
+
+        $propelTranslation = TranslationQuery::create()->filterByUnitId(
+            $propelUnit->getId()
+        )->findOneByLocale(
+            $translation->getLocale()
+        )->delete();
+    }
+
+    public function saveTranslations(array $translations)
+    {
+        foreach($translations as $translation) {
+            $this->saveTranslation($translation);
+        }
+    }
+
+    public function saveTranslation(Translation $translation)
+    {
+        $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
+            $translation->getUnit()->getDomain(),
+            $translation->getUnit()->getTranslationKey()
+        );
+
+        $propelTranslation = TranslationQuery::create()->filterByUnitId(
+            $propelUnit->getId()
+        )->findOneByLocale(
+            $translation->getLocale()
+        );
+
+        if(!$propelTranslation) {
+            $propelTranslation = new PropelTranslation();
+        }
+
+        $propelTranslation->updateFromModel($translation);
+        $propelTranslation->save();
+
     }
 }

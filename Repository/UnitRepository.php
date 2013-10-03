@@ -4,9 +4,11 @@ namespace Liip\TranslationBundle\Repository;
 
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
+use Liip\TranslationBundle\Model\Exceptions\PermissionDeniedException;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
+use Liip\TranslationBundle\Security\Security;
 
 /**
  * Allow to retrieve, filter and persist translation unit
@@ -36,13 +38,17 @@ class UnitRepository
     /** @var Unit[] $allUnits  */
     private $allUnits = null;
 
+    /** @var Security $security */
+    protected $security;
+
     private $loaded = false;
 
-    public function __construct($config, Translator $translator, PersistenceInterface $persistence)
+    public function __construct($config, Translator $translator, PersistenceInterface $persistence, Security $security = null)
     {
         $this->config = $config;
         $this->translator = $translator;
         $this->persistence = $persistence;
+        $this->security = $security;
     }
 
     /**
@@ -174,7 +180,58 @@ class UnitRepository
         if ($objects instanceOf Unit) {
             $objects = array($objects);
         }
-        $this->persistence->saveUnits($objects);
+
+        $dirtyUnits = array(
+            'deleted' => array(),
+            'modified' => array(),
+            'created' => array(),
+        );
+
+        $dirtyTranslations = array(
+            'deleted' => array(),
+            'modified' => array(),
+            'created' => array(),
+        );
+
+        foreach($objects as $unit) {
+            if($unit->isDirty()) {
+                $this->checkDomainGrants($unit->getDomain());
+
+                $dirtyReason = $unit->isDeleted()
+                    ? 'deleted'
+                    : $unit->isModified() ? 'modified' : 'created';
+                $dirtyUnits[$dirtyReason][] = $unit;
+
+                foreach($unit->getTranslations() as $translation) {
+                    if($translation->isDirty()) {
+                        $this->checkLocaleGrants($translation->getLocale());
+
+                        $dirtyReason = $translation->isDeleted()
+                            ? 'deleted'
+                            : $translation->isModified()
+                                ? 'modified' : 'created';
+                        $dirtyTranslations[$dirtyReason][] = $translation;
+                    }
+                }
+            }
+        }
+
+        $this->persistence->saveUnits(
+            $dirtyUnits['modified'] + $dirtyUnits['created']
+        );
+
+        $this->persistence->saveTranslations(
+            $dirtyTranslations['modified'] + $dirtyTranslations['created']
+        );
+        $this->persistence->deleteTranslations($dirtyTranslations['deleted']);
+
+        $this->persistence->deleteUnits($dirtyUnits['deleted']);
+
+        return array(
+            'deleted' => count($dirtyUnits['deleted']),
+            'created' => count($dirtyUnits['created']),
+            'updated' => count($dirtyUnits['updated']),
+        );
     }
 
     /**
@@ -215,8 +272,7 @@ class UnitRepository
     public function removeTranslation($locale, $domain, $key)
     {
         $unit = $this->findByDomainAndTranslationKey($domain, $key);
-        unset($unit[$locale]);
-        $this->persist($unit);
+        $unit[$locale]->setIsDeleted(true);
     }
 
     /**
@@ -283,5 +339,20 @@ class UnitRepository
         }
 
         return $units;
+    }
+
+
+    protected function checkDomainGrants($domain)
+    {
+        if(!$this->security->isGrantedForDomain($domain)) {
+            throw new PermissionDeniedException();
+        }
+    }
+
+    protected function checkLocaleGrants($locale)
+    {
+        if(!$this->security->isGrantedForLocale($locale)) {
+            throw new PermissionDeniedException();
+        }
     }
 }

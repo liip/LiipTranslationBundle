@@ -53,7 +53,7 @@ class YamlFilePersistence implements PersistenceInterface {
 
                 if(isset($translations[$domain][$key])) {
                     foreach($translations[$domain][$key] as $locale => $value) {
-                        $unit->setTranslation($locale, $value);
+                        $unit->setTranslation($locale, $value, false);
                     }
                 }
                 $ret[] = $unit;
@@ -81,6 +81,18 @@ class YamlFilePersistence implements PersistenceInterface {
         foreach (array('units', 'translations') as $dataType) {
             file_put_contents($this->directory.'/'.$dataType, Yaml::dump($$dataType, 4));
         }
+    }
+
+    public function deleteUnits(array $objectUnits)
+    {
+    }
+
+    public function saveTranslations(array $objectTranslations)
+    {
+    }
+
+    public function deleteTranslations(array $objectTranslations)
+    {
     }
 
     public function saveUnit(Unit $unit)

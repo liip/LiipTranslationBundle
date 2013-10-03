@@ -20,10 +20,16 @@ use Symfony\Component\Security\Core\SecurityContext;
  */
 class Security {
     protected $config = array();
+    protected $securityContext = null;
 
     public function __construct($config)
     {
         $this->config = $config;
+    }
+
+    public function setSecurityContext(SecurityContext $securityContext)
+    {
+        $this->securityContext = $securityContext;
     }
 
     public function isSecuredByDomain()
@@ -76,5 +82,27 @@ class Security {
         }
 
         return $authorizedLocaleList;
+    }
+
+    public function isGrantedForDomain($domain)
+    {
+        if($this->securityContext === null || !$this->isSecuredByDomain()) {
+            return true;
+        }
+
+        return $this->securityContext->isGranted(
+            $this->getRoleForDomain($domain)
+        );
+    }
+
+    public function isGrantedForLocale($locale)
+    {
+        if($this->securityContext === null || !$this->isSecuredByLocale()) {
+            return true;
+        }
+
+        return $this->securityContext->isGranted(
+            $this->getRoleForLocale($locale)
+        );
     }
 }

@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
+use Liip\TranslationBundle\Model\Translation;
 
 /**
  * Define a common interface for persisting translation units
@@ -52,4 +53,9 @@ interface PersistenceInterface
      * @return bool
      */
     public function saveUnit(Unit $unit);
+
+    public function deleteTranslations(array $translations);
+    public function deleteTranslation(Translation $translation);
+    public function saveTranslations(array $translations);
+    public function saveTranslation(Translation $translation);
 }

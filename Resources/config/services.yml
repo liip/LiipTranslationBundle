@@ -4,7 +4,7 @@ parameters:
 services:
     liip.translation.repository:
         class: Liip\TranslationBundle\Repository\UnitRepository
-        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence"]
+        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence", "@liip.translation.security"]
 
     liip.translation.security:
         class: Liip\TranslationBundle\Security\Security

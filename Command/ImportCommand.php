@@ -40,6 +40,7 @@ class ImportCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Importing new translation units...');
+
         $importOptions = array();
         if ($input->getOption('verbose')){
             $importOptions['logger'] = $output;
@@ -47,6 +48,13 @@ class ImportCommand extends ContainerAwareCommand
         if ($locales = $input->getOption('locales')) {
             $importOptions['locale_list'] = explode(',', $locales);
         }
+
+        $securityContext = $this->getContainer()->get('security.context');
+        $token = new UsernamePasswordToken(
+            'dummy_user', 'dummy_password', 'translation',
+            array('ROLE_TRANSLATOR_ADMIN')
+        );
+        $securityContext->setToken($token);
 
         /** @var UnitRepository $translationManager */
         $start = time();
@@ -56,7 +64,7 @@ class ImportCommand extends ContainerAwareCommand
 
         $output->writeln(sprintf(
             "Importation done in %s[s] (%s created, %s modified and %s removed)",
-            $duration, $stats['created'], $stats['updated'], $stats['removed']
+            $duration, $stats['created'], $stats['updated'], $stats['deleted']
         ));
     }
 }

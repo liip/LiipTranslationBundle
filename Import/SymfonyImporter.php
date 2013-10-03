@@ -139,12 +139,7 @@ class SymfonyImporter {
         $stat = $this->repository->persist();
         $this->log("<info>Success</info>\n");
 
-//        return $stat;
-        return array(
-            'created' => 0,
-            'updated' => 0,
-            'removed' => 0
-        );
+        return $stat;
     }
 
     protected function log($msg) {

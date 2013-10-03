@@ -21,7 +21,7 @@ namespace Liip\TranslationBundle\Model;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Unit implements \Iterator, \ArrayAccess
+class Unit extends Persistent implements \Iterator, \ArrayAccess
 {
     /** @var string */
     private $domain;
@@ -32,11 +32,15 @@ class Unit implements \Iterator, \ArrayAccess
     /** @var Translation[] translations in various locales */
     private $translations = array();
 
-    public function __construct($domain, $key, array $metadata = array())
+    public function __construct($domain, $key, array $metadata = array(), $isNew = true)
     {
         $this->domain = $domain;
         $this->key = $key;
         $this->setMetadata($metadata);
+
+        if($isNew) {
+            $this->setIsNew(true);
+        }
     }
 
     /**
@@ -62,9 +66,13 @@ class Unit implements \Iterator, \ArrayAccess
      * @param string $locale the locale
      * @param string $translation the translation (value)
      */
-    public function setTranslation($locale, $translation)
+    public function setTranslation($locale, $translation, $isUpdate = true)
     {
         $this->offsetSet($locale, $translation);
+
+        if($isUpdate) {
+            $this->setIsModified(true);
+        }
     }
 
     /**
@@ -76,6 +84,7 @@ class Unit implements \Iterator, \ArrayAccess
     public function addTranslation(Translation $translation)
     {
         $this->translations[$translation->getLocale()] = $translation;
+        $this->setIsModified(true);
     }
 
     /**
@@ -152,13 +161,16 @@ class Unit implements \Iterator, \ArrayAccess
 
     public function offsetSet($locale, $value)
     {
+        $this->setIsModified(true);
         if($this->offsetExists($locale)) {
             $this->translations[$locale]->setValue($value);
+            $this->translations[$locale]->setIsModified(true);
         } else {
             if (!$locale) {
                 throw new \RuntimeException("cannot set a translation without locale.");
             }
             $t = new Translation($value, $locale, $this);
+            $t->setIsNew(true);
             $this->translations[$locale] = $t;
         }
         return true;
@@ -166,7 +178,8 @@ class Unit implements \Iterator, \ArrayAccess
 
     public function offsetUnset($locale)
     {
-        unset($this->translations[$locale]);
+        $this->setIsModified(true);
+        $this->translations[$locale]->setIsDeleted(true);
         return true;
     }
 

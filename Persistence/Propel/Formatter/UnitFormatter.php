@@ -32,7 +32,7 @@ class UnitFormatter extends \PropelFormatter {
             $domain = $translation['DOMAIN'];
             $key = $translation['KEY'];
             if (!isset($unitTree[$domain][$key])) {
-                $unit = new ModelUnit($domain, $key, $this->unserialized($translation['METADATA']));
+                $unit = new ModelUnit($domain, $key, $this->unserialized($translation['METADATA']), false);
                 $allUnits[] = $unit;
                 $unitTree[$domain][$key] = $unit;
             }

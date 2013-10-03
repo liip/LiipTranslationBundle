@@ -16,7 +16,7 @@ namespace Liip\TranslationBundle\Model;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Translation {
+class Translation extends Persistent {
     /** @var string */
     private $value;
     /** @var string */
@@ -63,6 +63,8 @@ class Translation {
     public function setValue($t)
     {
         $this->value = $t;
+
+        $this->setIsModified(true);
     }
 
     public function getLocale()
