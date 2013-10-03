@@ -4,10 +4,9 @@ namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
-use Liip\TranslationBundle\Persistence\Propel\UnitQuery;
-use Liip\TranslationBundle\Persistence\Propel\Unit as PropelUnit;
-use Symfony\Component\Locale\Exception\NotImplementedException;
-use Symfony\Component\Yaml\Yaml;
+use Liip\TranslationBundle\Persistence\Propel\Formatter\UnitFormatter;
+use Liip\TranslationBundle\Persistence\Propel\Model\UnitQuery;
+use Liip\TranslationBundle\Persistence\Propel\Model\Unit as PropelUnit;
 
 /**
  * Persistence layer based on Propel
@@ -23,7 +22,6 @@ use Symfony\Component\Yaml\Yaml;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-
 class PropelPersistence implements PersistenceInterface {
 
 
@@ -34,13 +32,9 @@ class PropelPersistence implements PersistenceInterface {
      */
     public function getUnits()
     {
-        $propelUnits = UnitQuery::create()->leftJoinTranslation()->find();
-        $units = array();
-        foreach($propelUnits as $propelUnit){
-            $units[] = $propelUnit->convertToModel();
-        }
-
-        return $units;
+        return UnitQuery::create()->joinWith('Translation')
+            ->setFormatter(new UnitFormatter())
+            ->find();
     }
 
     /**
