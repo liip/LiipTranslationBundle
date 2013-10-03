@@ -39,15 +39,24 @@ class ImportCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $importOptions = array('logger' => $output);
+        $output->writeln('Importing new translation units...');
+        $importOptions = array();
+        if ($input->getOption('verbose')){
+            $importOptions['logger'] = $output;
+        }
         if ($locales = $input->getOption('locales')) {
             $importOptions['locale_list'] = explode(',', $locales);
         }
 
         /** @var UnitRepository $translationManager */
+        $start = time();
         $importer = $this->getContainer()->get('liip.translation.symfony_importer');
-        $importer->processImportOfStandardResources($importOptions, $input->getOption('override', false));
-        // clear cache to ensure that new translations are taken into account.
-        $importer->clearSymfonyCache();
+        $stats = $importer->processImportOfStandardResources($importOptions, $input->getOption('override', false));
+        $duration = time() - $start;
+
+        $output->writeln(sprintf(
+            "Importation done in %s[s] (%s created, %s modified and %s removed)",
+            $duration, $stats['created'], $stats['updated'], $stats['removed']
+        ));
     }
 }

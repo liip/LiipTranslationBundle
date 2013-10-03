@@ -136,8 +136,15 @@ class SymfonyImporter {
         }
 
         $this->log("\n<comment>Persisting</comment> ... ");
-        $this->repository->persist();
+        $stat = $this->repository->persist();
         $this->log("<info>Success</info>\n");
+
+//        return $stat;
+        return array(
+            'created' => 0,
+            'updated' => 0,
+            'removed' => 0
+        );
     }
 
     protected function log($msg) {
