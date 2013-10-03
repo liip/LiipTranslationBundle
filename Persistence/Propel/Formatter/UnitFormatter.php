@@ -37,7 +37,8 @@ class UnitFormatter extends \PropelFormatter {
                 $unitTree[$domain][$key] = $unit;
             }
             $unitTree[$domain][$key]->addTranslation(
-                new ModelTranslation($translation['VALUE'], $translation['LOCALE'], $unitTree[$domain][$key], $this->unserialized($translation[7]))
+                new ModelTranslation($translation['VALUE'], $translation['LOCALE'], $unitTree[$domain][$key], $this->unserialized($translation[7])),
+                false
             );
         }
 

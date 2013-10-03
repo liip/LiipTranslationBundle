@@ -78,13 +78,11 @@ class YamlFilePersistence implements PersistenceInterface
 
     public function saveUnit(Unit $unit)
     {
-        echo 'save unit';
         $this->saveUnits(array($unit));
     }
 
     public function saveUnits(array $units)
     {
-        echo 'save units';
         $existingUnits = $this->loadFile('units');
         foreach ($units as $unit) {
             $existingUnits[$unit->getDomain()][$unit->getTranslationKey()] = $unit->getMetadata();
@@ -95,13 +93,11 @@ class YamlFilePersistence implements PersistenceInterface
 
     public function deleteUnit(Unit $unit)
     {
-        echo 'delete unit';
         $this->deleteUnits(array($unit));
     }
 
     public function deleteUnits(array $units)
     {
-        echo 'delete units';
         $existingUnits = $this->loadFile('units');
         foreach ($units as $unit) {
             unset($existingUnits[$unit->getDomain()][$unit->getTranslationKey()]);
@@ -113,17 +109,13 @@ class YamlFilePersistence implements PersistenceInterface
 
     public function saveTranslation(Translation $translation)
     {
-        echo 'save t';
         $this->saveTranslations(array($translation));
     }
 
     public function saveTranslations(array $translations)
     {
-        echo 'save ts '.count($translations);
-
         $existingTranslations = $this->loadFile('translations');
         foreach ($translations as $t) {
-            var_dump(array($t->getValue(), $t->getMetadata()));
             $existingTranslations[$t->getDomain()][$t->getKey()][$t->getLocale()] = array($t->getValue(), $t->getMetadata());
         }
         $this->dumpFile('translations', $existingTranslations);
@@ -132,13 +124,11 @@ class YamlFilePersistence implements PersistenceInterface
 
     public function deleteTranslation(Translation $translation)
     {
-        echo 'delete t';
         $this->deleteTranslations(array($translation));
     }
 
     public function deleteTranslations(array $translations)
     {
-        echo 'delete ts';
         $existingTranslations = $this->loadFile('translations');
         foreach ($translations as $t) {
             unset($existingTranslations[$t->getDomain()][$t->getKey()][$t->getLocale()]);
@@ -149,11 +139,11 @@ class YamlFilePersistence implements PersistenceInterface
 
     protected function createUnitObject($domain, $key, $metadata, $translations)
     {
-        $unit = new Unit($domain, $key, $metadata);
+        $unit = new Unit($domain, $key, $metadata, false);
         if (isset($translations[$domain][$key])) {
             foreach($translations[$domain][$key] as $locale => $data) {
                 list($value, $metadata) = $data;
-                $unit->addTranslation(new Translation($value, $locale, $unit, $metadata));
+                $unit->addTranslation(new Translation($value, $locale, $unit, $metadata), false);
             }
         }
 

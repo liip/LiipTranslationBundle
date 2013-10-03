@@ -42,4 +42,15 @@ class Persistent
     {
         return $this->isNew() || $this->isModified() || $this->isDeleted();
     }
+
+    public function getDirtyReason()
+    {
+        return
+            $this->isDeleted() ? 'deleted' : (
+                $this->isNew() ? 'created' : (
+                    $this->isModified() ? 'modified' : null
+                )
+            )
+        ;
+    }
 }

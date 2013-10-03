@@ -69,7 +69,6 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
     public function setTranslation($locale, $translation, $isUpdate = true)
     {
         $this->offsetSet($locale, $translation);
-
         if($isUpdate) {
             $this->setIsModified(true);
         }
@@ -81,10 +80,12 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
      *
      * @param Translation $translation
      */
-    public function addTranslation(Translation $translation)
+    public function addTranslation(Translation $translation, $isUpdate = true)
     {
         $this->translations[$translation->getLocale()] = $translation;
-        $this->setIsModified(true);
+        if($isUpdate) {
+            $this->setIsModified(true);
+        }
     }
 
     /**

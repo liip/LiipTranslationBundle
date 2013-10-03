@@ -166,7 +166,7 @@ class UnitRepository
         return null;
     }
 
-    public function createUnit($domain, $key, array $metadata) {
+    public function createUnit($domain, $key, array $metadata = array()) {
         $u = new Unit($domain, $key, $metadata);
         $this->allUnits[] = $u;
         return $u;
@@ -196,21 +196,11 @@ class UnitRepository
         foreach($objects as $unit) {
             if($unit->isDirty()) {
                 $this->checkDomainGrants($unit->getDomain());
-
-                $dirtyReason = $unit->isDeleted()
-                    ? 'deleted'
-                    : $unit->isModified() ? 'modified' : 'created';
-                $dirtyUnits[$dirtyReason][] = $unit;
-
+                $dirtyUnits[$unit->getDirtyReason()][] = $unit;
                 foreach($unit->getTranslations() as $translation) {
                     if($translation->isDirty()) {
                         $this->checkLocaleGrants($translation->getLocale());
-
-                        $dirtyReason = $translation->isDeleted()
-                            ? 'deleted'
-                            : $translation->isModified()
-                                ? 'modified' : 'created';
-                        $dirtyTranslations[$dirtyReason][] = $translation;
+                        $dirtyTranslations[$unit->getDirtyReason()][] = $translation;
                     }
                 }
             }
