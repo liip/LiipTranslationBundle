@@ -23,17 +23,36 @@ class Translation {
     private $locale;
     /** @var Unit */
     private $unit;
+    /** @var array */
+    private $metadata;
 
     /**
      * @param string $t value (ie translation)
      * @param string $l locale
      * @param Unit $u unit related to this translation
      */
-    public function __construct($t, $l, Unit $u)
+    public function __construct($value, $locale, Unit $unit, array $metadata = array())
     {
-        $this->value = $t;
-        $this->locale = $l;
-        $this->unit = $u;
+        $this->value = $value;
+        $this->locale = $locale;
+        $this->unit = $unit;
+        $this->metadata = $metadata;
+    }
+
+    /**
+     * @param array $m the new metadata
+     */
+    public function setMetadata(array $m = array())
+    {
+        $this->metadata = $m;
+    }
+
+    /**
+     * @return array metadata as array
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 
     public function getValue()
