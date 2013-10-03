@@ -101,7 +101,15 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
         if (count($this->metadata) == 0) {
             return '-';
         }
-        return var_export($this->metadata, true);
+        $metadata = $this->getMetadata();
+        unset($metadata['id']);
+
+        $text = '';
+        foreach($metadata as $key => $value) {
+            if ($key == 'note'){
+                $text .= $value;
+            }
+        }
     }
 
     /**
