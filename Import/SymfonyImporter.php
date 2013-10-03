@@ -65,13 +65,18 @@ class SymfonyImporter {
         return strpos($resource['path'], 'symfony/symfony') !== false;
     }
 
-    public function processImportOfStandardResources($options, $override = false)
+    public function processImportOfStandardResources($options)
     {
+        $options = array_merge(array(
+            'locale_list' => null,
+            'logger' => null,
+            'import-translations' => false,
+            'override' => false
+        ), $options);
         if (array_key_exists('logger', $options)){
             $this->logger = $options['logger'];
         }
-
-        $locales = array_key_exists('locale_list', $options) ? $options['locale_list'] : $this->getLocaleList();
+        $locales = $options['locale_list'] !== null ? $options['locale_list'] : $this->getLocaleList();
 
         $this->log("<info>Start importation for locales:</info> [".implode(', ', $locales)."]\n");
 
@@ -106,31 +111,39 @@ class SymfonyImporter {
             $existingUnits[$u->getDomain()][$u->getTranslationKey()] = $u;
         }
 
-        // Load translations into the intermediate persistence
+        // Creation of the units
         $units = array();
         foreach ($locales as $locale) {
             foreach ($catalogues[$locale]->all() as $domain => $translations) {
-                $this->log("\nImport catalog <comment>$domain</comment>\n");
                 foreach($translations as $key => $value) {
-                    $this->log("\t>> key [$key] with a base value of [$value]");
-                    $metadata = $catalogues[$locale]->getMetadata($key, $domain);
 
+                    $this->log("    >> Key [$key] for domain [$domain]\n");
+
+                    // Retrieved or create a unit
                     if(! isset($existingUnits[$domain][$key])) {
-                        $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key, is_null($metadata) ? array() : $metadata);
+                        $this->log("\t>> Creation of a new Unit [$domain, $key]\n");
+                        $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key);
                     }
                     $unit = $existingUnits[$domain][$key];
 
-                    if($unit->hasTranslation($locale)) {
-                        if($override) {
-                            $this->log(" <info>Imported</info> <comment>(overriden current value)</comment>\n");
-                        } else {
-                            $this->log(" <comment>Skipped (no override)</comment>\n");
-                            continue;
-                        }
-                    } else {
-                        $this->log(" <info>Imported</info>\n");
+                    // Update it's metadata
+                    $metadata = $catalogues[$locale]->getMetadata($key, $domain);
+                    $unit->setMetadata(is_null($metadata) ? array() : $metadata);
+                    if ($unit->isModified()){
+                        $this->log("\t>> Metadata of the Unit [$domain, $key] updated\n");
                     }
-                    $unit->setTranslation($locale, $value);
+
+                    // Update translation
+                    if($options['import-translations']) {
+                        if ($unit->hasTranslation($locale) && $options['override']) {
+                            $unit->setTranslation($locale, $value);
+                            $this->log("\t>> Translation in [$locale] overridden\n");
+                        }
+                        if (!$unit->hasTranslation($locale)){
+                            $unit->setTranslation($locale, $value);
+                            $this->log("\t>> Translation in [$locale] imported\n");
+                        }
+                    }
                 }
             }
         }

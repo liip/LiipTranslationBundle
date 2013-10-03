@@ -30,9 +30,10 @@ class ImportCommand extends ContainerAwareCommand
     {
         $this
             ->setName('translation:import')
-            ->setDescription('Import all existing translations into the application storage.')
+            ->setDescription('Import all existing translation units into the application storage.')
             ->setDefinition(array(
                 new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'A comma separated list of locales ( --locales=en,fr,fr_CH'),
+                new InputOption('with-translations', null, InputOption::VALUE_NONE, 'also import the associated translations'),
                 new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations')
             ))
         ;
@@ -42,14 +43,25 @@ class ImportCommand extends ContainerAwareCommand
     {
         $output->writeln('Importing new translation units...');
 
+        // Options parsing
         $importOptions = array();
-        if ($input->hasOption('verbose')){
+        if ($input->getOption('verbose') !== NULL){
             $importOptions['logger'] = $output;
         }
         if ($locales = $input->getOption('locales')) {
             $importOptions['locale_list'] = explode(',', $locales);
         }
+        if ($locales = $input->getOption('with-translations')) {
+            $importOptions['import-translations'] = true;
+        }
+        if ($locales = $input->getOption('override')) {
+            if ($input->getOption('with-translations')==null) {
+                throw new \RuntimeException('[override] option is only available in conjuction with [with-translations]');
+            }
+            $importOptions['override'] = true;
+        }
 
+        // TODO move this into the security component
         if($this->getContainer()->has('security.context')) {
             $securityContext = $this->getContainer()->get('security.context');
             $securityContext->setToken(new AnonymousToken('cli', 'cli', array('ROLE_TRANSLATOR_ADMIN')));
@@ -57,7 +69,7 @@ class ImportCommand extends ContainerAwareCommand
 
         $start = time();
         $importer = $this->getContainer()->get('liip.translation.symfony_importer');
-        $stats = $importer->processImportOfStandardResources($importOptions, $input->getOption('override', false));
+        $stats = $importer->processImportOfStandardResources($importOptions);
         $duration = time() - $start;
 
         $output->writeln(sprintf(
