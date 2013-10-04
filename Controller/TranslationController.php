@@ -25,14 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TranslationController extends BaseController
 {
-    protected function getFilterForm(array $filters = array())
-    {
-        return $this->createForm(new FilterType(
-            $this->getAuthorizedLocale(),
-            $this->getRepository()->getDomainList()
-        ), $filters);
-    }
-
     protected function getFilter()
     {
         $filters = $this->getFilterManager()->getCurrentFilters();
@@ -75,7 +67,7 @@ class TranslationController extends BaseController
         $filters = $this->getFilter();
         $units = $this->getRepository()->findFiltered($filters);
 
-        $filterForm = $this->getFilterForm($filters);
+        $filterForm = $this->createFilterForm($filters);
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $units,
             'columns' => $filters['locale'],
@@ -86,7 +78,7 @@ class TranslationController extends BaseController
 
     public function filterAction()
     {
-        $filterForm = $this->getFilterForm();
+        $filterForm = $this->createFilterForm();
         $newFilters = $this->handleForm($filterForm);
         $this->getFilterManager()->updateFilters($newFilters);
 
@@ -176,5 +168,13 @@ class TranslationController extends BaseController
     protected function generateZipFilename(Request $request, $filters)
     {
         return 'translations-from-'.$request->getHost().'.zip';
+    }
+
+    protected function createFilterForm(array $filters = array())
+    {
+        return $this->createForm(new FilterType(
+            $this->getAuthorizedLocale(),
+            $this->getRepository()->getDomainList()
+        ), $filters);
     }
 }
