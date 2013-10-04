@@ -50,9 +50,7 @@ class UnitFormatter extends \PropelFormatter {
      */
     public function formatOne(\PDOStatement $stmt)
     {
-        $units = $this->format($stmt);
-
-        return count($units)==0 ? null : reset($units);
+        throw new \Exception('Not implemented yet');
     }
 
     /**

@@ -33,16 +33,16 @@ class PropelPersistence implements PersistenceInterface
      */
     public function getUnit($domain, $key)
     {
-        $unit = UnitQuery::create()->leftJoinWith('Translation')
+        $units = UnitQuery::create()->leftJoin('Translation')->with('Translation')
             ->filterByDomain($domain)->filterByKey($key)
             ->setFormatter(new UnitFormatter())
-            ->findOne();
+            ->find();
 
-        if ($unit == null) {
+        if (count($units) == 0) {
             throw new NotFoundException($domain, $key);
         }
 
-        return $unit;
+        return reset($units);
     }
 
     /**
