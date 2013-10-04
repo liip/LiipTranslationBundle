@@ -35,7 +35,7 @@ class TranslationController extends BaseController
 
     protected function getFilter()
     {
-        $filters = $this->getSession()->get(Configuration::SESSION_PREFIX . 'filters', array());
+        $filters = $this->getFilterManager()->getCurrentFilters();
 
         $authorizedLocales = $this->getAuthorizedLocale();
         // we use two different keys so that the display of a full / empty selection doesn't affect the list
@@ -87,16 +87,15 @@ class TranslationController extends BaseController
     public function filterAction()
     {
         $filterForm = $this->getFilterForm();
-        $filters = $this->handleForm($filterForm);
-        $this->getSession()->set(Configuration::SESSION_PREFIX.'filters', $filters);
+        $newFilters = $this->handleForm($filterForm);
+        $this->getFilterManager()->updateFilters($newFilters);
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
     public function clearFilterAction()
     {
-        $this->getSession()->set(Configuration::SESSION_PREFIX.'filters', null);
-
+        $this->getFilterManager()->resetFilters();
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 

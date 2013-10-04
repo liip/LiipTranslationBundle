@@ -26,8 +26,10 @@ class SessionImporter
 {
     /** @var UnitRepository $repository */
     protected $repository;
+
     /** @var \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session $session */
     protected $session;
+
     /** @var Translator $translator */
     protected $translator;
 

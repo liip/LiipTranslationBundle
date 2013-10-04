@@ -31,3 +31,7 @@ services:
 
     liip.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader
+
+    liip.translation.filter:
+        class: Liip\TranslationBundle\Filter\FilterManager
+        arguments: ["%liip_translation_config%", "@session", "@liip.translation.repository"]

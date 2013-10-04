@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\Export\ZipExporter;
+use Liip\TranslationBundle\Filter\FilterManager;
 use Liip\TranslationBundle\Import\SessionImporter;
 use Liip\TranslationBundle\Import\SymfonyImporter;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
@@ -142,6 +143,14 @@ abstract class BaseController extends Controller
     protected function getSecurity()
     {
         return $this->get('liip.translation.security');
+    }
+
+    /**
+     * @return FilterManager
+     */
+    protected function getFilterManager()
+    {
+        return $this->get('liip.translation.filter');
     }
 
     /**

@@ -67,6 +67,14 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
+                ->arrayNode('interface')
+                    ->children()
+                        ->variableNode('default_filters')
+                            ->defaultValue(array())
+                        ->end()
+                    ->end()
+                ->end()
+
             ->end()
         ;
 
