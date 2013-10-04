@@ -46,13 +46,20 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testExport()
     {
-        // Generate a zip file
-        $exporter = new ZipExporter();
-        $exporter->setUnits($this->getSomeUnits());
-        $zipPath = $exporter->createZipFile();
+        $unit1 = new Unit('message', 'welcome.text');
+        $unit1->setTranslation('en', 'Hello');
+        $unit1->setTranslation('fr', 'Salut');
+        $unit1->setTranslation('fr_CH', 'Salut toi');
 
-        $zip = new ZipArchive();
-        $zip->open($zipPath);
+        $unit2 = new Unit('message', 'first_name');
+        $unit2->setTranslation('en', 'First name');
+        $unit2->setTranslation('fr', 'Prénom');
+
+        $unit3 = new Unit('validator', 'not_empty');
+        $unit3->setTranslation('en', 'Not empty error');
+        $unit3->setTranslation('fr', 'Pas vide erreur');
+
+        $zip = $this->getZipFromUnit(array($unit1, $unit2, $unit3));
 
         $this->assertEquals(array(
             'message.en.yml',
@@ -64,26 +71,47 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("welcome.text: Hello\nfirst_name: 'First name'\n", $zip->getFromName('message.en.yml'));
         $this->assertEquals("welcome.text: 'Salut toi'\n", $zip->getFromName('message.fr_CH.yml'));
-
     }
 
 
-    protected function getSomeUnits()
+    public function testExportOfEmptyTranslation()
     {
-        $unit1 = new Unit('message', 'welcome.text', array());
-        $unit1->setTranslation('en', 'Hello');
-        $unit1->setTranslation('fr', 'Salut');
-        $unit1->setTranslation('fr_CH', 'Salut toi');
+        $unit1 = new Unit('messages', 'key1');
+        $unit1->setTranslation('en', 'Not empty');
 
-        $unit2 = new Unit('message', 'first_name', array());
-        $unit2->setTranslation('en', 'First name');
-        $unit2->setTranslation('fr', 'Prénom');
+        $unit2 = new Unit('messages', 'key2');
+        $unit2->setTranslation('en', null);
 
-        $unit3 = new Unit('validator', 'not_empty', array());
-        $unit3->setTranslation('en', 'Not empty error');
-        $unit3->setTranslation('fr', 'Pas vide erreur');
+        $zip = $this->getZipFromUnit(array($unit1, $unit2));
 
-        return array($unit1, $unit2, $unit3);
+        $this->assertEquals(array('messages.en.yml'), $zip->getFileList());
+        $this->assertEquals("key1: 'Not empty'\n", $zip->getFromName('messages.en.yml'));
+    }
+
+
+    public function testExportOfEmptyLocale()
+    {
+        $unit1 = new Unit('messages', 'locale');
+        $unit1->setTranslation('fr', null);
+
+        $zip = $this->getZipFromUnit(array($unit1));
+        $this->assertEquals(array(), $zip->getFileList());
+    }
+
+
+    /**
+     * Export a zip for the provided units
+     * @param $units
+     * @return ZipArchive
+     */
+    protected function getZipFromUnit($units)
+    {
+        $exporter = new ZipExporter();
+        $exporter->setUnits($units);
+        $zipPath = $exporter->createZipFile();
+        $zip = new ZipArchive();
+        $zip->open($zipPath);
+        return $zip;
     }
 
 }

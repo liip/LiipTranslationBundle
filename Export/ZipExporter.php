@@ -76,7 +76,10 @@ class ZipExporter {
     {
         foreach ($this->unitsByLocaleAndDomain as $locale => $translationDomains) {
             foreach ($translationDomains as $domain => $translations) {
-                $zip->addFromString("$domain.$locale.yml", $this->createYml($translations));
+                $yml = $this->createYml($translations);
+                if (strlen($yml) > 0 && $yml !== '{  }') {
+                    $zip->addFromString("$domain.$locale.yml", $yml);
+                }
             }
         }
     }
@@ -88,7 +91,9 @@ class ZipExporter {
     protected function createYml($translations) {
         $flatArray = array();
         foreach($translations as $translation) {
-            $flatArray[$translation->getKey()] = $translation->getValue();
+            if ($translation->getValue() !== null) {
+                $flatArray[$translation->getKey()] = $translation->getValue();
+            }
         }
 
         return Yaml::dump($flatArray);
