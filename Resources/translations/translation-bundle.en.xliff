@@ -163,8 +163,16 @@
                 <target>Import everything</target>
             </trans-unit>
             <trans-unit id="button.10">
-                <source>button.translate</source>
+                <source>button.translate.save</source>
                 <target>Translate</target>
+            </trans-unit>
+            <trans-unit id="button.11">
+                <source>button.translate.skip</source>
+                <target>Skip</target>
+            </trans-unit>
+            <trans-unit id="button.12">
+                <source>button.translate.save_and_next</source>
+                <target>Translate and next...</target>
             </trans-unit>
 
             <trans-unit id="form.1">
