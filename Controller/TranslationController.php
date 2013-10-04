@@ -93,18 +93,15 @@ class TranslationController extends BaseController
 
     public function editAction($locale, $domain, $key)
     {
-        if(! $unit->hasTranslation($locale)) {
-            $unit->setTranslation($locale, '');
-        }
-        $translation = $unit->getTranslation($locale);
         $unit = $this->getRepository()->findByDomainAndKey($domain, $key);
+        $translation = $unit->hasTranslation($locale) ? $unit->getTranslation($locale) : new Translation(null, $locale, $unit);
+        $form = $this->createForm(new TranslationType(), $translation);
 
-        $form = $this->createForm(new TranslationType(), $translation, array());
         if ($this->getRequest()->getMethod() === 'POST') {
-            /** @var Translation $data */
             $translation = $this->handleForm($form);
             if($form->isValid()) {
-                $this->getRepository()->persist($translation->getUnit());
+                $unit->addTranslation($translation);
+                $this->getRepository()->persist($unit);
                 $this->addFlashMessage('success', 'Translation was successfully edited.');
                 return $this->redirect($this->generateUrl('liip_translation_interface'));
             }

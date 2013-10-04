@@ -75,6 +75,12 @@ class Translation extends Persistent {
         $this->setIsModified(true);
     }
 
+    public function getModificationDate()
+    {
+        // TODO fetch from the metadata
+        return '-';
+    }
+
     public function getLocale()
     {
         return $this->locale;
