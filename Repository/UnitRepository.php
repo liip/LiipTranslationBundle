@@ -200,7 +200,7 @@ class UnitRepository
                 foreach($unit->getTranslations() as $translation) {
                     if($translation->isDirty()) {
                         $this->checkLocaleGrants($translation->getLocale());
-                        $dirtyTranslations[$unit->getDirtyReason()][] = $translation;
+                        $dirtyTranslations[$translation->getDirtyReason()][] = $translation;
                     }
                 }
             }
@@ -270,7 +270,8 @@ class UnitRepository
     public function removeTranslation($locale, $domain, $key)
     {
         $unit = $this->findByDomainAndTranslationKey($domain, $key);
-        $unit[$locale]->setIsDeleted(true);
+        $unit->deleteTranslation($locale);
+        $this->persist($unit);
     }
 
     /**

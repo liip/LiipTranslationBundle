@@ -23,17 +23,17 @@ class Persistent
         return $this->isNew;
     }
 
-    protected function setIsDeleted($isDeleted)
+    protected function setIsDeleted($isDeleted = true)
     {
         $this->isDeleted = $isDeleted;
     }
 
-    protected function setIsModified($isModified)
+    protected function setIsModified($isModified = true)
     {
         $this->isModified = $isModified;
     }
 
-    protected function setIsNew($isNew)
+    protected function setIsNew($isNew = true)
     {
         $this->isNew = $isNew;
     }

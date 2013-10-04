@@ -160,6 +160,13 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
         return $this->offsetExists($locale);
     }
 
+    public function deleteTranslation($locale)
+    {
+        $this->getTranslation($locale)->delete();
+        $this->setIsModified();
+    }
+
+
     public function offsetExists($locale)
     {
         return array_key_exists($locale, $this->translations) && ! $this->translations[$locale]->isDeleted;
@@ -192,8 +199,7 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
 
     public function offsetUnset($locale)
     {
-        $this->setIsModified(true);
-        $this->translations[$locale]->setIsDeleted(true);
+        $this->deleteTranslation($locale);
         return true;
     }
 

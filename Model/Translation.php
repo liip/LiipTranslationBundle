@@ -40,6 +40,14 @@ class Translation extends Persistent {
     }
 
     /**
+     * Mark this translation as deleted (will be remove at the next persist)
+     */
+    public function delete()
+    {
+        $this->setIsDeleted();
+    }
+
+    /**
      * @param array $m the new metadata
      */
     public function setMetadata(array $m = array())

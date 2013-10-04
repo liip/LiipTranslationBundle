@@ -166,6 +166,7 @@ class TranslationController extends BaseController
 
     public function cacheClearAction()
     {
+        // TODO Move this on the translator
         $this->getSymfonyImporter()->clearSymfonyCache();
         $this->addFlashMessage('success', 'Cache cleared');
 
