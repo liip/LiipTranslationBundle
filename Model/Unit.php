@@ -36,7 +36,7 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
     {
         $this->domain = $domain;
         $this->key = $key;
-        $this->setMetadata($metadata);
+        $this->metadata = $metadata;
 
         if($isNew) {
             $this->setIsNew(true);
