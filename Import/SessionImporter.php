@@ -9,7 +9,7 @@ use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * To be completed
+ * Importer session based, allow to upload several files, then to edit/remove translations before processing the import
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class FileImporter
+class SessionImporter
 {
     /** @var UnitRepository $repository */
     protected $repository;
@@ -145,6 +145,11 @@ class FileImporter
         unset($translations[$locale]['new'][$domain][$key]);
         unset($translations[$locale]['updated'][$domain][$key]);
         $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
+    }
+
+    public function edit($domain, $key, $locale, $newValue)
+    {
+        throw new \Exception('Implement me');
     }
 
     public function persists(PersistenceInterface $persistence, $locale = null)

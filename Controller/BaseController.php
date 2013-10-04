@@ -3,7 +3,7 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\Export\ZipExporter;
-use Liip\TranslationBundle\Import\FileImporter;
+use Liip\TranslationBundle\Import\SessionImporter;
 use Liip\TranslationBundle\Import\SymfonyImporter;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
@@ -96,11 +96,11 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * @return FileImporter
+     * @return SessionImporter
      */
-    protected function getImporter()
+    protected function getSessionImporter()
     {
-        return $this->get('liip.translation.file_importer');
+        return $this->get('liip.translation.session_importer');
     }
 
     /**
