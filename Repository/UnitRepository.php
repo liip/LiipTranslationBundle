@@ -76,7 +76,7 @@ class UnitRepository
             foreach($this->allUnits as $u) {
                 $found = false;
                 foreach($units as $u2) {
-                    if($u->getDomain() == $u2->getDomain() && $u->getTranslationKey() == $u2->getTranslationKey()) {
+                    if($u->getDomain() == $u2->getDomain() && $u->getKey() == $u2->getKey()) {
                         $found = true;
                     }
                 }
@@ -107,7 +107,7 @@ class UnitRepository
     {
         $units = array();
         foreach($this->getAll() as $unit) {
-            $units[$unit->getDomain()][$unit->getTranslationKey()] = $unit;
+            $units[$unit->getDomain()][$unit->getKey()] = $unit;
         }
 
         return $units;
@@ -153,9 +153,9 @@ class UnitRepository
      * @param $value
      * @return Unit[]
      */
-    public function findByTranslationKey($value)
+    public function findByKey($value)
     {
-        return $this->findBy('translationKey', $value);
+        return $this->findBy('key', $value);
     }
 
     /**
@@ -290,7 +290,7 @@ class UnitRepository
         $translations = array();
         foreach($units as $unit) {
             if($unit->hasTranslation($locale)) {
-                $translations[$unit->getTranslationKey()] = $unit->getTranslation($locale)->getValue();
+                $translations[$unit->getKey()] = $unit->getTranslation($locale)->getValue();
             }
         }
 
@@ -343,7 +343,7 @@ class UnitRepository
             $filterKey = isset($filters['key']) && strlen(trim($filters['key'])) > 0 ? trim($filters['key']) : null;
             $filterValue = isset($filters['value']) && strlen(trim($filters['value'])) > 0 ? trim($filters['value']) : null;
 
-            if ($filterKey && strpos($u->getTranslationKey(), $filterKey) === false) {
+            if ($filterKey && strpos($u->getKey(), $filterKey) === false) {
                 unset($units[$k]);
                 continue;
             }

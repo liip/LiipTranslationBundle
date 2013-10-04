@@ -43,7 +43,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $persistence->expects($this->any())->method('getUnit')->will(
             $this->returnCallback(function($domain, $key) use ($units) {
                 foreach ($units as $unit) {
-                    if ($unit->getDomain() == $domain && $unit->getTranslationKey() == $key) {
+                    if ($unit->getDomain() == $domain && $unit->getKey() == $key) {
                         return $unit;
                     }
                 }
@@ -88,14 +88,14 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($u2_1, $u2_2), $repo->findByDomain('domain2'));
         $this->assertEquals(array($u3_1), $repo->findByDomain('domain3'));
 
-        $this->assertEquals(array($u1_1, $u2_1, $u3_1), $repo->findByTranslationKey('key1'));
-        $this->assertEquals(array($u1_2, $u2_2), $repo->findByTranslationKey('key2'));
-        $this->assertEquals(array($u1_3), $repo->findByTranslationKey('key3'));
+        $this->assertEquals(array($u1_1, $u2_1, $u3_1), $repo->findByKey('key1'));
+        $this->assertEquals(array($u1_2, $u2_2), $repo->findByKey('key2'));
+        $this->assertEquals(array($u1_3), $repo->findByKey('key3'));
 
         $this->assertEquals($u2_2, $repo->findByDomainAndKey('domain2', 'key2'));
 
         $this->assertEmpty($repo->findByDomain('non-existing domain'));
-        $this->assertEmpty($repo->findByTranslationKey('non-existing key'));
+        $this->assertEmpty($repo->findByKey('non-existing key'));
     }
 
     public function testGetDomainList()
@@ -119,7 +119,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $u = $repo->createUnit('domain', 'key', array());
         $this->assertTrue($u instanceof Unit);
         $this->assertEquals('domain', $u->getDomain());
-        $this->assertEquals('key', $u->getTranslationKey());
+        $this->assertEquals('key', $u->getKey());
         // test if the repository contains the unit (without prior load)
         $this->assertContains($u, $repo->findAll());
 

@@ -52,7 +52,7 @@ class Unit extends BaseUnit
     public function updateFromModel(ModelUnit $unit)
     {
         $this->setDomain($unit->getDomain());
-        $this->setKey($unit->getTranslationKey());
+        $this->setKey($unit->getKey());
         $this->setMetadata($unit->getMetadata());
     }
 

@@ -65,7 +65,7 @@ class PropelPersistence implements PersistenceInterface
      */
     public function saveUnit(Unit $unit)
     {
-        $propelUnit = UnitQuery::create()->findOneByDomainAndKey($unit->getDomain(), $unit->getTranslationKey());
+        $propelUnit = UnitQuery::create()->findOneByDomainAndKey($unit->getDomain(), $unit->getKey());
         if (!$propelUnit) {
             $propelUnit = new PropelUnit();
         }
@@ -90,7 +90,7 @@ class PropelPersistence implements PersistenceInterface
     public function deleteUnit(Unit $unit)
     {
         UnitQuery::create()->findOneByDomainAndKey(
-            $unit->getDomain(), $unit->getTranslationKey()
+            $unit->getDomain(), $unit->getKey()
         )->delete();
     }
 
@@ -106,7 +106,7 @@ class PropelPersistence implements PersistenceInterface
     {
         $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
             $translation->getUnit()->getDomain(),
-            $translation->getUnit()->getTranslationKey()
+            $translation->getUnit()->getKey()
         );
 
         $propelTranslation = TranslationQuery::create()
@@ -139,7 +139,7 @@ class PropelPersistence implements PersistenceInterface
         // Fetch the related unit
         $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
             $translation->getUnit()->getDomain(),
-            $translation->getUnit()->getTranslationKey()
+            $translation->getUnit()->getKey()
         );
 
         // Retrived or create the translation

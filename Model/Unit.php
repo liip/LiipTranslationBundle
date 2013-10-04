@@ -21,7 +21,7 @@ namespace Liip\TranslationBundle\Model;
  * @author Gilles Meier <gilles.meier@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Unit extends Persistent implements \Iterator, \ArrayAccess
+class Unit extends Persistent implements \ArrayAccess
 {
     /** @var string */
     private $domain;
@@ -125,7 +125,7 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
     /**
      * @return string the translation key associated with this unit
      */
-    public function getTranslationKey()
+    public function getKey()
     {
         return $this->key;
     }
@@ -205,28 +205,4 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
         return true;
     }
 
-    public function current()
-    {
-        return current($this->translations);
-    }
-
-    public function next()
-    {
-        return next($this->translations);
-    }
-
-    public function key()
-    {
-        return key($this->translations);
-    }
-
-    public function valid()
-    {
-        return key($this->translations) !== null;
-    }
-
-    public function rewind()
-    {
-        return reset($this->translations);
-    }
 }

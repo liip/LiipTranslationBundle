@@ -85,7 +85,7 @@ class YamlFilePersistence implements PersistenceInterface
     {
         $existingUnits = $this->loadFile('units');
         foreach ($units as $unit) {
-            $existingUnits[$unit->getDomain()][$unit->getTranslationKey()] = $unit->getMetadata();
+            $existingUnits[$unit->getDomain()][$unit->getKey()] = $unit->getMetadata();
         }
         $this->dumpFile('units', $existingUnits);
     }
@@ -100,7 +100,7 @@ class YamlFilePersistence implements PersistenceInterface
     {
         $existingUnits = $this->loadFile('units');
         foreach ($units as $unit) {
-            unset($existingUnits[$unit->getDomain()][$unit->getTranslationKey()]);
+            unset($existingUnits[$unit->getDomain()][$unit->getKey()]);
         }
         $this->dumpFile('units', $existingUnits);
     }

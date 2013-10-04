@@ -16,25 +16,25 @@
         {% block table_row %}
             <tr>
                 <td class="translation-domain">{{ item.domain }}</td>
-                <td class="translation-key">{{ item.translationKey }}</td>
+                <td class="translation-key">{{ item.key }}</td>
                 <td class="translation-help">{{ item.help }}</td>
                 {% for locale in columns %}
                     <td class="translation-content">
                         {% set has_value = item.hasTranslation(locale) %}
-                        {% set translation_id = item.domain ~ '__' ~ item.translationKey ~ '__' ~ locale %}
+                        {% set translation_id = item.domain ~ '__' ~ item.key ~ '__' ~ locale %}
                         <span class="translation-value{% if not has_value %} translation-fallback text-muted{% endif %}" id="{{ translation_id }}">
                             {%- if has_value -%}
                                 {{ item.translation(locale).value }}
                             {%- else -%}
-                                {{ item.translationKey | trans({}, item.domain, locale) }}
+                                {{ item.key | trans({}, item.domain, locale) }}
                             {%- endif -%}
                         </span>
-                        <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
+                        <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.key, locale: locale}) }}">
                             <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
                             {{ (has_value ? 'link.edit' : 'link.override') | trans({}, 'translation-bundle') }}
                         </a>
                         {% if has_value %}
-                            <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.translationKey, locale: locale}) }}">
+                            <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.key, locale: locale}) }}">
                                 <span class="glyphicon glyphicon-trash"></span> {{ 'link.remove' | trans({}, 'translation-bundle') }}
                             </a>
                         {% endif %}

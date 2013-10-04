@@ -93,7 +93,7 @@ class Translation extends Persistent {
 
     public function getKey()
     {
-        return $this->getUnit()->getTranslationKey();
+        return $this->getUnit()->getKey();
     }
 
     public function getDomain()

@@ -48,7 +48,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $metadata = array();
         $u = new Unit(self::DOMAIN, self::KEY, $metadata);
         $this->assertEquals(self::DOMAIN, $u->getDomain());
-        $this->assertEquals(self::KEY, $u->getTranslationKey());
+        $this->assertEquals(self::KEY, $u->getKey());
         $this->assertEquals($metadata, $u->getMetadata());
         $this->assertEquals('-', $u->getHelp());
 
@@ -128,9 +128,9 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::TRANSLATION1, $unit[self::LOCALE2]);
 
         $count = 0;
-        foreach ($unit as $k => $v) {
-            $this->assertContains($k, array(self::LOCALE1, self::LOCALE2));
-            $this->assertTrue($v instanceof Translation);
+        foreach ($unit->getTranslations() as $t) {
+            $this->assertContains($t->getLocale(), array(self::LOCALE1, self::LOCALE2));
+            $this->assertTrue($t instanceof Translation);
             ++$count;
         }
         $this->assertEquals(2, $count);
@@ -158,7 +158,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($unit[self::LOCALE1]));
         $this->assertEquals('', $unit->getTranslation(self::LOCALE1));
         $count = 0;
-        foreach ($unit as $k => $v) {
+        foreach ($unit->getTranslations() as $t) {
             ++$count;
         }
         $this->assertEquals(1, $count);
