@@ -6,6 +6,7 @@ use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Liip\TranslationBundle\Form\FilterType;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -159,7 +160,7 @@ class TranslationController extends BaseController
 
         $response->setContent($zipContent);
         $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment; filename="vca-translations.zip"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->generateZipFilename($this->getRequest(), $filters).'"');
 
         return $response;
     }
@@ -171,5 +172,10 @@ class TranslationController extends BaseController
         $this->addFlashMessage('success', 'Cache cleared');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
+    }
+
+    protected function generateZipFilename(Request $request, $filters)
+    {
+        return 'translations-from-'.$request->getHost().'.zip';
     }
 }
