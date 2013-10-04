@@ -128,7 +128,7 @@ class SymfonyImporter {
                     if ($locale == $options['metadata_locale']) {
                         $catalogMetadata = $catalogues[$locale]->getMetadata($key, $domain);
                         if ($catalogMetadata !== $unit->getMetadata()) {
-                            $unit->setMetadata(is_null($metadata) ? array() : $metadata);
+                            $unit->setMetadata(is_null($catalogMetadata) ? array() : $catalogMetadata);
                             $this->log("\t>> Metadata of the Unit [$domain, $key] updated\n");
                         }
                     }
