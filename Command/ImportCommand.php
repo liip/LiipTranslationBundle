@@ -45,9 +45,7 @@ class ImportCommand extends ContainerAwareCommand
 
         // Options parsing
         $importOptions = array();
-        if ($input->getOption('verbose') !== NULL){
-            $importOptions['logger'] = $output;
-        }
+        $importOptions['output'] = $output;
         if ($locales = $input->getOption('locales')) {
             $importOptions['locale_list'] = explode(',', $locales);
         }

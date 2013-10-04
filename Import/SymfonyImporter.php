@@ -69,13 +69,13 @@ class SymfonyImporter {
     {
         $options = array_merge(array(
             'locale_list' => null,
-            'logger' => null,
+            'output' => null,
             'import-translations' => false,
             'override' => false,
             'metadata_locale' => 'en'
         ), $options);
-        if (array_key_exists('logger', $options)){
-            $this->logger = $options['logger'];
+        if (array_key_exists('output', $options)){
+            $this->logger = $options['output'];
         }
         $locales = $options['locale_list'] !== null ? $options['locale_list'] : $this->getLocaleList();
 
@@ -156,7 +156,7 @@ class SymfonyImporter {
     }
 
     protected function log($msg) {
-        if ($this->logger) {
+        if ($this->logger && $this->logger->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
             $this->logger->write($msg);
         }
     }
