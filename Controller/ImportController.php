@@ -59,8 +59,13 @@ class ImportController extends BaseController
         $data = $this->handleForm($form);
 
         try {
-            $this->getSessionImporter()->handleUploadedFile($data['file']);
-            $this->addFlashMessage('success', 'File import success');
+            $counters = $this->getSessionImporter()->handleUploadedFile($data['file']);
+            if ($counters['new']==0 && $counters['updated']==0) {
+                $this->addFlashMessage('warning', 'File import success, but not more modification found');
+            }
+            else {
+                $this->addFlashMessage('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
+            }
         }
         catch (\Exception $e) {
             $this->addFlashMessage('error', 'Error while trying to import: '.$e->getMessage());

@@ -43,6 +43,11 @@ class SessionImporter
         $this->translator = $translator;
     }
 
+    public function getCurrentTranslations()
+    {
+        return $this->getTranslationsFromSession();
+    }
+
     /**
      * Return the UploadedFile original extension. This is here for
      * compatibility reason with Symfony 2.0.
@@ -73,16 +78,21 @@ class SessionImporter
             $zip->open($file->getRealPath());
             $zip->extractTo($tempFolder);
             $zip->close();
+            $counters = array('new' => 0, 'updated' => 0);
             foreach(scandir($tempFolder) as $path) {
                 if (is_file($tempFolder.'/'.$path)) {
-                    $this->import($tempFolder.'/'.$path);
+                    $fileCounters = $this->importFile($tempFolder.'/'.$path);
+                    $counters['new'] += $fileCounters['new'];
+                    $counters['updated'] += $fileCounters['updated'];
                 }
             }
             unset($tempFolder);
         }
         else {
-            $this->import($file->getRealPath(), $file->getClientOriginalName());
+            $counters = $this->importFile($file->getRealPath(), $file->getClientOriginalName());
         }
+
+        return $counters;
     }
 
     /**
@@ -92,7 +102,7 @@ class SessionImporter
      * @param string $fileName   Optional, the filename to parse to extract resources data
      * @throws \RuntimeException
      */
-    protected function import($filePath, $fileName = null)
+    protected function importFile($filePath, $fileName = null)
     {
         // Filename parsing
         if ($fileName == null){
@@ -110,7 +120,8 @@ class SessionImporter
         ));
 
         // Merge with existing entries
-        $translations = $this->getCurrentTranslations();
+        $translations = $this->getTranslationsFromSession();
+        $counters = array('new' => 0, 'updated' => 0);
         if (!array_key_exists($locale, $translations)){
             $translations[$locale] = array('new' => array(), 'updated' => array());
         }
@@ -118,33 +129,29 @@ class SessionImporter
             foreach ($messages as $key => $value) {
                 if ($trans = $this->repository->findTranslation($domain, $key, $locale)) {
                     if ($trans->getValue() !== $value) {
-                        $translations[$locale]['updated'][$domain][$key] = array('old' => $trans, 'new' => $value);
+                        $translations[$locale]['updated'][$domain][$key] = array('old' => $trans->getValue(), 'new' => $value);
+                        $counters['new'] += 1;
                     }
                 } else {
                     $translations[$locale]['new'][$domain][$key] = $value;
+                    $counters['updated'] += 1;
                 }
             }
         }
 
-        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
+        $this->updateSession($translations);
+            
+        return $counters;
     }
 
-    /**
-     * Return the current buffer
-     *
-     * @return array
-     */
-    public function getCurrentTranslations()
-    {
-        return $this->session->get(Configuration::SESSION_PREFIX.'import-list', array());
-    }
+
 
     public function remove($domain, $key, $locale)
     {
-        $translations = $this->getCurrentTranslations();
+        $translations = $this->getTranslationsFromSession();
         unset($translations[$locale]['new'][$domain][$key]);
         unset($translations[$locale]['updated'][$domain][$key]);
-        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
+        $this->updateSession($translations);
     }
 
     public function edit($domain, $key, $locale, $newValue)
@@ -156,7 +163,7 @@ class SessionImporter
     {
         // Persisting locale [all], means to persist all locale separatly
         if ($locale == 'all') {
-            foreach($this->getCurrentTranslations() as $locale => $data) {
+            foreach($this->getTranslationsFromSession() as $locale => $data) {
                 $this->doImport($locale);
             }
         }
@@ -169,7 +176,7 @@ class SessionImporter
 
     protected function doImport($locale)
     {
-        $translations = $this->getCurrentTranslations();
+        $translations = $this->getTranslationsFromSession();
         $existingUnits = $this->repository->getAllByDomainAndKey();
 
         // Add new translations, create the unit if require
@@ -191,7 +198,7 @@ class SessionImporter
 
         // Remove the processed locale from the session
         unset($translations[$locale]);
-        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
+        $this->updateSession($translations);
     }
 
     /**
@@ -199,6 +206,35 @@ class SessionImporter
      */
     public function clear()
     {
-        $this->session->set(Configuration::SESSION_PREFIX.'import-list', null);
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', array());
     }
+
+    protected function getTranslationsFromSession()
+    {
+        return $this->session->get(Configuration::SESSION_PREFIX.'import-list', array());
+    }
+
+    protected function updateSession($translations)
+    {
+        foreach ($translations as $locale => $values){
+
+            // Clear empty domains
+            foreach(array('new', 'updated') as $modififactionType) {
+                foreach ($values[$modififactionType] as $domain => $trads) {
+                    if (count($trads)==0){
+                        unset($translations[$locale][$modififactionType][$domain]);
+                    }
+                }
+            }
+
+            // Clear empty locales
+            if (count($translations[$locale]['new'])==0 && count($translations[$locale]['updated'])==0){
+                unset($translations[$locale]);
+            }
+        }
+
+        $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
+    }
+
+
 }
