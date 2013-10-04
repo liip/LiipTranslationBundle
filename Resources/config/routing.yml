@@ -44,8 +44,8 @@ liip_translation_import:
     defaults: { _controller: LiipTranslationBundle:Import:index }
 
 liip_translation_import_reset:
-    pattern:  /import
-    defaults: { _controller: LiipTranslationBundle:Import:index }
+    pattern:  /import/reset
+    defaults: { _controller: LiipTranslationBundle:Import:reset }
 
 liip_translation_import_file:
     pattern: /import/upload

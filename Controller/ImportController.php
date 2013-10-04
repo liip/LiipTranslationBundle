@@ -37,6 +37,18 @@ class ImportController extends BaseController
     }
 
     /**
+     * Clear the current dashboard
+     *
+     * @return Response
+     */
+    public function resetAction()
+    {
+        $this->getSessionImporter()->clear();
+
+        return $this->redirect($this->generateUrl('liip_translation_import'));
+    }
+
+    /**
      * File upload handling, redirect to the dashboard
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
