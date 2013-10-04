@@ -5,7 +5,7 @@
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
         <column name="domain" type="varchar" size="255" required="true" />
         <column name="key" type="varchar" size="255" required="true" />
-        <column name="metadata" type="array" />
+        <column name="metadata" type="object" />
         <unique name="unit_domain_key">
             <unique-column name="domain" />
             <unique-column name="key" />
@@ -16,7 +16,7 @@
         <column name="unit_id" type="integer" required="true" primaryKey="true" />
         <column name="locale" type="varchar" size="255" required="true" primaryKey="true" />
         <column name="value" type="longvarchar" />
-        <column name="metadata" type="array" />
+        <column name="metadata" type="object" />
         <unique name="value_unit_locale">
             <unique-column name="unit_id" />
             <unique-column name="locale" />

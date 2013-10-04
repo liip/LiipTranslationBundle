@@ -110,6 +110,8 @@ class Unit extends Persistent implements \Iterator, \ArrayAccess
                 $text .= $value;
             }
         }
+
+        return $text;
     }
 
     /**

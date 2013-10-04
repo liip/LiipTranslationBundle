@@ -52,10 +52,10 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($metadata, $u->getMetadata());
         $this->assertEquals('-', $u->getHelp());
 
-        $metadata = array('some_metadata' => 'fancy data', 'another' => 'more fancy data');
+        $metadata = array('some_metadata' => 'fancy data', 'another' => 'more fancy data', 'note' => 'You can use a placeholder %price%');
         $u = new Unit(self::DOMAIN, self::KEY, $metadata);
         $this->assertEquals($metadata, $u->getMetadata());
-        $this->assertEquals(var_export($metadata, true), $u->getHelp());
+        $this->assertEquals('You can use a placeholder %price%', $u->getHelp());
     }
 
     /**

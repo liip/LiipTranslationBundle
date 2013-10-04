@@ -32,7 +32,7 @@ class UnitFormatter extends \PropelFormatter {
             $domain = $translation['DOMAIN'];
             $key = $translation['KEY'];
             if (!isset($unitTree[$domain][$key])) {
-                $unit = new ModelUnit($domain, $key, $this->unserialized($translation['METADATA']), false);
+                $unit = new ModelUnit($domain, $key, $this->unserialized($translation[3]));
                 $allUnits[] = $unit;
                 $unitTree[$domain][$key] = $unit;
             }
@@ -64,8 +64,8 @@ class UnitFormatter extends \PropelFormatter {
     }
 
     /**
-     * Unserialized ARRAY data
-     * (Copy/paste from \PHP5ObjectBuilder::addArrayAccessorBody())
+     * Unserialized Propel 'object' type
+     * (Copy/paste from BaseUnit::getMetadata()
      *
      * @param $data string
      *
@@ -73,7 +73,7 @@ class UnitFormatter extends \PropelFormatter {
      */
     protected function unserialized($data)
     {
-        return $data ? explode(' | ', $data) : array();
+        return $data ? unserialize($data) : array();
     }
 
 }
