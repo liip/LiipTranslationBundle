@@ -72,11 +72,6 @@ class ImportCommand extends ContainerAwareCommand
         $stats = $importer->processImportOfStandardResources($importOptions);
         $duration = time() - $start;
 
-        $output->writeln(sprintf(
-            "Importation done in %s[s] (Units: %s created, %s modified and %s removed. Translations: %s created, %s modified and %s removed)",
-            $duration,
-            $stats['units']['created'], $stats['units']['updated'], $stats['units']['deleted'],
-            $stats['translations']['created'], $stats['translations']['updated'], $stats['translations']['deleted']
-        ));
+        $output->writeln("Importation done in $duration [s] (Units: {$stats['units']['text']}. Translations: {$stats['translations']['text']})");
     }
 }

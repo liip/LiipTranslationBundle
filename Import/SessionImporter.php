@@ -152,34 +152,46 @@ class SessionImporter
         throw new \Exception('Implement me');
     }
 
-    public function persists(PersistenceInterface $persistence, $locale = null)
+    public function comfirmImportation($locale = null)
+    {
+        // Persisting locale [all], means to persist all locale separatly
+        if ($locale == 'all') {
+            foreach($this->getCurrentTranslations() as $locale => $data) {
+                $this->doImport($locale);
+            }
+        }
+        else {
+            $this->doImport($locale);
+        }
+
+        return $this->repository->persist();
+    }
+
+    protected function doImport($locale)
     {
         $translations = $this->getCurrentTranslations();
+        $existingUnits = $this->repository->getAllByDomainAndKey();
 
-        $units = array();
-        if ($locale == 'all') {
-            foreach($translations as $locale => $data) {
-                $this->persists($persistence, $locale);
-            }
-            return;
-        }
-
+        // Add new translations, create the unit if require
         foreach ($translations[$locale]['new'] as $domain => $newTranslations) {
             foreach($newTranslations as $key => $value) {
-                $this->repository->findByDomainAndTranslationKey($domain, $key)->setTranslation($locale, $value);
+                if (!isset($existingUnits[$domain][$key])) {
+                    $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key, array('created-at-import' => true));
+                }
+                $existingUnits[$domain][$key]->setTranslation($locale, $value);
             }
         }
 
+        // Update existing translations
         foreach ($translations[$locale]['updated'] as $domain => $newTranslations) {
             foreach($newTranslations as $key => $newValue) {
-                $this->repository->findTranslation($domain, $key, $locale)->setValue($newValue);
+                $existingUnits[$domain][$key]->getTranslation($locale)->setValue($newValue);
             }
         }
 
+        // Remove the processed locale from the session
         unset($translations[$locale]);
         $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
-
-        $persistence->saveUnits($units);
     }
 
     /**

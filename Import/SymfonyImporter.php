@@ -107,10 +107,7 @@ class SymfonyImporter {
 
         }
 
-        $existingUnits = array();
-        foreach($this->repository->findAll() as $u) {
-            $existingUnits[$u->getDomain()][$u->getTranslationKey()] = $u;
-        }
+        $existingUnits = $this->repository->getAllByDomainAndKey();
 
         // Creation of the units
         $units = array();

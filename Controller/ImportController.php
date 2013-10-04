@@ -23,21 +23,31 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ImportController extends BaseController
 {
+    /**
+     * Importating dashboard
+     *
+     * @return Response
+     */
     public function indexAction()
     {
         return $this->render('LiipTranslationBundle:Import:index.html.twig', array(
             'upload_form' => $this->createForm(new FileImportType())->createView(),
-            'translations' => $this->getImporter()->getCurrentTranslations(),
+            'translations' => $this->getSessionImporter()->getCurrentTranslations(),
         ));
     }
 
+    /**
+     * File upload handling, redirect to the dashboard
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function uploadAction()
     {
         $form = $this->createForm(new FileImportType());
         $data = $this->handleForm($form);
 
         try {
-            $this->getImporter()->handleUploadedFile($data['file']);
+            $this->getSessionImporter()->handleUploadedFile($data['file']);
             $this->addFlashMessage('success', 'File import success');
         }
         catch (\Exception $e) {
@@ -47,20 +57,34 @@ class ImportController extends BaseController
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
 
+    /**
+     * Remove an entry from the session
+     *
+     * @param $locale
+     * @param $domain
+     * @param $key
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function removeEntryAction($locale, $domain, $key)
     {
         $this->securityCheck($domain, $locale);
 
-        $this->getImporter()->remove($domain, $key, $locale);
+        $this->getSessionImporter()->remove($domain, $key, $locale);
         $this->addFlashMessage('success', 'Entry removed');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
 
+    /**
+     * Process the importation for the given locale, and redirect to the dashboard
+     *
+     * @param $locale
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function processAction($locale)
     {
-        $this->getImporter()->persists($this->getPersistence(), $locale);
-        $this->addFlashMessage('success', 'Import success');
+        $stats = $this->getSessionImporter()->comfirmImportation($locale);
+        $this->addFlashMessage('success', "Import success ({$stats['translations']['text']})");
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }

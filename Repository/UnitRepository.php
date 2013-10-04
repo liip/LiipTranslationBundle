@@ -97,6 +97,22 @@ class UnitRepository
         return $this->allUnits;
     }
 
+    public function getAll()
+    {
+        return $this->findAll();
+    }
+
+    public function getAllByDomainAndKey()
+    {
+        $units = array();
+        foreach($this->getAll() as $unit) {
+            $units[$unit->getDomain()][$unit->getTranslationKey()] = $unit;
+        }
+
+        return $units;
+    }
+
+
     /**
      * @param $columns
      * @param null $value
@@ -218,7 +234,7 @@ class UnitRepository
         $this->persistence->deleteUnits($dirtyUnits['deleted']);
 
         // Return statistics
-        return array(
+        $stats = array(
             'units' => array(
                 'deleted' => count($dirtyUnits['deleted']),
                 'created' => count($dirtyUnits['created']),
@@ -230,6 +246,14 @@ class UnitRepository
                 'updated' => count($dirtyTranslations['modified']),
             )
         );
+        $stats['units']['text'] = $this->generateStatisticText($stats['units']);
+        $stats['translations']['text'] = $this->generateStatisticText($stats['translations']);
+        return $stats;
+    }
+
+    protected function generateStatisticText($stats)
+    {
+        return sprintf("%s created, %s modified and %s removed", $stats['created'], $stats['updated'], $stats['deleted']);
     }
 
     /**
