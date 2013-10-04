@@ -162,7 +162,7 @@ class UnitRepository
      * @param $key
      * @return Unit
      */
-    public function findByDomainAndTranslationKey($domain, $key)
+    public function findByDomainAndKey($domain, $key)
     {
         return $this->persistence->getUnit($domain, $key);
     }
@@ -175,7 +175,7 @@ class UnitRepository
      */
     public function findTranslation($domain, $key, $locale)
     {
-        $unit = $this->findByDomainAndTranslationKey($domain, $key);
+        $unit = $this->findByDomainAndKey($domain, $key);
         if($unit && $unit->hasTranslation($locale)) {
             return $unit->getTranslation($locale);
         }
@@ -293,7 +293,7 @@ class UnitRepository
      */
     public function removeTranslation($locale, $domain, $key)
     {
-        $unit = $this->findByDomainAndTranslationKey($domain, $key);
+        $unit = $this->findByDomainAndKey($domain, $key);
         $unit->deleteTranslation($locale);
         $this->persist($unit);
     }
@@ -306,7 +306,7 @@ class UnitRepository
      */
     public function updateTranslation($locale, $domain, $key, $value)
     {
-        $unit = $this->findByDomainAndTranslationKey($domain, $key);
+        $unit = $this->findByDomainAndKey($domain, $key);
         $unit->setTranslation($locale, $value);
         $this->persist($unit);
     }

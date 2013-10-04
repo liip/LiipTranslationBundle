@@ -92,7 +92,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array($u1_2, $u2_2), $repo->findByTranslationKey('key2'));
         $this->assertEquals(array($u1_3), $repo->findByTranslationKey('key3'));
 
-        $this->assertEquals($u2_2, $repo->findByDomainAndTranslationKey('domain2', 'key2'));
+        $this->assertEquals($u2_2, $repo->findByDomainAndKey('domain2', 'key2'));
 
         $this->assertEmpty($repo->findByDomain('non-existing domain'));
         $this->assertEmpty($repo->findByTranslationKey('non-existing key'));
