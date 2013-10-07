@@ -76,7 +76,8 @@ class TranslationControllerTest extends BaseWebTestCase
             array(),
             array(
                 'HTTP_X-Requested-With' => 'XMLHttpRequest'
-            ));
+            )
+        );
 
         // Check the rsult on the list
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
@@ -103,4 +104,29 @@ class TranslationControllerTest extends BaseWebTestCase
         $this->assertEquals('value1', $transKey->text());
     }
 
+    public function testCacheClear()
+    {
+        // First we change the label of the cache clear button
+        $client = static::createClient();
+        $client->request('POST', $this->getUrl('liip_translation_inline_edit'), array(
+                'value' => 'Clear cache now!',
+                'id' => 'translation-bundle__button.clear_cache__en'
+            ),
+            array(),
+            array(
+                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+            )
+        );
+
+        // We check the name on the interface, and see it's still the old one
+        $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
+        $link = $crawler->filter('a.translation-cache-clear');
+        $this->assertEquals('Clear cache', $link->text());
+
+        // Now we clear the cache and check the button again
+        $client->click($link->link());
+        $crawler = $client->followRedirect();
+        $link = $crawler->filter('a.translation-cache-clear');
+        $this->assertEquals('Clear cache now!', $link->text());
+    }
 }
