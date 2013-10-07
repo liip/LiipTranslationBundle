@@ -130,8 +130,9 @@ class Translator extends BaseTranslator
         }
 
         // Register all catalogues we have in the storage
-        $locales = $this->container->get('liip.translation.security')->getLocaleList();
-        foreach ($this->container->get('liip.translation.repository')->getDomainList() as $domain) {
+        $repo = $this->container->get('liip.translation.repository');
+        $locales = $repo->getLocaleList();
+        foreach ($repo->getDomainList() as $domain) {
             foreach ($locales as $locale) {
                 parent::addResource('liip', 'intermediate.storage', $locale, $domain);
             }

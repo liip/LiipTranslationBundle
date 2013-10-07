@@ -275,9 +275,9 @@ class UnitRepository
         $catalogue = new MessageCatalogue($locale);
         $units = $this->findByDomain($domain);
         $translations = array();
-        foreach($units as $u) {
-            if(isset($u[$locale])) {
-                $translations[$u->getTranslationKey()] = $u->getTranslation($locale)->getValue();
+        foreach($units as $unit) {
+            if($unit->hasTranslation($locale)) {
+                $translations[$unit->getTranslationKey()] = $unit->getTranslation($locale)->getValue();
             }
         }
 
