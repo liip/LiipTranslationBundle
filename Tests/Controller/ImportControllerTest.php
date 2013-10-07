@@ -52,6 +52,8 @@ class ImportControllerTest extends BaseWebTestCase
         $form = $crawler->filter('input[value="Upload"]')->form();
         $client->submit($form, array('translation_file_import[file]'=>$this->createYml()));
         $crawler = $client->followRedirect();
+        $this->assertNotContains('alert-error', $client->getResponse()->getContent());
+
 
         // Check the results
         $this->assertEquals($crawler->filter('.alert-info')->text(), 'File import success, 1 new and 1 update');
@@ -68,6 +70,7 @@ class ImportControllerTest extends BaseWebTestCase
         $form = $crawler->filter('input[value="Upload"]')->form();
         $client->submit($form, array('translation_file_import[file]'=>$this->createZip()));
         $crawler = $client->followRedirect();
+        $this->assertNotContains('alert-error', $client->getResponse()->getContent());
 
         // Check the results
         $this->assertEquals($crawler->filter('.alert-info')->text(), 'File import success, 2 new and 1 update');
@@ -83,6 +86,7 @@ class ImportControllerTest extends BaseWebTestCase
         $form = $crawler->filter('input[value="Upload"]')->form();
         $client->submit($form, array('translation_file_import[file]'=>$this->createZip()));
         $crawler = $client->followRedirect();
+        $this->assertNotContains('alert-error', $client->getResponse()->getContent());
 
         // Check the results
         $this->assertEquals($crawler->filter('.alert-info')->text(), 'File import success, 2 new and 1 update');

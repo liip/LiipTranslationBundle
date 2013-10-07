@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\Form\FileImportType;
+use Liip\TranslationBundle\Import\ImportException;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -67,7 +68,7 @@ class ImportController extends BaseController
                 $this->addFlashMessage('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
             }
         }
-        catch (\Exception $e) {
+        catch (ImportException $e) {
             $this->addFlashMessage('error', 'Error while trying to import: '.$e->getMessage());
         }
 

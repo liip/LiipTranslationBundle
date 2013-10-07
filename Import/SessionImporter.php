@@ -74,12 +74,7 @@ class SessionImporter
     public function handleUploadedFile(UploadedFile $file)
     {
         if ($this->getFileExtension($file) === 'zip') {
-            $tempFolder = sys_get_temp_dir().md5(rand(0, 99999));
-            mkdir($tempFolder);
-            $zip = new \ZipArchive;
-            $zip->open($file->getRealPath());
-            $zip->extractTo($tempFolder);
-            $zip->close();
+            $tempFolder = $this->extractZip($file);
             $counters = array('new' => 0, 'updated' => 0);
             foreach(scandir($tempFolder) as $path) {
                 if (is_file($tempFolder.'/'.$path)) {
@@ -98,11 +93,32 @@ class SessionImporter
     }
 
     /**
+     * Extract a zip file into a temp folder and return the folder path
+     *
+     * @param UploadedFile $file
+     * @return string The path to the temp folder
+     * @throws ImportException
+     */
+    protected function extractZip($file)
+    {
+        $tempFolder = sys_get_temp_dir().'/'.md5(rand(0, 99999));
+        if (@mkdir($tempFolder)===false) {
+            throw new ImportException("Impossible to create a temp folder for zip extraction");
+        }
+        $zip = new \ZipArchive;
+        $zip->open($file->getRealPath());
+        $zip->extractTo($tempFolder);
+        $zip->close();
+
+        return $tempFolder;
+    }
+
+    /**
      * Add a file to the current import buffer
      *
      * @param string $filePath   The path to the file
      * @param string $fileName   Optional, the filename to parse to extract resources data
-     * @throws \RuntimeException
+     * @throws ImportException
      */
     protected function importFile($filePath, $fileName = null)
     {
@@ -111,7 +127,7 @@ class SessionImporter
             $fileName = basename($filePath);
         }
         if (!preg_match('/\w+\.\w+\.\w+/', $fileName)){
-            throw new \RuntimeException("Invalid filename [$fileName], all translation files must be named: domain.locale.format (ex: messages.en.yml)");
+            throw new ImportException("Invalid filename [$fileName], all translation files must be named: domain.locale.format (ex: messages.en.yml)");
         }
         list($domain, $locale, $format) = explode('.', $fileName, 3);
         $catalogue = $this->translator->loadResource(array(
