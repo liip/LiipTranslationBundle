@@ -1,3 +1,5 @@
+{{ form_errors(form) }}
+
 {% set form_url = path('liip_translation_edit', { locale: translation.locale, domain: translation.domain, key: translation.key }) %}
 <form action="{{ form_url }}" method="POST" {{ form_enctype(form) }} class="form-inline" role="form">
     {{ form_rest(form) }}
