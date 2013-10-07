@@ -7,26 +7,23 @@ This Bundle provides various tools to ease translations management of a Sf2 app.
 
 
 Introduction
-============
+------------
 
 This bundle add a new layer in top of the translation mecanisms. This allow your customer to edit, override any translations directly from the website.
 
-Separation of concern
----------------------
+### Separation of concern
 
 Using such a tool allow a clear separation between "key" and "value". Developers are responsible about defining new keys and removing old keys.
 Client/customer are responsible for translating the website.
 
-Key values on steroid
----------------------
+### Key values on steroid
 
 The current basic key-value system could be better. We extend it and allow devloppers to complete keys with metadata (like it's possible with XLiFF).
 Extend your keys with informations like maxbytes, comment, description, urls, screenshot, etc... Anything that could help translators.
 
 A "value" is the translation for a "key" in a given locale, it's also possible to complete it with metadata (comments, update date, validity, etc...)
 
-Storage layer
--------------
+### Storage layer
 
 The intermediate storage is currently available for:
 
@@ -35,17 +32,15 @@ The intermediate storage is currently available for:
 
 but adding a new persistance is very easy (you just have to implement a small interface)
 
-Symfony compatibility
----------------------
+### Symfony compatibility
 
 This bundle work on any symfony version: from 2.0 to 2.4. Unit and functionnals tests have been written to ensure this compatibilty.
 
 
 Functionalities
-===============
+---------------
 
-Translation interface in the backend
-------------------------------------
+### Translation interface in the backend
 
  * Edit through a contextual popin
  * Fast inline editting
@@ -55,8 +50,7 @@ Translation interface in the backend
  * Search by key name or translation value
  * Display helps from the developpers
 
-Import/Export
-------------------
+### Import/Export
 
 Useful to provide files to an external agency, or to transfer translations from a staging environment to production
 
@@ -65,27 +59,25 @@ Useful to provide files to an external agency, or to transfer translations from 
  * Export/import multi domain/language with a zip zip file
  * Review change interface to handle collision at import time
 
-New translation keys insertion
-------------------------------
+### New translation keys insertion
 
  * Developers can provide context information to a translation keys (maxsize, description, comment, url, etc..)
  * Symfony command for developers to insert new complexe keys into Xliff
 
-Security
---------
+### Security
 
  * Rights management (restricted to given loclae or given domain)
 
 
 Installation
-============
+------------
 
   1. Via composer
 
           composer require liip/translation-bundle master-dev
 
 Configuration
-=============
+-------------
 
     liip_translation:
         locale_list: [en_JP, en_US, ch, en, fr, ja, ko, pt, ru, zh]
@@ -100,8 +92,7 @@ Configuration
               domain: ['messages']
               languages: ['en', 'fr']
 
-Security
---------
+### Security
 
 Access to translation management can be restricted by domains or by locales. By default, those restrictions are
 disabled, you can turn them ON in the config, with:
@@ -128,7 +119,7 @@ description into your config:
 
 
 Contributing
-============
+------------
 
 Pull requests are welcome. Please see our [CONTRIBUTING](https://github.com/liip/LiipTranslationBundle/blob/master/CONTRIBUTING.md) guide.
 
