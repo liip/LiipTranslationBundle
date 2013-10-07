@@ -198,8 +198,8 @@ class SessionImporter
 
         // Update existing translations
         foreach ($translations[$locale]['updated'] as $domain => $newTranslations) {
-            foreach($newTranslations as $key => $newValue) {
-                $existingUnits[$domain][$key]->getTranslation($locale)->setValue($newValue);
+            foreach($newTranslations as $key => $data) {
+                $existingUnits[$domain][$key]->getTranslation($locale)->setValue($data['new']);
             }
         }
 
