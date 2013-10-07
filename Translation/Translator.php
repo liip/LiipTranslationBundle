@@ -142,9 +142,19 @@ class Translator extends BaseTranslator
 
     public function clearCacheForLocale($locale)
     {
-        $cacheFile = $this->options['cache_dir'].'/catalogue.'.$locale.'.php';
-        if (is_file($cacheFile)) {
-            unlink($cacheFile);
+        foreach(array('.php', '.php.meta') as $extension) {
+            $file = $this->options['cache_dir'].'/catalogue.'.$locale.$extension;
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+    }
+
+    public function clearCache()
+    {
+        $locales = $this->container->get('liip.translation.repository')->getLocaleList();
+        foreach ($locales as $locale) {
+            $this->clearCacheForLocale($locale);
         }
     }
 

@@ -161,10 +161,4 @@ class SymfonyImporter {
         }
     }
 
-    public function clearSymfonyCache()
-    {
-        foreach ($this->getLocaleList() as $locale) {
-            $this->translator->clearCacheForLocale($locale);
-        }
-    }
 }
