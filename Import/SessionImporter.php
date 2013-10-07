@@ -132,11 +132,11 @@ class SessionImporter
                 if ($trans = $this->repository->findTranslation($domain, $key, $locale)) {
                     if ($trans->getValue() !== $value) {
                         $translations[$locale]['updated'][$domain][$key] = array('old' => $trans->getValue(), 'new' => $value);
-                        $counters['new'] += 1;
+                        $counters['updated'] += 1;
                     }
                 } else {
                     $translations[$locale]['new'][$domain][$key] = $value;
-                    $counters['updated'] += 1;
+                    $counters['new'] += 1;
                 }
             }
         }
