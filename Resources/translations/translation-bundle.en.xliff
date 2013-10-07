@@ -147,8 +147,8 @@
                 <target>Execute imports for all locale</target>
             </trans-unit>
             <trans-unit id="button.6">
-                <source>button.import</source>
-                <target>Import</target>
+                <source>button.upload_file</source>
+                <target>Upload</target>
             </trans-unit>
             <trans-unit id="button.7">
                 <source>button.reset-filter</source>
