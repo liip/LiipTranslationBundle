@@ -129,7 +129,7 @@ class SessionImporter
         }
         foreach($catalogue->all() as $domain => $messages) {
             foreach ($messages as $key => $value) {
-                if ($trans = $this->repository->findTranslation($domain, $key, $locale)) {
+                if ($trans = $this->repository->findTranslation($domain, $key, $locale, true)) {
                     if ($trans->getValue() !== $value) {
                         $translations[$locale]['updated'][$domain][$key] = array('old' => $trans->getValue(), 'new' => $value);
                         $counters['updated'] += 1;

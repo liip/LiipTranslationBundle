@@ -5,6 +5,7 @@ namespace Liip\TranslationBundle\Repository;
 use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Exceptions\PermissionDeniedException;
+use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
@@ -173,12 +174,24 @@ class UnitRepository
      * @param $locale
      * @return Translation
      */
-    public function findTranslation($domain, $key, $locale)
+    public function findTranslation($domain, $key, $locale, $nullWhenNotFound = false)
     {
-        $unit = $this->findByDomainAndKey($domain, $key);
+        // Get the unit
+        try {
+            $unit = $this->findByDomainAndKey($domain, $key);
+        }
+        catch (NotFoundException $e){
+            if ($nullWhenNotFound){
+                return null;
+            }
+            throw $e;
+        }
+
+        // Check translation
         if($unit && $unit->hasTranslation($locale)) {
             return $unit->getTranslation($locale);
         }
+
         return null;
     }
 
