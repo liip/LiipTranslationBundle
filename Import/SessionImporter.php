@@ -74,7 +74,7 @@ class SessionImporter
     public function handleUploadedFile(UploadedFile $file)
     {
         if ($this->getFileExtension($file) === 'zip') {
-            $tempFolder = sys_get_temp_dir().md5(time());
+            $tempFolder = sys_get_temp_dir().md5(rand(0, 99999));
             mkdir($tempFolder);
             $zip = new \ZipArchive;
             $zip->open($file->getRealPath());
@@ -164,16 +164,21 @@ class SessionImporter
     public function comfirmImportation($locale = null)
     {
         // Persisting locale [all], means to persist all locale separatly
+        $locales = array($locale);
         if ($locale == 'all') {
-            foreach($this->getTranslationsFromSession() as $locale => $data) {
-                $this->doImport($locale);
-            }
+            $locales = array_keys($this->getTranslationsFromSession());
         }
-        else {
+
+        // Import
+        foreach($locales as $locale) {
             $this->doImport($locale);
         }
 
-        return $this->repository->persist();
+        // Save and clear cache
+        $stat = $this->repository->persist();
+        $this->translator->clearCache();
+
+        return $stat;
     }
 
     protected function doImport($locale)
