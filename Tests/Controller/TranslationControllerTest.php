@@ -52,7 +52,7 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
 
         // Find a trans item
-        $transKey = $crawler->filter('#functionnal__key1__en');
+        $transKey = $crawler->filter('#functional__key1__en');
         $this->assertEquals('value1', $transKey->text());
 
         // Find and click the edit link
@@ -67,7 +67,7 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Check that the change is effective
-        $transKey = $crawler->filter('#functionnal__key1__en');
+        $transKey = $crawler->filter('#functional__key1__en');
         $this->assertEquals('new_value1', $transKey->text());
     }
 
@@ -77,7 +77,7 @@ class TranslationControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $client->request('POST', $this->getUrl('liip_translation_inline_edit'), array(
                 'value' => 'new_value2_for_fr',
-                'id' => 'functionnal__key2__fr'
+                'id' => 'functional__key2__fr'
             ),
             array(),
             array(
@@ -87,7 +87,7 @@ class TranslationControllerTest extends BaseWebTestCase
 
         // Check the rsult on the list
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
-        $transKey = $crawler->filter('#functionnal__key2__fr');
+        $transKey = $crawler->filter('#functional__key2__fr');
         $this->assertEquals('new_value2_for_fr', $transKey->text());
     }
 
@@ -100,14 +100,33 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
 
         // Find the remove link and click it
-        $transKey = $crawler->filter('#functionnal__key1__en');
+        $transKey = $crawler->filter('#functional__key1__en');
         $editLink = $transKey->parents()->eq(0)->filter('a.translation-remove')->eq(0)->link();
         $client->click($editLink);
         $crawler = $client->followRedirect();
 
         // Check that the change is effective
-        $transKey = $crawler->filter('#functionnal__key1__en');
+        $transKey = $crawler->filter('#functional__key1__en');
         $this->assertEquals('value1', $transKey->text());
+    }
+
+    public function testExport()
+    {
+        // First we edit some translations for export
+        $repo = $this->getContainer()->get('liip.translation.repository');
+        $repo->updateTranslation('en', 'functional', 'export-key1', 'override-val-for-key1');
+        $repo->updateTranslation('en', 'functional', 'export-key2', 'override-val-for-key2');
+        $repo->updateTranslation('fr', 'functional', 'export-key1', 'override-val-for-key1_in_fr');
+
+        // Execute the export
+        $client = static::createClient();
+        $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
+        $crawler = $client->click($crawler->filter('a.translation-export')->eq(0)->link());
+
+        // Basic checks
+        $this->assertEquals('application/zip', $client->getResponse()->headers->get('Content-Type'));
+        $this->assertContains('functional.en.yml', $client->getResponse()->getContent());
+        $this->assertContains('functional.fr.yml', $client->getResponse()->getContent());
     }
 
     public function testCacheClear()
@@ -135,4 +154,5 @@ class TranslationControllerTest extends BaseWebTestCase
         $link = $crawler->filter('a.translation-cache-clear');
         $this->assertEquals('Clear cache now!', $link->text());
     }
+
 }

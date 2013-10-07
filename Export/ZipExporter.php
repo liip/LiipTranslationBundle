@@ -31,6 +31,7 @@ class ZipExporter {
      */
     public function setUnits($units)
     {
+        $this->unitsByLocaleAndDomain = array();
         foreach($units as $unit) {
             foreach($unit->getTranslations() as $translation) {
                 $this->unitsByLocaleAndDomain[$translation->getLocale()][$translation->getDomain()][] = $translation;
