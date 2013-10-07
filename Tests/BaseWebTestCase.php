@@ -5,7 +5,33 @@ namespace Liip\TranslationBundle\Tests;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 
-class BaseWebTestCase extends WebTestCase {
+class BaseWebTestCase extends WebTestCase
+{
+    /**
+     * Executes the given SF2 command.
+     */
+    protected static function executeCommand($cmd)
+    {
+        exec(realpath(__DIR__.'/Fixtures/TestApplication').'/'.$cmd);
+    }
+
+    /**
+     * Runs the cache:clear command.
+     */
+    protected static function clearCache()
+    {
+        self::executeCommand('app/console cache:clear --no-warmup');
+    }
+
+    /**
+     * Clears the cache and runs the translation:import command.
+     */
+    public static function importUnits()
+    {
+        self::clearCache();
+        self::executeCommand('app/console translation:import');
+    }
+
     public function assertStatusCode($code, Client $client, $message = null)
     {
         $status = $client->getResponse()->getStatusCode();

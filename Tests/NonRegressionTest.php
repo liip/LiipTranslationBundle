@@ -21,37 +21,11 @@ use Symfony\Component\HttpKernel\Kernel;
 class NonRegressionTest extends BaseWebTestCase
 {
     /**
-     * Executes the given SF2 command.
-     */
-    protected static function executeCommand($cmd)
-    {
-        chdir(__DIR__.'/Fixtures/TestApplication');
-        exec($cmd);
-    }
-
-    /**
-     * Runs the cache:clear command.
-     */
-    protected static function clearCache()
-    {
-        self::executeCommand('./app/console cache:clear --no-warmup');
-    }
-
-    /**
-     * Clears the cache and runs the translation:import command.
-     */
-    public static function importTranslations()
-    {
-        self::clearCache();
-        self::executeCommand('./app/console translation:import');
-    }
-
-    /**
      * Test the fallback system as defined in http://symfony.com/doc/current/book/translation.html#configuration
      */
     public function testFallback()
     {
-        self::importTranslations();
+        self::importUnits();
 
         $client = static::createClient();
         $client->request('GET', '/non-regression/fallback');
@@ -67,7 +41,7 @@ class NonRegressionTest extends BaseWebTestCase
      */
     public function testOverriding()
     {
-        self::importTranslations();
+        self::importUnits();
 
         $client = static::createClient();
         $client->request('GET', '/non-regression/override');
