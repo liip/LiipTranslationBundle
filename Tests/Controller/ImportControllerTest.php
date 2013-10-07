@@ -146,7 +146,7 @@ class ImportControllerTest extends BaseWebTestCase
         $exporter = new ZipExporter();
         $exporter->setUnits(array($unit1, $unit2));
 
-        return new UploadedFile($exporter->createZipFile(sys_get_temp_dir().'trans.zip'), 'trans.zip');
+        return new UploadedFile($exporter->createZipFile(sys_get_temp_dir().'/trans.zip'), 'trans.zip');
     }
 
 }
