@@ -4,6 +4,7 @@ namespace Liip\TranslationBundle\Tests\Controller;
 
 use Liip\TranslationBundle\Controller\TranslationController;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * To be completed
@@ -32,10 +33,15 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
         $form = $crawler->filter('input[type="submit"][value="Filter"]')->form();
 
-        // Firler by languagues must reduces the number of columns
-        $client->submit($form, array(
-            'translation_filter[languages]' => array('fr_CH')
-        ));
+        // Filter by languagues must reduces the number of columns
+        $formData = array();
+        if (Kernel::MINOR_VERSION==0) {
+            $formData['translation_filter[languages][fr_CH]'] = 'fr_CH';
+        }
+        else {
+            $formData['translation_filter[languages]'] = array('fr_CH');
+        }
+        $client->submit($form, $formData);
         $crawler = $client->followRedirect();
         $this->assertEquals(4, $crawler->filter('table.translations thead th')->count());
     }
@@ -46,7 +52,7 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
 
         // Find a trans item
-        $transKey = $crawler->filter('#functionnal__key1__fr_CH');
+        $transKey = $crawler->filter('#functionnal__key1__en');
         $this->assertEquals('value1', $transKey->text());
 
         // Find and click the edit link
@@ -56,13 +62,13 @@ class TranslationControllerTest extends BaseWebTestCase
         // Edit the value
         $form = $crawler->filter('input[type="submit"]')->form();
         $client->submit($form, array(
-            'translation_translation[value]' => 'new_value1_for_fr_CH'
+            'translation_translation[value]' => 'new_value1'
         ));
         $crawler = $client->followRedirect();
 
         // Check that the change is effective
-        $transKey = $crawler->filter('#functionnal__key1__fr_CH');
-        $this->assertEquals('new_value1_for_fr_CH', $transKey->text());
+        $transKey = $crawler->filter('#functionnal__key1__en');
+        $this->assertEquals('new_value1', $transKey->text());
     }
 
     public function testInlineEditing()
@@ -94,13 +100,13 @@ class TranslationControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', $this->getUrl('liip_translation_interface'));
 
         // Find the remove link and click it
-        $transKey = $crawler->filter('#functionnal__key1__fr_CH');
+        $transKey = $crawler->filter('#functionnal__key1__en');
         $editLink = $transKey->parents()->eq(0)->filter('a.translation-remove')->eq(0)->link();
         $client->click($editLink);
         $crawler = $client->followRedirect();
 
         // Check that the change is effective
-        $transKey = $crawler->filter('#functionnal__key1__fr_CH');
+        $transKey = $crawler->filter('#functionnal__key1__en');
         $this->assertEquals('value1', $transKey->text());
     }
 
