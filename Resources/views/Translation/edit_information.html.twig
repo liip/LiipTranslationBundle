@@ -2,5 +2,5 @@
     <li>Domain: {{ unit.domain }}</li>
     <li>Last modification: {{ translation.modificationDate }}</li>
     <li>Help/description: {{ unit.help }}</li>
-    <li>English version: <pre>{{ translation.key | trans({}, unit.domain, 'en') }}</pre></li>
+    <li>English version: <quote>{{ translation.key | trans({}, unit.domain, 'en') }}</quote></li>
 </ul>

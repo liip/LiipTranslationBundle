@@ -20,7 +20,7 @@ class TranslationType extends CompatibleAbstractType
 {
     public function compatibleBuildForm($builder, array $options)
     {
-        $builder->add('value', 'text', $this->decorateOption(array(
+        $builder->add('value', 'textarea', $this->decorateOption(array(
             'label' => 'form.translation.value',
             'required' => false
         ), $options));
