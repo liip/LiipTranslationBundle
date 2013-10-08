@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 
 /**
  * Import all existing translations into the current translation storage
- * *
+ *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
  * @license http://opensource.org/licenses/MIT MIT License
  * @author David Jeanmonod <david.jeanmonod@liip.ch>
  * @author Gilles Meier <gilles.meier@liip.ch>
+ * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 class ImportCommand extends ContainerAwareCommand

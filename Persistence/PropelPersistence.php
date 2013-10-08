@@ -23,6 +23,7 @@ use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTransla
  * @license http://opensource.org/licenses/MIT MIT License
  * @author David Jeanmonod <david.jeanmonod@liip.ch>
  * @author Gilles Meier <gilles.meier@liip.ch>
+ * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 class PropelPersistence implements PersistenceInterface
