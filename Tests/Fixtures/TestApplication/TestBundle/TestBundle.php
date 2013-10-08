@@ -5,7 +5,7 @@ namespace Liip\TranslationBundle\Tests\Fixtures\TestApplication\TestBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * To be completed
+ * A simple bundle used into the test application
  *
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.

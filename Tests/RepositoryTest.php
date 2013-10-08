@@ -8,8 +8,6 @@ use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Repository\UnitRepository;
 
 /**
- * To be completed
- *
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *

@@ -1,24 +1,7 @@
 <?php
 
-namespace Symfony\Component\Translation;
-
-if (! interface_exists('Symfony\Component\Translation\MetadataAwareInterface')) {
-    interface MetadataAwareInterface
-    {
-        public function getMetadata($key = '', $domain = 'messages');
-        public function setMetadata($key, $value, $domain = 'messages');
-        public function deleteMetadata($key = '', $domain = 'messages');
-    }
-}
-
-namespace Liip\TranslationBundle\Translation;
-
-use Symfony\Component\Translation\MessageCatalogue as BaseMessageCatalogue;
-use Symfony\Component\Translation\MessageCatalogueInterface;
-use Symfony\Component\Translation\MetadataAwareInterface;
-
 /**
- * To be completed
+ * Provide a compatible MessageCatalogue accross all symfony version (2.0 and higher)
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -32,6 +15,33 @@ use Symfony\Component\Translation\MetadataAwareInterface;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
+
+
+/**
+ * Define MetadataAwareInterface when absent (in 2.0 for example)
+ */
+namespace Symfony\Component\Translation;
+
+if (! interface_exists('Symfony\Component\Translation\MetadataAwareInterface')) {
+    interface MetadataAwareInterface
+    {
+        public function getMetadata($key = '', $domain = 'messages');
+        public function setMetadata($key, $value, $domain = 'messages');
+        public function deleteMetadata($key = '', $domain = 'messages');
+    }
+}
+
+
+/**
+ * Implement it if require
+ * The code is copy/paste from 2.1
+ */
+namespace Liip\TranslationBundle\Translation;
+
+use Symfony\Component\Translation\MessageCatalogue as BaseMessageCatalogue;
+use Symfony\Component\Translation\MessageCatalogueInterface;
+use Symfony\Component\Translation\MetadataAwareInterface;
+
 if(in_array('Symfony\Component\Translation\MetadataAwareInterface', class_implements('Symfony\Component\Translation\MessageCatalogue'))) {
     class MessageCatalogue extends BaseMessageCatalogue
     {

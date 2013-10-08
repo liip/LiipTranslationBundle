@@ -3,7 +3,7 @@
 namespace Liip\TranslationBundle\Form;
 
 /**
- * To be completed
+ * File upload form
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

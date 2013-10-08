@@ -6,7 +6,7 @@ use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 
 /**
- * To be completed
+ * Load translations from the repository (intermediate storage)
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -30,8 +30,6 @@ class Loader implements LoaderInterface
     }
 
     /**
-     * Load translations from the intermediate storage
-     *
      * {@inheritdoc}
      * @api
      */

@@ -5,7 +5,7 @@ namespace Liip\TranslationBundle\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 
 /**
- * To be completed
+ * Service that handle all aspect of the security
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

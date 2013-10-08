@@ -5,7 +5,7 @@ namespace Liip\TranslationBundle\Form;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * To be completed
+ * Provide a base Type class that is compatible 2.0 and higher
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

@@ -3,7 +3,7 @@
 namespace Liip\TranslationBundle\Model;
 
 /**
- * To be completed
+ * Representation of a translation element
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

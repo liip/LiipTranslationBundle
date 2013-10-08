@@ -9,7 +9,7 @@ use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * To be completed
+ * Persistance layer that store all data into two YAML files
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
