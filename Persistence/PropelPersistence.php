@@ -82,7 +82,6 @@ class PropelPersistence implements PersistenceInterface
      */
     public function saveUnits(array $units)
     {
-        // TODO save all at once
         foreach($units as $unit) {
             $this->saveUnit($unit);
         }
@@ -121,7 +120,6 @@ class PropelPersistence implements PersistenceInterface
 
     public function deleteTranslations(array $translations)
     {
-        // TODO use a single query
         foreach($translations as $translation) {
             $this->deleteTranslation($translation);
         }
