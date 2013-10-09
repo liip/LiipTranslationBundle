@@ -15,7 +15,8 @@ twig:
 
 security:
     providers:
-        in_memory: ~
+        in_memory:
+            memory: ~
     firewalls:
         all:
             pattern: ^/
