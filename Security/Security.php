@@ -19,17 +19,14 @@ use Symfony\Component\Security\Core\SecurityContext;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Security {
+class Security
+{
     protected $config = array();
     protected $securityContext = null;
 
-    public function __construct($config)
+    public function __construct($config, SecurityContext $securityContext = null)
     {
         $this->config = $config;
-    }
-
-    public function setSecurityContext(SecurityContext $securityContext)
-    {
         $this->securityContext = $securityContext;
     }
 
