@@ -38,38 +38,8 @@ class LiipTranslationExtension extends Extension
         $container->setParameter('liip.translation.persistence.class', $config['persistence']['class']);
         $container->setParameter('liip.translation.persistence.options', $config['persistence']['options']);
 
-        if ($config['security']['by_locale'] || $config['security']['by_domain']) {
-            $this->defineSecurityRoles($config, $container);
-        }
-
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-    }
-
-    /**
-     * Dynamically define roles based on locales and domains
-     *
-     * @param array $config                 The bundle raw config
-     * @param ContainerBuilder $container   The main container
-     */
-    public function defineSecurityRoles(array $config, ContainerBuilder $container)
-    {
-        $hierarchy = $container->getParameter('security.role_hierarchy.roles');
-
-        if ($config['security']['by_locale'] === true) {
-            foreach ($config['locale_list'] as $locale) {
-                $hierarchy['ROLE_TRANSLATOR_ALL_LOCALES'][] = 'ROLE_TRANSLATOR_LOCALE_'.strtoupper($locale);
-            }
-        }
-
-        if ($config['security']['by_domain'] === true) {
-            $domains = array(); // TODO retrieve the domain list from somewhere...
-            foreach ($domains as $domain) {
-                $hierarchy['ROLE_TRANSLATOR_ALL_DOMAINS'][] = 'ROLE_TRANSLATOR_DOMAIN_'.strtoupper($domain);
-            }
-        }
-
-        $container->setParameter('security.role_hierarchy.roles', $hierarchy);
     }
 
 }

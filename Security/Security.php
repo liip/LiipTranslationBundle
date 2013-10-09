@@ -40,12 +40,12 @@ class Security
         return $this->config['security']['by_locale'];
     }
 
-    public function getRoleForLocale($locale)
+    public static function getRoleForLocale($locale)
     {
         return 'ROLE_TRANSLATOR_LOCALE_' . strtoupper($locale);
     }
 
-    public function getRoleForDomain($domain)
+    public static function getRoleForDomain($domain)
     {
         return 'ROLE_TRANSLATOR_DOMAIN_' . strtoupper($domain);
     }
@@ -74,7 +74,7 @@ class Security
 
         $authorizedLocaleList = array();
         foreach ($this->getLocaleList() as $locale) {
-            if ($securityContext->isGranted($this->getRoleForLocale($locale))) {
+            if ($securityContext->isGranted(self::getRoleForLocale($locale))) {
                 $authorizedLocaleList[] = $locale;
             }
         }
@@ -88,9 +88,7 @@ class Security
             return true;
         }
 
-        return $this->securityContext->isGranted(
-            $this->getRoleForDomain($domain)
-        );
+        return $this->securityContext->isGranted(self::getRoleForDomain($domain));
     }
 
     public function isGrantedForLocale($locale)
@@ -99,8 +97,6 @@ class Security
             return true;
         }
 
-        return $this->securityContext->isGranted(
-            $this->getRoleForLocale($locale)
-        );
+        return $this->securityContext->isGranted(self::getRoleForLocale($locale));
     }
 }

@@ -79,13 +79,13 @@ abstract class BaseController extends Controller
     public function securityCheck($domain = null, $locale = null)
     {
         if (isset($domain) && $this->getSecurity()->isSecuredByDomain()) {
-            if (!$this->getSecurityContext()->isGranted($this->getSecurity()->getRoleForDomain($domain))) {
+            if (!$this->getSecurityContext()->isGranted(Security::getRoleForDomain($domain))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for domain [$domain]");
             }
         }
 
         if (isset($locale) && $this->getSecurity()->isSecuredByLocale()) {
-            if (!$this->getSecurityContext()->isGranted($this->getSecurity()->getRoleForLocale($locale))) {
+            if (!$this->getSecurityContext()->isGranted(Security::getRoleForLocale($locale))) {
                 throw new AccessDeniedHttpException("You don't have permissions to work on translations for locale [$locale]");
             }
         }
