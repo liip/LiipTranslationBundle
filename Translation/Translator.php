@@ -3,6 +3,7 @@
 namespace Liip\TranslationBundle\Translation;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator as BaseTranslator;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
@@ -144,11 +145,8 @@ class Translator extends BaseTranslator
 
     public function clearCacheForLocale($locale)
     {
-        foreach(array('.php', '.php.meta') as $extension) {
-            $file = $this->options['cache_dir'].'/catalogue.'.$locale.$extension;
-            if (is_file($file)) {
-                unlink($file);
-            }
+        foreach(Finder::create()->files()->name("catalogue.$locale*")->in($this->options['cache_dir']) as $file) {
+            unlink($file);
         }
     }
 
