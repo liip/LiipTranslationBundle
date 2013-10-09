@@ -13,7 +13,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Liip\TranslationBundle\LiipTranslationBundle(),
-            new Liip\TranslationBundle\Tests\Fixtures\TestApplication\TestBundle\TestBundle()
+            new Liip\TranslationBundle\Tests\Fixtures\TestApplication\TestBundle\TestBundle(),
+            new Symfony\Bundle\SecurityBundle\SecurityBundle()
         );
 
         if (in_array($this->getEnvironment(), array('test'))) {
@@ -30,11 +31,13 @@ class AppKernel extends Kernel
 
     public function getCacheDir()
     {
+//        return __DIR__.'/cache';
         return sys_get_temp_dir().'/LiipTranslationBundleTest/cache';
     }
 
     public function getLogDir()
     {
+//        return __DIR__.'/logs';
         return sys_get_temp_dir().'/LiipTranslationBundleTest/logs';
     }
 }

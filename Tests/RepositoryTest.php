@@ -6,6 +6,7 @@ use Liip\TranslationBundle\Model\Translation;
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Repository\UnitRepository;
+use Liip\TranslationBundle\Security\Security;
 
 /**
  * This file is part of the LiipTranslationBundle test suite.
@@ -50,7 +51,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
             })
         );
 
-        return new UnitRepository($config, $translator, $persistence);
+        return new UnitRepository($config, $translator, $persistence, new Security($config));
     }
 
     public function testLocaleList()

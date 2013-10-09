@@ -45,7 +45,7 @@ class UnitRepository
 
     private $loaded = false;
 
-    public function __construct($config, Translator $translator, PersistenceInterface $persistence, Security $security = null)
+    public function __construct($config, Translator $translator, PersistenceInterface $persistence, Security $security)
     {
         $this->config = $config;
         $this->translator = $translator;
@@ -381,14 +381,14 @@ class UnitRepository
 
     protected function checkDomainGrants($domain)
     {
-        if($this->security !== null && !$this->security->isGrantedForDomain($domain)) {
+        if(!$this->security->isGrantedForDomain($domain)) {
             throw new PermissionDeniedException();
         }
     }
 
     protected function checkLocaleGrants($locale)
     {
-        if($this->security !== null && !$this->security->isGrantedForLocale($locale)) {
+        if(!$this->security->isGrantedForLocale($locale)) {
             throw new PermissionDeniedException();
         }
     }

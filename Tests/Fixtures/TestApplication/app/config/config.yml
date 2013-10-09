@@ -13,6 +13,17 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 
+security:
+    providers:
+        in_memory: ~
+    firewalls:
+        all:
+            pattern: ^/
+            anonymous: true
+    role_hierarchy: []
+
+liip_functional_test: ~
+
 liip_translation:
     locale_list: [fr_CH, fr, en]
     persistence:
@@ -23,4 +34,3 @@ liip_translation:
         by_domain: false
         by_locale: false
 
-liip_functional_test: ~
