@@ -206,4 +206,12 @@ class Unit extends Persistent implements \ArrayAccess
         return true;
     }
 
+    public function isDirty() {
+        foreach($this->getTranslations() as $t) {
+            if($t->isDirty()) {
+                return true;
+            }
+        }
+        return parent::isDirty();
+    }
 }
