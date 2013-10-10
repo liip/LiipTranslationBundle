@@ -2,3 +2,5 @@ key1: value1
 key2: value2
 export-key1: value1_en
 export-key2: value2_en
+compound.translation1: compound 1
+compound.translation2: compound 2
