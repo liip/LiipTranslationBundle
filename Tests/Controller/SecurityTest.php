@@ -34,7 +34,7 @@ class SecurityTest extends BaseWebTestCase
         $file = __DIR__.static::$configFile;
         exec("cp $file $file.bak");
         $config = Yaml::parse(file_get_contents($file));
-        $config['liip_translation']['security']['by_domain'] = false;
+        $config['liip_translation']['security']['by_domain'] = true;
         $config['liip_translation']['security']['by_locale'] = true;
         file_put_contents($file,Yaml::dump($config));
         static::clearCache();
@@ -116,8 +116,8 @@ class SecurityTest extends BaseWebTestCase
         return array(
             array('update', array(), array('domain'=>'security', 'locale'=> 'fr')),
             array('update', array('ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
-//            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain'=>'security', 'locale'=> 'fr')),
-//            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain'=>'security', 'locale'=> 'fr')),
+            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain'=>'security', 'locale'=> 'fr')),
+            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain'=>'security', 'locale'=> 'fr')),
             array('update', array('ROLE_TRANSLATOR_LOCALE_EN', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
         );
     }
