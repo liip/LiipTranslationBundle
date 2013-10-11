@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Command;
 
+use Liip\TranslationBundle\Import\SymfonyImporter;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,7 +34,8 @@ class ImportCommand extends ContainerAwareCommand
             ->setName('translation:import')
             ->setDescription('Import all existing translation units into the application storage.')
             ->setDefinition(array(
-                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'A comma separated list of locales ( --locales=en,fr,fr_CH'),
+                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'Only import specific locales: comma separated list of locales (--locales=en,fr,fr_CH)'),
+                new InputOption('domains', null, InputOption::VALUE_REQUIRED, 'Only import specific domains: comma separated list of domains (--domains=messages,validators)'),
                 new InputOption('with-translations', null, InputOption::VALUE_NONE, 'also import the associated translations'),
                 new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations')
             ))
@@ -49,6 +51,9 @@ class ImportCommand extends ContainerAwareCommand
         $importOptions['output'] = $output;
         if ($locales = $input->getOption('locales')) {
             $importOptions['locale_list'] = explode(',', $locales);
+        }
+        if ($domains = $input->getOption('domains')) {
+            $importOptions['domain_list'] = explode(',', $domains);
         }
         if ($locales = $input->getOption('with-translations')) {
             $importOptions['import-translations'] = true;
@@ -67,6 +72,7 @@ class ImportCommand extends ContainerAwareCommand
         }
 
         $start = time();
+        /** @var SymfonyImporter $importer */
         $importer = $this->getContainer()->get('liip.translation.symfony_importer');
         $stats = $importer->processImportOfStandardResources($importOptions);
         $duration = time() - $start;

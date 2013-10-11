@@ -69,6 +69,7 @@ class SymfonyImporter {
     {
         $options = array_merge(array(
             'locale_list' => null,
+            'domain_list' => null,
             'output' => null,
             'import-translations' => false,
             'override' => false,
@@ -99,6 +100,11 @@ class SymfonyImporter {
 
             if (!in_array($resource['locale'], $locales)) {
                 $this->log("  >> <comment>Skipped</comment> (unwanted locales)\n");
+                continue;
+            }
+
+            if ($options['domain_list'] !== null && !in_array($resource['domain'], $options['domain_list'])) {
+                $this->log("  >> <comment>Skipped</comment> (unwanted domain)\n");
                 continue;
             }
 

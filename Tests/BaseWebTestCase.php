@@ -26,10 +26,12 @@ class BaseWebTestCase extends WebTestCase
     /**
      * Clears the cache and runs the translation:import command.
      */
-    public static function importUnits()
+    public static function importUnits($locales = array(), $domains = array())
     {
         self::clearCache();
-        self::executeCommand('app/console translation:import');
+        $localesParam = empty($locales) ? '' : '--locales='.implode(',', $locales);
+        $domainsParam = empty($domains) ? '' : '--domains='.implode(',', $domains);
+        self::executeCommand("app/console translation:import $localesParam $domainsParam -vvv");
     }
 
     public function assertStatusCode($code, Client $client, $message = null)
