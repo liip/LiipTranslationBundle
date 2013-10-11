@@ -58,12 +58,11 @@ class UpdateRoleHierarchyPass implements CompilerPassInterface
 
     public function getDomainRoles($config)
     {
-        // TODO How could we access the repository from here to call getAllDomain on it??
-        // Using $container->get('liip.translation.repository'); is not working here...
-        $config['domain_list'] = array();
-
+        if(count($config['security']['domain_list'])==0){
+            throw new \Exception('To use the security by domain, you must define the security.domain_list parameter');
+        }
         $roles = array();
-        foreach ($config['domain_list'] as $domain) {
+        foreach ($config['security']['domain_list'] as $domain) {
             $roles[] = Security::getRoleForDomain($domain);
         }
 

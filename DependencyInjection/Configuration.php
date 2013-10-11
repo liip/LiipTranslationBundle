@@ -65,6 +65,10 @@ class Configuration implements ConfigurationInterface
                         ->booleanNode('by_locale')
                             ->defaultValue(false)
                         ->end()
+                        ->arrayNode('domain_list')
+                            ->defaultValue(array('en', 'en_US'))
+                            ->prototype('scalar')->end()
+                        ->end()
                     ->end()
                 ->end()
 

@@ -382,14 +382,14 @@ class UnitRepository
     protected function checkDomainGrants($domain)
     {
         if(!$this->security->isGrantedForDomain($domain)) {
-            throw new PermissionDeniedException();
+            throw new PermissionDeniedException("No rights to update domain [$domain]");
         }
     }
 
     protected function checkLocaleGrants($locale)
     {
         if(!$this->security->isGrantedForLocale($locale)) {
-            throw new PermissionDeniedException();
+            throw new PermissionDeniedException("No rights to update locale [$locale]");
         }
     }
 }
