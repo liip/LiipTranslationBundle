@@ -16,7 +16,7 @@ before_script:
   - composer require symfony/framework-bundle:${SYMFONY_VERSION} --no-update
   - composer update
 
-script: phpunit --coverage-text
+script: phpunit --coverage-text && phpunit Tests/Controller/SecurityTest.php
 notifications:
   email:
     - team-bot@liip.ch

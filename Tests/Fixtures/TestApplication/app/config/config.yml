@@ -16,7 +16,9 @@ twig:
 security:
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    admin: { password: admin, roles: [ 'ROLE_ADMIN' ] }
     firewalls:
         all:
             pattern: ^/
@@ -34,4 +36,5 @@ liip_translation:
     security:
         by_domain: false
         by_locale: false
+        domain_list: [messages, security]
 

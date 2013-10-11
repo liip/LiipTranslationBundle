@@ -5,6 +5,7 @@
     <testsuites>
         <testsuite name="LiipTranslationBundle test suite">
             <directory suffix="Test.php">./Tests</directory>
+            <exclude>./Tests/Controller/SecurityTest.php</exclude>
         </testsuite>
     </testsuites>
 

@@ -37,34 +37,43 @@ class SecurityTest extends BaseWebTestCase
         $config['liip_translation']['security']['by_domain'] = true;
         $config['liip_translation']['security']['by_locale'] = true;
         file_put_contents($file,Yaml::dump($config));
-        static::clearCache();
+
+        //  Import units and clear cache
+        self::importUnits(array(), array('security'));
     }
 
-    public function setUp()
+    public function testRoleDefinition()
     {
-        /** @var UnitRepository $repo */
-        $repo = $this->getContainer()->get('liip.translation.repository');
-        $this->setRoles('ROLE_TRANSLATION_ADMIN');
-        $repo->createUnit('security', 'key1');
-        $repo->persist();
+        $hierarchy = $this->getContainer()->getParameter('security.role_hierarchy.roles');
+        $this->assertEquals(
+            array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_ALL_LOCALES'),
+            $hierarchy['ROLE_TRANSLATOR_ADMIN']
+        );
+        $this->assertEquals(
+            array('ROLE_TRANSLATOR_LOCALE_FR_CH', 'ROLE_TRANSLATOR_LOCALE_FR', 'ROLE_TRANSLATOR_LOCALE_EN'),
+            $hierarchy['ROLE_TRANSLATOR_ALL_LOCALES']
+        );
+        $this->assertEquals(
+            array('ROLE_TRANSLATOR_DOMAIN_MESSAGES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'),
+            $hierarchy['ROLE_TRANSLATOR_ALL_DOMAINS']
+        );
     }
 
     /**
      * @dataProvider getValidAction
      */
-    public function testAutorizedAction($action, $roles, $parameters)
+    public function testAutorizedAction($roles, $parameters)
     {
-        $this->processAction($action, $roles, $parameters);
+        $this->processAction($roles, $parameters);
     }
 
     /**
      * @dataProvider getUnautorizedAction
      * @expectedException \Liip\TranslationBundle\Model\Exceptions\PermissionDeniedException
      */
-    public function testUnautorizedAction($action, $roles, $parameters)
+    public function testUnautorizedAction($roles, $parameters)
     {
-        $this->markTestSkipped("Currently not working when running all the test suite, maybe we should do kind of container refresh");
-        $this->processAction($action, $roles, $parameters);
+        $this->processAction($roles, $parameters);
     }
 
 
@@ -76,49 +85,34 @@ class SecurityTest extends BaseWebTestCase
         );
     }
 
-    public function processAction($action, $roles, $parameters)
+    public function processAction($roles, $parameters)
     {
-        // Update the user roles
         $this->setRoles($roles);
-
-        // process an edit or a removal
         $repo = $this->getContainer()->get('liip.translation.repository');
-        switch ($action) {
-            case 'update':
-                $repo->updateTranslation($parameters['locale'], $parameters['domain'], 'key1', 'new-value');
-                break;
-            case 'remove':
-                $repo->removeTranslation($parameters['locale'], $parameters['domain'], 'key1');
-                break;
-            default:
-                throw new \Exception("Invalid action [$action]");
-        }
+        $repo->updateTranslation($parameters['locale'], $parameters['domain'], 'key1', 'new-value');
     }
 
     public function getValidAction()
     {
         return array(
-            array('update', 'ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
-            array('remove', 'ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
-
-            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
-
-            array('update', array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
-            array('remove', array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
-
-            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
-            array('remove', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr'))
+            array('ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
+            array('ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr'))
       );
     }
 
     public function getUnautorizedAction()
     {
         return array(
-            array('update', array(), array('domain'=>'security', 'locale'=> 'fr')),
-            array('update', array('ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
-            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain'=>'security', 'locale'=> 'fr')),
-            array('update', array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain'=>'security', 'locale'=> 'fr')),
-            array('update', array('ROLE_TRANSLATOR_LOCALE_EN', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array(), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array('ROLE_TRANSLATOR_LOCALE_EN', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
         );
     }
 
