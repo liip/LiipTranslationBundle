@@ -3,6 +3,7 @@ VERSION 0  FIRST FUNCTIONAL DRAFT
 =================================
 
    Version 0.0 - First functional draft
+      12/10/2013 14:14  0.0.7  Fix a bug in the import process + add tests for security
       10/10/2013 00:16  0.0.6  Security tests + a bug fix for cache clear action
       08/10/2013 07:43  0.0.5  Fix importation bugs
       07/10/2013 15:00  0.0.4  More functional tests
