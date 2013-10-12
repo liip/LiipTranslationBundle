@@ -80,13 +80,14 @@ Configuration
 -------------
 
     liip_translation:
-        locale_list: [en_JP, en_US, ch, en, fr, ja, ko, pt, ru, zh]
+        locale_list: [en_JP, en_US, en, fr_CH, fr]
         security:
             by_domain: false
             by_locale: true
         persistence:
-            class: Liip\TranslationBundle\Persistence\PropelPersistence
-            options: []
+            class: Liip\TranslationBundle\Persistence\YamlFilePersistence
+            options:
+                folder: "%kernel.root_dir%/data/translations"
         interface:
             default_filters:
               domain: ['messages']
@@ -112,10 +113,11 @@ associated roles to your users. The existing roles are:
         ROLE_TRANSLATOR_ALL_LOCALES
             ROLE_TRANSLATOR_LOCALE_XXX
 
-You can create those roles manually in your security hierarchy configuration, or import the provided security
-description into your config:
+!! Warning, if you use security by domain, you have to explicitly list the domains. Example:
 
-    - { resource: @LiipTranslationBundle/Resources/config/security.yml }
+        security:
+            by_domain: true
+            domain_list: [messages, validators, forms]
 
 
 Contributing
