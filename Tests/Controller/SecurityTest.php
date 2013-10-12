@@ -8,6 +8,7 @@ use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Security\Security;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Yaml\Yaml;
 
@@ -30,12 +31,20 @@ class SecurityTest extends BaseWebTestCase
 
     public static function setUpBeforeClass()
     {
-        // Update the config and clear the cache
+        // Get the config
         $file = __DIR__.static::$configFile;
         exec("cp $file $file.bak");
         $config = Yaml::parse(file_get_contents($file));
+
+        // Activate the security
+        $securityConfigFile = Kernel::MINOR_VERSION==0 ? 'security.2.0.yml' : 'security.yml';
+        $config['imports'] = array(array('resource' => $securityConfigFile));
+
+        // Activate the security on the bundle
         $config['liip_translation']['security']['by_domain'] = true;
         $config['liip_translation']['security']['by_locale'] = true;
+
+        // Write it down
         file_put_contents($file,Yaml::dump($config));
 
         //  Import units and clear cache
@@ -121,6 +130,7 @@ class SecurityTest extends BaseWebTestCase
         // put back original config
         $file = __DIR__.static::$configFile;
         exec("mv $file.bak $file");
+        self::clearCache();
     }
 }
 

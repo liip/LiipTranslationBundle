@@ -1,0 +1,10 @@
+security:
+    providers:
+        in_memory:
+            users:
+                admin: { password: admin, roles: [ 'ROLE_ADMIN' ] }
+    firewalls:
+        all:
+            pattern: ^/
+            anonymous: true
+    role_hierarchy: []

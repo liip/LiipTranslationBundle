@@ -13,18 +13,6 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
 
-security:
-    providers:
-        in_memory:
-            memory:
-                users:
-                    admin: { password: admin, roles: [ 'ROLE_ADMIN' ] }
-    firewalls:
-        all:
-            pattern: ^/
-            anonymous: true
-    role_hierarchy: []
-
 liip_functional_test: ~
 
 liip_translation:
