@@ -9,16 +9,16 @@ This Bundle provides various tools to ease translations management of a Sf2 app.
 Introduction
 ------------
 
-This bundle add a new layer in top of the translation mecanisms. This allow your customer to edit, override any translations directly from the website.
+This bundle add a new layer in top of the translation mecanisms. This allows your customer to edit, override any translations directly from the website.
 
 ### Separation of concern
 
-Using such a tool allow a clear separation between "key" and "value". Developers are responsible about defining new keys and removing old keys.
+Using such a tool allows a clear separation between "key" and "value". Developers are responsible for defining new keys and removing old keys.
 Client/customer are responsible for translating the website.
 
 ### Key values on steroid
 
-The current basic key-value system could be better. We extend it and allow devloppers to complete keys with metadata (like it's possible with XLiFF).
+The current basic key-value system could be better. We extend it and allow developers to complete keys with metadata (like it's possible with XLiFF).
 Extend your keys with informations like maxbytes, comment, description, urls, screenshot, etc... Anything that could help translators.
 
 A "value" is the translation for a "key" in a given locale, it's also possible to complete it with metadata (comments, update date, validity, etc...)
@@ -34,7 +34,7 @@ but adding a new persistance is very easy (you just have to implement a small in
 
 ### Symfony compatibility
 
-This bundle work on any symfony version: from 2.0 to 2.4. Unit and functionnals tests have been written to ensure this compatibilty.
+This bundle work on any symfony version: from 2.0 to 2.4. Unit and functionnal tests have been written to ensure this compatibilty.
 
 
 Functionalities
@@ -43,30 +43,30 @@ Functionalities
 ### Translation interface in the backend
 
  * Edit through a contextual popin
- * Fast inline editting
+ * Fast inline editing
  * Possibility to view various translated column at the same time (en, fr, pt, etc...)
- * Filter by locale, domain, dates
+ * Filter by locale, domain, date
  * Filter for untranslated key
  * Search by key name or translation value
- * Display helps from the developpers
+ * Display help messages from the developpers
 
 ### Import/Export
 
 Useful to provide files to an external agency, or to transfer translations from a staging environment to production
 
- * Export translation in YAML
+ * Export translation to a YAML file
  * Export based on the current list filter
- * Export/import multi domain/language with a zip zip file
+ * Export/import multi domain/language with a zip file
  * Review change interface to handle collision at import time
 
 ### New translation keys insertion
 
  * Developers can provide context information to a translation keys (maxsize, description, comment, url, etc..)
- * Symfony command for developers to insert new complexe keys into Xliff
+ * Symfony command for developers to insert new complex keys into Xliff
 
 ### Security
 
- * Rights management (restricted to given loclae or given domain)
+ * Rights management (restricted to given locale or given domain)
 
 
 Installation
@@ -96,7 +96,7 @@ Configuration
 ### Security
 
 Access to translation management can be restricted by domains or by locales. By default, those restrictions are
-disabled, you can turn them ON in the config, with:
+disabled, you can turn them on in the config, with:
 
     liip_translation:
         ...
@@ -104,7 +104,7 @@ disabled, you can turn them ON in the config, with:
             by_domain: false
             by_locale: true
 
-You can activate, one or even both restrictions in parallels. Once this have been activated, you have to attribute
+You can activate, one or both restrictions together. Once this have been activated, you have to attribute
 associated roles to your users. The existing roles are:
 
     ROLE_TRANSLATOR_ADMIN
