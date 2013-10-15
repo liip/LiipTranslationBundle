@@ -2,10 +2,10 @@
     <thead>
     {% block table_header %}
         <tr>
-            <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
+            <th class="translation-domain">{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
+            <th class="translation-key">{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
             {% for locale in columns %}
-                <th>{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+                <th class="translation-content">{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
             {% endfor %}
         </tr>
     {% endblock %}
