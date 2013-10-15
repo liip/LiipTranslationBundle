@@ -4,7 +4,6 @@
         <tr>
             <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
             <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'column.help' | trans({}, 'translation-bundle') }}</th>
             {% for locale in columns %}
                 <th>{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
             {% endfor %}
@@ -17,7 +16,6 @@
             <tr>
                 <td class="translation-domain">{{ item.domain }}</td>
                 <td class="translation-key">{{ item.key }}</td>
-                <td class="translation-help">{{ item.help }}</td>
                 {% for locale in columns %}
                     <td class="translation-content">
                         {% set has_value = item.hasTranslation(locale) %}
