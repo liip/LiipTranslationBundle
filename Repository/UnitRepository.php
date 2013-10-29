@@ -343,35 +343,45 @@ class UnitRepository
             $filterEmpty = isset($filters['empty']) && $filters['empty'];
             $filterKey = isset($filters['key']) && strlen(trim($filters['key'])) > 0 ? trim($filters['key']) : null;
             $filterValue = isset($filters['value']) && strlen(trim($filters['value'])) > 0 ? trim($filters['value']) : null;
+            if(empty($filters['locale'])) {
+                $filters['locale'] = $this->getLocaleList();
+            }
 
             if ($filterKey && strpos($u->getKey(), $filterKey) === false) {
                 unset($units[$k]);
                 continue;
             }
 
-            if(empty($filters['locale'])) {
-                $filters['locale'] = $this->getLocaleList();
-            }
-
-            /** @var int $count number of non-empty translations */
-            $count = 0;
+            $nonEmptyCount = 0;
             $valueCount = 0;
             foreach ($u->getTranslations() as $t) {
+
+                // Remove translations not required
                 if(! in_array($t->getLocale(), $filters['locale'])) {
                     unset($u[$t->getLocale()]);
                     continue;
                 }
-                $value = trim($t->getValue());
-                if (strlen($value) == 0) {
-                    ++$count;
-                }
 
+                // Count empty or match values
+                $value = $t->getValue();
+                if ($value !== null && strlen($value) > 0) {
+                    $nonEmptyCount++;
+                }
                 if ($filterValue && strpos($value, $filterValue) !== false) {
-                    ++$valueCount;
+                    $valueCount++;
                 }
             }
-            if (($filterEmpty && $count == count($filters['locale'])) || ($filterValue && $valueCount == 0)) {
+
+            // For empty filtering, remove unit with non empty translations
+            if ($filterEmpty && $nonEmptyCount >= count($filters['locale'])) {
                 unset($units[$k]);
+                continue;
+            }
+
+            // For value filtering, remove unit when there is no match
+            if ($filterValue && $valueCount == 0) {
+                unset($units[$k]);
+                continue;
             }
         }
 
