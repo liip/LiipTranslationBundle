@@ -27,15 +27,17 @@
                                 {{ item.key | trans({}, item.domain, locale) }}
                             {%- endif -%}
                         </span>
-                        <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.key, locale: locale}) }}">
-                            <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
-                            {{ (has_value ? 'link.edit' : 'link.override') | trans({}, 'translation-bundle') }}
-                        </a>
-                        {% if has_value %}
-                            <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.key, locale: locale}) }}">
-                                <span class="glyphicon glyphicon-trash"></span> {{ 'link.remove' | trans({}, 'translation-bundle') }}
+                        <span class="translation-action">
+                            <a class="{{ has_value ? 'translation-edit' : 'translation-override' }}" href="{{ path('liip_translation_edit', { domain: item.domain, key: item.key, locale: locale}) }}">
+                                <span class="glyphicon glyphicon-{{ has_value ? 'edit' : 'pencil' }}"></span>
+                                {{ (has_value ? 'link.edit' : 'link.override') | trans({}, 'translation-bundle') }}
                             </a>
-                        {% endif %}
+                            {% if has_value %}
+                                <a class="translation-remove" href="{{ path('liip_translation_remove', { domain: item.domain, key: item.key, locale: locale}) }}">
+                                    <span class="glyphicon glyphicon-trash"></span> {{ 'link.remove' | trans({}, 'translation-bundle') }}
+                                </a>
+                            {% endif %}
+                        </span>
                     </td>
                 {% endfor %}
             </tr>
