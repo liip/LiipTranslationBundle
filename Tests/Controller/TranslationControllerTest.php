@@ -42,7 +42,7 @@ class TranslationControllerTest extends BaseWebTestCase
         }
         $client->submit($form, $formData);
         $crawler = $client->followRedirect();
-        $this->assertEquals(4, $crawler->filter('table.translations thead th')->count());
+        $this->assertEquals(3, $crawler->filter('table.translations thead th')->count());
     }
 
     public function testOverriding()
