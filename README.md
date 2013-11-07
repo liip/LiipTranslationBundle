@@ -1,7 +1,7 @@
 LiipTranslationBundle
 =====================
 
-[![Build Status](https://magnum.travis-ci.com/liip/LiipTranslationBundle.png?token=qRGqYhgyyFcdZKKPqBhb&branch=master)](https://magnum.travis-ci.com/liip/LiipTranslationBundle)
+[![Build Status](https://travis-ci.org/liip/LiipTranslationBundle.png?branch=master)](https://travis-ci.org/liip/LiipTranslationBundle)
 
 This Bundle provides various tools to ease translations management of a Sf2 app.
 
