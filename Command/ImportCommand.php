@@ -34,18 +34,17 @@ class ImportCommand extends ContainerAwareCommand
             ->setName('translation:import')
             ->setDescription('Import all existing translation units into the application storage.')
             ->setDefinition(array(
-                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'Only import specific locales: comma separated list of locales (--locales=en,fr,fr_CH)'),
-                new InputOption('domains', null, InputOption::VALUE_REQUIRED, 'Only import specific domains: comma separated list of domains (--domains=messages,validators)'),
+                new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'only import specific locales: comma separated list of locales (--locales=en,fr,fr_CH)'),
+                new InputOption('domains', null, InputOption::VALUE_REQUIRED, 'only import specific domains: comma separated list of domains (--domains=messages,validators)'),
                 new InputOption('with-translations', null, InputOption::VALUE_NONE, 'also import the associated translations'),
-                new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations')
+                new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations'),
+                new InputOption('prune', null, InputOption::VALUE_NONE, 'remove all units that are no more present in files')
             ))
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Importing new translation units...');
-
         // Options parsing
         $importOptions = array();
         $importOptions['output'] = $output;
@@ -55,14 +54,17 @@ class ImportCommand extends ContainerAwareCommand
         if ($domains = $input->getOption('domains')) {
             $importOptions['domain_list'] = explode(',', $domains);
         }
-        if ($locales = $input->getOption('with-translations')) {
+        if ($input->getOption('with-translations')) {
             $importOptions['import-translations'] = true;
         }
-        if ($locales = $input->getOption('override')) {
+        if ($input->getOption('override')) {
             if ($input->getOption('with-translations')==null) {
                 throw new \RuntimeException('[override] option is only available in conjuction with [with-translations]');
             }
             $importOptions['override'] = true;
+        }
+        if ($input->getOption('prune')) {
+            $importOptions['prune'] = true;
         }
 
         // TODO move this into the security component

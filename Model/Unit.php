@@ -169,6 +169,11 @@ class Unit extends Persistent implements \ArrayAccess
         $this->setIsModified();
     }
 
+    public function delete()
+    {
+        $this->setIsDeleted();
+    }
+
 
     public function offsetExists($locale)
     {

@@ -77,7 +77,7 @@ if(in_array('Symfony\Component\Translation\MetadataAwareInterface', class_implem
                 }
             }
 
-            return null;
+            return array();
         }
 
         public function setMetadata($key, $value, $domain = 'messages')

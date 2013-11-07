@@ -1,12 +1,20 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: krtek
- * Date: 9/25/13
- * Time: 10:56 AM
- * To change this template use File | Settings | File Templates.
- */
 
+/**
+ * Importer for the classic symfony files, used by the command app/console translation:import
+ *
+ * This file is part of the LiipTranslationBundle. For more information concerning
+ * the bundle, see the README.md file at the project root.
+ *
+ * @package Liip\TranslationBundle\Import
+ * @version 0.0.1
+ *
+ * @license http://opensource.org/licenses/MIT MIT License
+ * @author David Jeanmonod <david.jeanmonod@liip.ch>
+ * @author Gilles Meier <gilles.meier@liip.ch>
+ * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
+ * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
+ */
 namespace Liip\TranslationBundle\Import;
 
 
@@ -73,14 +81,13 @@ class SymfonyImporter {
             'output' => null,
             'import-translations' => false,
             'override' => false,
-            'metadata_locale' => 'en'
+            'metadata_locale' => 'en', # define from which locale you want to import the metadata
+            'prune' => false
         ), $options);
         if (array_key_exists('output', $options)){
             $this->logger = $options['output'];
         }
         $locales = $options['locale_list'] !== null ? $options['locale_list'] : $this->getLocaleList();
-
-        $this->log("<info>Start importation for locales:</info> [".implode(', ', $locales)."]\n");
 
         // Create all catalogues
         /** @var MessageCatalogue[] $catalogues */
@@ -90,8 +97,9 @@ class SymfonyImporter {
         }
 
         // Import resources one by one
+        $this->log("<info>Evaluation of the file list</info>\n");
         foreach($this->getStandardResources() as $resource) {
-            $this->log("Import resource <fg=cyan>{$resource['path']}</fg=cyan>");
+            $this->log("    Resource <fg=cyan>{$resource['path']}</fg=cyan>");
 
             if ($this->checkIfResourceIsIgnored($resource)) {
                 $this->log("  >> <comment>Skipped</comment> (due to ignore settings from the config)\n");
@@ -113,15 +121,13 @@ class SymfonyImporter {
 
         }
 
+        // Update all units from the catalog
+        $this->log("\n<info>Update or create units and associated translations</info>\n");
         $existingUnits = $this->repository->getAllByDomainAndKey();
-
-        // Creation of the units
-        $units = array();
+        $allFileUnits = array();
         foreach ($locales as $locale) {
             foreach ($catalogues[$locale]->all() as $domain => $translations) {
                 foreach($translations as $key => $value) {
-
-                    $this->log("    >> Key [$key] for domain [$domain]\n");
 
                     // Retrieved or create a unit
                     if(!isset($existingUnits[$domain][$key])) {
@@ -142,19 +148,39 @@ class SymfonyImporter {
                     // Update translation
                     if($options['import-translations']) {
                         if ($unit->hasTranslation($locale) && $options['override']) {
-                            $this->log("\t>> Translation in [$locale] overridden\n");
+                            $this->log("\t>> Translation [$domain, $key] for [$locale] overridden by '$value'\n");
                             $unit->setTranslation($locale, $value);
                         }
                         if (!$unit->hasTranslation($locale)){
-                            $this->log("\t>> Translation in [$locale] imported\n");
+                            $this->log("\t>> Translation [$domain, $key] for [$locale] imported\n");
                             $unit->setTranslation($locale, $value);
                         }
                     }
+
+                    // Key a trace of all units from the file for the prune process
+                    $allFileUnits[$domain][$key] = true;
                 }
             }
         }
 
-        $this->log("\n<comment>Persisting</comment> ... ");
+        // Potentially remove no more existing units
+        if ($options['prune']===true) {
+            $this->log("\n<info>Remove units that are no more present in translation files</info>\n");
+            $domains = $options['domain_list']!==null ? $options['domain_list'] : array_keys($existingUnits);
+            foreach($domains as $domain) {
+                if (!isset($allFileUnits[$domain])) {
+                    continue;
+                }
+                $removed = array_diff(array_keys($existingUnits[$domain]), array_keys($allFileUnits[$domain]));
+                foreach($removed as $key) {
+                    $this->log("\t>> Translation unit [$domain, $key] removed\n");
+                    $existingUnits[$domain][$key]->delete();
+                }
+            }
+        }
+
+        $this->log("<info>Save the changes</info>\n");
+        $this->log("<comment>Persisting</comment> ... ");
         $stat = $this->repository->persist();
         $this->log("<info>Success</info>\n");
 
