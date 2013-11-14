@@ -5,6 +5,8 @@
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+    <link href="{{ asset('bundles/liiptranslation/css/style.css') }}"  rel='stylesheet' />
+    <script src="//code.jquery.com/jquery.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-default" role="navigation">
@@ -19,7 +21,7 @@
     {% for type, messages in app.session.flashbag.all() | default(app.session.flashes | default(false)) %}
         <ul>
             {% if not messages is iterable %}
-                {# their can ben only one message of each type within Sf 2.0 #}
+                {# their can be only one message of each type within Sf 2.0 #}
                 {% set messages = [ messages ] %}
             {% endif %}
             {% for message in messages %}
@@ -31,11 +33,11 @@
     {% block translation_bundle_content %}
     {% endblock %}
 
-    <script src="//code.jquery.com/jquery.js"></script>
+
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="{{ asset('bundles/liiptranslation/js/jquery.jeditable.js') }}"></script>
     <script type="text/javascript">
-        $('.translation-value').editable({{ path('liip_translation_inline_edit') }}, {
+        $('.translation-value').editable('{{ path('liip_translation_inline_edit') }}', {
             indicator: 'Saving...',
             tooltip: 'Click to edit...',
             submit: 'Ok',

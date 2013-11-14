@@ -1,26 +1,53 @@
 <table class="new-translations">
     <thead>
-        <tr>
-            <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
-            <th>{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
-            <th>{{ 'column.action' | trans({}, 'translation-bundle') }}</th>
-        </tr>
+    <tr>
+        <th>{{ 'column.domain' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'column.key' | trans({}, 'translation-bundle') }}</th>
+        <th>{{ 'column.value' | trans({'%locale%': locale}, 'translation-bundle') }}</th>
+        <th>{{ 'column.action' | trans({}, 'translation-bundle') }}</th>
+    </tr>
     </thead>
     <tbody>
     {% for domain, domainTranslations in translations %}
         {% for key, value in domainTranslations %}
-            <tr>
+            <tr id='remove-{{ key }}'>
                 <td>{{ domain }}</td>
                 <td>{{ key }}</td>
                 <td>{{ value }}</td>
-                <td>
-                    <a href="{{ path('liip_translation_import_remove_entry', {'locale': locale, 'domain': domain, 'key': key}) }}">
+                <td id='remove-link'>
+                    <a href="#"  onclick="enableAjaxDelete('{{ key }}', '{{ path('liip_translation_import_remove_entry', {'locale': locale, 'domain': domain, 'key': key}) }}')">
                         <span class="glyphicon glyphicon-trash"></span> {{ 'link.remove' | trans({}, 'translation-bundle') }}
                     </a>
+
+                    <script>
+
+
+                    </script>
                 </td>
             </tr>
         {% endfor %}
     {% endfor %}
     </tbody>
 </table>
+
+<script type="text/javascript">
+    function enableAjaxDelete(id, url){
+
+      var xmlhttp = false;
+
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }else{
+            xmlhttp = new ActiveXObject();
+        }
+        xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState === 4 && xmlhttp.status === 200){
+                document.getElementById('remove-'+id).style.display='none';
+            }
+
+        }
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send(null);
+    }
+</script>
