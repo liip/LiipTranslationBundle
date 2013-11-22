@@ -35,7 +35,7 @@ class TranslateCommand extends ContainerAwareCommand
             ->setDefinition(array(
                 new InputArgument('key', InputArgument::REQUIRED, 'The key to translate'),
                 new InputOption('locale', 'l', InputOption::VALUE_REQUIRED, 'Destination locale', 'en'),
-                new InputOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Message domain', 'message')
+                new InputOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Message domain', 'messages')
             ))
         ;
     }
