@@ -3,7 +3,7 @@ LiipTranslationBundle
 
 [![Build Status](https://travis-ci.org/liip/LiipTranslationBundle.png?branch=master)](https://travis-ci.org/liip/LiipTranslationBundle)
 
-This Bundle provides various tools to ease translations management of a Sf2 app.
+This Bundle provides various tools to ease translations management of a Sf2 app. Here is a small [presentation](https://docs.google.com/presentation/d/1JK6vff6cVa92VxRIJ5ORzSUrmbtDPc5bPsFE35soEpw/edit?usp=sharing) of the bundle.
 
 
 Introduction
