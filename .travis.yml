@@ -20,3 +20,5 @@ script: phpunit --coverage-text && phpunit Tests/Controller/SecurityTest.php
 notifications:
   email:
     - team-bot@liip.ch
+  slack:
+    - liip:omECyFa2jBWp1yiRO6c6dash
