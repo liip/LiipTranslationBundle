@@ -99,6 +99,16 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
+     * Returns the directory given
+     *
+     * @return string
+     */
+    public function getDirectoryName()
+    {
+        return $this->directory;
+    }
+
+    /**
      * Loads a file
      *
      * @param string $name
@@ -197,10 +207,9 @@ class GitPersistence extends YamlFilePersistence
     protected function getResolvedOptions(array $options)
     {
         $resolver = new OptionsResolver;
-        $resolver->setDefault('processClass', "Symfony\\Component\\Process\\Process")
-            ->setAllowedTypes('processClass', 'string')
-            ->setRequired('folder')
-            ->setAllowedTypes('folder', 'string');
+        $resolver->setDefaults(array('processClass' => "Symfony\\Component\\Process\\Process"))
+            ->setRequired(array('folder'))
+            ->setAllowedTypes(array('processClass' => 'string', 'folder' => 'string'));
 
         return $resolver->resolve($options);
     }
