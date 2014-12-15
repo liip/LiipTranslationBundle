@@ -24,12 +24,12 @@ class GitPersistence extends YamlFilePersistence
     /**
      * @const string Command for git commit and push
      */
-    const CMD_COMMITPUSH = 'git -C %s commit -a -m "%s" && git push';
+    const CMD_COMMITPUSH = 'git --git-dir=%s commit -a -m "%s" && git --git-dir=%s push';
 
     /**
      * @const string Command for git pull
      */
-    const CMD_GITPULL = 'git -C %s pull';
+    const CMD_GITPULL = 'git --git-dir=%s/.git pull';
 
     /**
      * @var string Class name for processes, can be a mock class instead
@@ -109,17 +109,16 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Loads a file
+     * Pulls the translation repository
      *
-     * @param string $name
-     *
-     * @return array
+     * @return bool
      */
-    protected function loadFile($name)
+    public function pullTranslations()
     {
-        $this->pullTranslations();
-
-        return parent::loadFile($name);
+        return $this->executeCmd(sprintf(
+            self::CMD_GITPULL,
+            $this->directory
+        ));
     }
 
     /**
@@ -139,7 +138,8 @@ class GitPersistence extends YamlFilePersistence
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message
+            $message,
+            $this->directory
         ));
     }
 
@@ -160,19 +160,7 @@ class GitPersistence extends YamlFilePersistence
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message
-        ));
-    }
-
-    /**
-     * Pulls the translation repository
-     *
-     * @return bool
-     */
-    protected function pullTranslations()
-    {
-        return $this->executeCmd(sprintf(
-            self::CMD_GITPULL,
+            $message,
             $this->directory
         ));
     }
@@ -194,7 +182,7 @@ class GitPersistence extends YamlFilePersistence
             throw new \RuntimeException($process->getErrorOutput());
         }
 
-        return true;
+        return $process->getOutput();
     }
 
     /**

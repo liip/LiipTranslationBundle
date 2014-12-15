@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\TranslationBundle\Persistence\GitPersistence;
 use Symfony\Component\Process\Process;
 
 /**
@@ -24,7 +23,7 @@ use Symfony\Component\Process\Process;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class GitPersistenceInitCommand extends ContainerAwareCommand
+class GitPersistenceInitCommand extends GitRepoAwareCommand
 {
     /**
      * Configuration
@@ -32,7 +31,7 @@ class GitPersistenceInitCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:git-repo:init')
+            ->setName('translation:git-persistence:init')
             ->setDescription('Initializes a Git repository at the configured folder where your translations will be stored.')
             ->setDefinition(array(
                 new InputOption('remote', null, InputOption::VALUE_OPTIONAL, 'Git remote to clone and pull from and to push to (if given, command omits asking any questions)'),
@@ -45,6 +44,7 @@ class GitPersistenceInitCommand extends ContainerAwareCommand
      * @param OutputInterface $output
      *
      * @return int|null|void
+     *
      * @throws \RuntimeException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -55,14 +55,7 @@ class GitPersistenceInitCommand extends ContainerAwareCommand
             $askQuestions = false;
         }
 
-        $persistence = $this->getContainer()->get('liip.translation.persistence');
-        if (false === $persistence instanceof GitPersistence) {
-            throw new \RuntimeException(sprintf(
-                'Cannot initialize git repository, configured persistence should be "%s", "%s" given',
-                'Liip\TranslationBundle\Persistence\GitPersistence',
-                get_class($persistence)
-            ));
-        }
+        $persistence = $this->getPersistence();
 
         $dir = rtrim($persistence->getDirectoryName(), DIRECTORY_SEPARATOR);
 
@@ -84,9 +77,9 @@ class GitPersistenceInitCommand extends ContainerAwareCommand
                 throw new \RuntimeException($directoryProcess->getErrorOutput());
             }
         } else {
-            $output->writeln('Directory "' . $dir . '" exists');
+            $output->writeln('Directory "' . $dir . '" already exists, not creating.');
             if (is_dir($dir . DIRECTORY_SEPARATOR . '.git')) {
-                throw new \RuntimeException('"' . $dir . '" already is a git repository');
+                throw new \RuntimeException('"' . $dir . '" already is a git repository.');
             }
         }
 
