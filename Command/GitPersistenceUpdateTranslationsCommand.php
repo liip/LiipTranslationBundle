@@ -24,7 +24,7 @@ use Symfony\Component\Process\Process;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class GitUpdateTranslationsCommand extends GitRepoAwareCommand
+class GitPersistenceUpdateTranslationsCommand extends GitPersistenceAwareCommand
 {
     /**
      * Configuration

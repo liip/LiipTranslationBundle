@@ -24,7 +24,7 @@ use Symfony\Component\Process\Process;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-abstract class GitRepoAwareCommand extends ContainerAwareCommand
+abstract class GitPersistenceAwareCommand extends ContainerAwareCommand
 {
     /**
      * Returns the configured repository, which should be a GitPersistence

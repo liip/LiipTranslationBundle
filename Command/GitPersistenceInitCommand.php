@@ -23,7 +23,7 @@ use Symfony\Component\Process\Process;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class GitPersistenceInitCommand extends GitRepoAwareCommand
+class GitPersistenceInitCommand extends GitPersistenceAwareCommand
 {
     /**
      * Configuration
