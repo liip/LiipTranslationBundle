@@ -10,7 +10,7 @@ use Liip\TranslationBundle\Persistence\GitPersistence;
 use Symfony\Component\Process\Process;
 
 /**
- * Initialize a Git repo inside your project to use git persistence
+ * Update translations in the Git repository used for GitPersistence
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

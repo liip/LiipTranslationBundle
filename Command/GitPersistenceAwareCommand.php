@@ -10,7 +10,7 @@ use Liip\TranslationBundle\Persistence\GitPersistence;
 use Symfony\Component\Process\Process;
 
 /**
- * Initialize a Git repo inside your project to use git persistence
+ * Abstract command class for every command that is related to GitPersistence
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
@@ -46,4 +46,4 @@ abstract class GitPersistenceAwareCommand extends ContainerAwareCommand
 
         return $persistence;
     }
-} 
+}
