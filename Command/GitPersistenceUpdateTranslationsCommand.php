@@ -2,12 +2,8 @@
 
 namespace Liip\TranslationBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Liip\TranslationBundle\Persistence\GitPersistence;
-use Symfony\Component\Process\Process;
 
 /**
  * Update translations in the Git repository used for GitPersistence
