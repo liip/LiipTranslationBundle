@@ -42,18 +42,18 @@ class ListResourcesCommand extends ContainerAwareCommand
         $output->writeln("\n<comment>List of available translation resources:</comment>\n");
         $resources = $this->getContainer()->get('liip.translation.symfony_importer')->getStandardResources();
 
-        if(! $input->getOption('group') ) {
-            foreach($resources as $resource) {
+        if (! $input->getOption('group') ) {
+            foreach ($resources as $resource) {
                 $path = $resource['path'];
                 $output->writeln("\t".realpath($path));
             }
         } else {
             $languageByResources = array();
-            foreach($resources as $resource) {
+            foreach ($resources as $resource) {
                 $pathParts = pathinfo(realpath($resource['path']));
                 list($domain, $locale) = explode('.', $pathParts['filename']);
                 $resource = $pathParts['dirname'] . '/' . $domain;
-                if(! array_key_exists($resource, $languageByResources)) {
+                if (! array_key_exists($resource, $languageByResources)) {
                     $languageByResources[$resource] = array();
                 }
                 $languageByResources[$resource][] = $locale;
@@ -61,7 +61,7 @@ class ListResourcesCommand extends ContainerAwareCommand
 
             foreach ($languageByResources as $resource => $langauges) {
                 $output->writeln("\t<info>$resource</info>");
-                $output->writeln("\t\tavailable in [".implode(', ',$langauges)."]\n");
+                $output->writeln("\t\tavailable in [".implode(', ', $langauges)."]\n");
             }
         }
     }

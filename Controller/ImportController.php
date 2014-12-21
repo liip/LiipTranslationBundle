@@ -64,12 +64,10 @@ class ImportController extends BaseController
             $counters = $this->getSessionImporter()->handleUploadedFile($data['file']);
             if ($counters['new']==0 && $counters['updated']==0) {
                 $this->addFlashMessage('warning', 'File import success, but not more modification found');
-            }
-            else {
+            } else {
                 $this->addFlashMessage('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
             }
-        }
-        catch (ImportException $e) {
+        } catch (ImportException $e) {
             $this->addFlashMessage('error', 'Error while trying to import: '.$e->getMessage());
         }
 
@@ -79,9 +77,10 @@ class ImportController extends BaseController
     /**
      * Remove an entry from the session
      *
-     * @param $locale
-     * @param $domain
-     * @param $key
+     * @param string $locale
+     * @param string $domain
+     * @param string $key
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeEntryAction($locale, $domain, $key)
@@ -97,7 +96,8 @@ class ImportController extends BaseController
     /**
      * Process the importation for the given locale, and redirect to the dashboard
      *
-     * @param $locale
+     * @param string $locale
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function processAction($locale)

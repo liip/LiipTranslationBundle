@@ -68,7 +68,7 @@ class ImportCommand extends ContainerAwareCommand
         }
 
         // TODO move this into the security component
-        if($this->getContainer()->has('security.context')) {
+        if ($this->getContainer()->has('security.context')) {
             $securityContext = $this->getContainer()->get('security.context');
             $securityContext->setToken(new AnonymousToken('cli', 'cli', array('ROLE_TRANSLATOR_ADMIN')));
         }

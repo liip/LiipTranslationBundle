@@ -42,7 +42,7 @@ class YamlFilePersistence implements PersistenceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * @return \Liip\TranslationBundle\Model\Unit[]
      */
     public function getUnits()
@@ -50,8 +50,8 @@ class YamlFilePersistence implements PersistenceInterface
         list($unitData, $translations) = $this->loadFiles();
 
         $units = array();
-        foreach($unitData as $domain => $keys) {
-            foreach($keys as $key => $metadata) {
+        foreach ($unitData as $domain => $keys) {
+            foreach ($keys as $key => $metadata) {
                 $units[] = $this->createUnitObject($domain, $key, $metadata, $translations);
             }
         }
@@ -60,7 +60,8 @@ class YamlFilePersistence implements PersistenceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return Unit
      * @throw NotFoundException
      */
@@ -74,8 +75,6 @@ class YamlFilePersistence implements PersistenceInterface
 
         return $this->createUnitObject($domain, $key, $units[$domain][$key], $translations);
     }
-
-
 
     public function saveUnit(Unit $unit)
     {
@@ -142,7 +141,7 @@ class YamlFilePersistence implements PersistenceInterface
     {
         $unit = new Unit($domain, $key, $metadata, false);
         if (isset($translations[$domain][$key])) {
-            foreach($translations[$domain][$key] as $locale => $data) {
+            foreach ($translations[$domain][$key] as $locale => $data) {
                 list($value, $metadata) = $data;
                 $unit->addTranslation(new Translation($value, $locale, $unit, $metadata), false);
             }
@@ -160,6 +159,7 @@ class YamlFilePersistence implements PersistenceInterface
     protected function loadFile($name)
     {
         $file = $this->directory.'/'.$name;
+
         return file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
     }
 

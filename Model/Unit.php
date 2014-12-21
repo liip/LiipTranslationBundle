@@ -39,13 +39,13 @@ class Unit extends Persistent implements \ArrayAccess
         $this->key = $key;
         $this->metadata = $metadata;
 
-        if($isNew) {
+        if ($isNew) {
             $this->setIsNew(true);
         }
     }
 
     /**
-     * @param array $m the new metadata
+     * @param array $metadata the new metadata
      */
     public function setMetadata(array $metadata = array())
     {
@@ -71,11 +71,12 @@ class Unit extends Persistent implements \ArrayAccess
      *
      * @param string $locale the locale
      * @param string $translation the translation (value)
+     * @param bool   $isUpdate
      */
     public function setTranslation($locale, $translation, $isUpdate = true)
     {
         $this->offsetSet($locale, $translation);
-        if($isUpdate) {
+        if ($isUpdate) {
             $this->setIsModified(true);
         }
     }
@@ -89,7 +90,7 @@ class Unit extends Persistent implements \ArrayAccess
     public function addTranslation(Translation $translation, $isUpdate = true)
     {
         $this->translations[$translation->getLocale()] = $translation;
-        if($isUpdate) {
+        if ($isUpdate) {
             $this->setIsModified(true);
         }
     }
@@ -106,8 +107,8 @@ class Unit extends Persistent implements \ArrayAccess
         unset($metadata['id']);
 
         $text = '';
-        foreach($metadata as $key => $value) {
-            if ($key == 'note'){
+        foreach ($metadata as $key => $value) {
+            if ($key == 'note') {
                 $text .= $value;
             }
         }
@@ -144,18 +145,21 @@ class Unit extends Persistent implements \ArrayAccess
      * translation does not exists.
      *
      * @param string $locale
+     *
      * @return null|Translation
      */
     public function getTranslation($locale)
     {
-        if(array_key_exists($locale, $this->translations)) {
+        if (array_key_exists($locale, $this->translations)) {
             return $this->translations[$locale];
         }
+
         return null;
     }
 
     /**
      * @param string $locale
+     *
      * @return bool does a translation exists for the given locale ?
      */
     public function hasTranslation($locale)
@@ -182,16 +186,17 @@ class Unit extends Persistent implements \ArrayAccess
 
     public function offsetGet($locale)
     {
-        if($this->offsetExists($locale)) {
+        if ($this->offsetExists($locale)) {
             return $this->translations[$locale]->getValue();
         }
+
         return false;
     }
 
     public function offsetSet($locale, $value)
     {
         $this->setIsModified(true);
-        if($this->offsetExists($locale)) {
+        if ($this->offsetExists($locale)) {
             $this->translations[$locale]->setValue($value);
             $this->translations[$locale]->setIsModified(true);
         } else {
@@ -202,21 +207,25 @@ class Unit extends Persistent implements \ArrayAccess
             $t->setIsNew(true);
             $this->translations[$locale] = $t;
         }
+
         return true;
     }
 
     public function offsetUnset($locale)
     {
         $this->deleteTranslation($locale);
+
         return true;
     }
 
-    public function isDirty() {
-        foreach($this->getTranslations() as $t) {
-            if($t->isDirty()) {
+    public function isDirty()
+    {
+        foreach ($this->getTranslations() as $t) {
+            if ($t->isDirty()) {
                 return true;
             }
         }
+
         return parent::isDirty();
     }
 }

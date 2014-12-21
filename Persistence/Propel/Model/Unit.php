@@ -37,7 +37,7 @@ class Unit extends BaseUnit
             $this->getKey(),
             $this->getMetadata()
         );
-        foreach($this->getTranslations() as $translation) {
+        foreach ($this->getTranslations() as $translation) {
             $unit->setTranslation($translation->getLocale(), $translation->getValue());
         }
 
@@ -61,7 +61,7 @@ class Unit extends BaseUnit
     /**
      * Get or create a Propel Tranlation object for the given locale
      *
-     * @param $locale
+     * @param string $locale
      *
      * @return Translation
      */
