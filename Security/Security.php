@@ -64,6 +64,7 @@ class Security
      * Return the list of locales authorized by the provided security context
      *
      * @param SecurityContext|null $securityContext
+     *
      * @return array
      */
     public function getAuthorizedLocaleList($securityContext)
@@ -84,7 +85,7 @@ class Security
 
     public function isGrantedForDomain($domain)
     {
-        if($this->securityContext === null || !$this->isSecuredByDomain()) {
+        if ($this->securityContext === null || !$this->isSecuredByDomain()) {
             return true;
         }
 
@@ -93,7 +94,7 @@ class Security
 
     public function isGrantedForLocale($locale)
     {
-        if($this->securityContext === null || !$this->isSecuredByLocale()) {
+        if ($this->securityContext === null || !$this->isSecuredByLocale()) {
             return true;
         }
 

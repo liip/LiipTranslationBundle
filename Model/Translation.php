@@ -17,7 +17,8 @@ namespace Liip\TranslationBundle\Model;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class Translation extends Persistent {
+class Translation extends Persistent
+{
     /** @var string */
     private $value;
     /** @var string */
@@ -28,9 +29,10 @@ class Translation extends Persistent {
     private $metadata;
 
     /**
-     * @param string $t value (ie translation)
-     * @param string $l locale
-     * @param Unit $u unit related to this translation
+     * @param string $value  value (ie translation)
+     * @param string $locale locale
+     * @param Unit   $unit   unit related to this translation
+     * @param array  $metadata
      */
     public function __construct($value, $locale, Unit $unit, array $metadata = array())
     {

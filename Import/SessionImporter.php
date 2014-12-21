@@ -56,11 +56,12 @@ class SessionImporter
      * compatibility reason with Symfony 2.0.
      *
      * @param UploadedFile $file
+     *
      * @return string
      */
     protected function getFileExtension(UploadedFile $file)
     {
-        if(method_exists($file, 'getClientOriginalExtension')) {
+        if (method_exists($file, 'getClientOriginalExtension')) {
             return $file->getClientOriginalExtension();
         } else {
             return pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
@@ -71,13 +72,15 @@ class SessionImporter
      * Take care of uploaded files (including zip) for importing resources
      *
      * @param UploadedFile $file
+     *
+     * @return array
      */
     public function handleUploadedFile(UploadedFile $file)
     {
         if ($this->getFileExtension($file) === 'zip') {
             $tempFolder = $this->extractZip($file);
             $counters = array('new' => 0, 'updated' => 0);
-            foreach(scandir($tempFolder) as $path) {
+            foreach (scandir($tempFolder) as $path) {
                 if (is_file($tempFolder.'/'.$path)) {
                     $fileCounters = $this->importFile($tempFolder.'/'.$path);
                     $counters['new'] += $fileCounters['new'];
@@ -85,8 +88,7 @@ class SessionImporter
                 }
             }
             unset($tempFolder);
-        }
-        else {
+        } else {
             $counters = $this->importFile($file->getRealPath(), $file->getClientOriginalName());
         }
 
@@ -97,6 +99,7 @@ class SessionImporter
      * Extract a zip file into a temp folder and return the folder path
      *
      * @param UploadedFile $file
+     *
      * @return string The path to the temp folder
      * @throws ImportException
      */
@@ -117,17 +120,19 @@ class SessionImporter
     /**
      * Add a file to the current import buffer
      *
-     * @param string $filePath   The path to the file
-     * @param string $fileName   Optional, the filename to parse to extract resources data
+     * @param string $filePath The path to the file
+     * @param string $fileName Optional, the filename to parse to extract resources data
+     *
+     * @return array
      * @throws ImportException
      */
     protected function importFile($filePath, $fileName = null)
     {
         // Filename parsing
-        if ($fileName == null){
+        if ($fileName == null) {
             $fileName = basename($filePath);
         }
-        if (!preg_match('/\w+\.\w+\.\w+/', $fileName)){
+        if (!preg_match('/\w+\.\w+\.\w+/', $fileName)) {
             throw new ImportException("Invalid filename [$fileName], all translation files must be named: domain.locale.format (ex: messages.en.yml)");
         }
         list($domain, $locale, $format) = explode('.', $fileName, 3);
@@ -141,10 +146,10 @@ class SessionImporter
         // Merge with existing entries
         $translations = $this->getTranslationsFromSession();
         $counters = array('new' => 0, 'updated' => 0);
-        if (!array_key_exists($locale, $translations)){
+        if (!array_key_exists($locale, $translations)) {
             $translations[$locale] = array('new' => array(), 'updated' => array());
         }
-        foreach($catalogue->all() as $domain => $messages) {
+        foreach ($catalogue->all() as $domain => $messages) {
             foreach ($messages as $key => $value) {
                 if ($trans = $this->repository->findTranslation($domain, $key, $locale, true)) {
                     if ($trans->getValue() !== $value) {
@@ -159,11 +164,9 @@ class SessionImporter
         }
 
         $this->updateSession($translations);
-            
+
         return $counters;
     }
-
-
 
     public function remove($domain, $key, $locale)
     {
@@ -187,7 +190,7 @@ class SessionImporter
         }
 
         // Import
-        foreach($locales as $locale) {
+        foreach ($locales as $locale) {
             $this->doImport($locale);
         }
 
@@ -205,7 +208,7 @@ class SessionImporter
 
         // Add new translations, create the unit if require
         foreach ($translations[$locale]['new'] as $domain => $newTranslations) {
-            foreach($newTranslations as $key => $value) {
+            foreach ($newTranslations as $key => $value) {
                 if (!isset($existingUnits[$domain][$key])) {
                     $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key, array('created-at-import' => true));
                 }
@@ -215,7 +218,7 @@ class SessionImporter
 
         // Update existing translations
         foreach ($translations[$locale]['updated'] as $domain => $newTranslations) {
-            foreach($newTranslations as $key => $data) {
+            foreach ($newTranslations as $key => $data) {
                 $existingUnits[$domain][$key]->getTranslation($locale)->setValue($data['new']);
             }
         }
@@ -240,19 +243,19 @@ class SessionImporter
 
     protected function updateSession($translations)
     {
-        foreach ($translations as $locale => $values){
+        foreach ($translations as $locale => $values) {
 
             // Clear empty domains
-            foreach(array('new', 'updated') as $modififactionType) {
+            foreach (array('new', 'updated') as $modififactionType) {
                 foreach ($values[$modififactionType] as $domain => $trads) {
-                    if (count($trads)==0){
+                    if (count($trads)==0) {
                         unset($translations[$locale][$modififactionType][$domain]);
                     }
                 }
             }
 
             // Clear empty locales
-            if (count($translations[$locale]['new'])==0 && count($translations[$locale]['updated'])==0){
+            if (count($translations[$locale]['new']) == 0 && count($translations[$locale]['updated']) == 0) {
                 unset($translations[$locale]);
             }
         }

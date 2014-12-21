@@ -47,19 +47,20 @@ class TranslationController extends BaseController
     protected function beautifyFilter($filters)
     {
         $result = array();
-        foreach($filters as $name => $value) {
+        foreach ($filters as $name => $value) {
             // don't display empty filter or locale which is a synonym for languages
-            if(empty($value) || $name == 'locale') {
+            if (empty($value) || $name == 'locale') {
                 continue;
             }
 
-            if(is_bool($value)) {
+            if (is_bool($value)) {
                 $value = $value ? 'filters.value.true' : 'translation.filters.value.false';
-            } else if(is_array($value)) {
+            } else if (is_array($value)) {
                 $value = implode(', ', $value);
             }
             $result['filters.'.$name] = $value;
         }
+
         return $result;
     }
 
@@ -69,6 +70,7 @@ class TranslationController extends BaseController
         $units = $this->getRepository()->findFiltered($filters);
 
         $filterForm = $this->createFilterForm($filters);
+
         return $this->render('LiipTranslationBundle:Translation:index.html.twig', array(
             'items' => $units,
             'columns' => $filters['locale'],
@@ -89,6 +91,7 @@ class TranslationController extends BaseController
     public function clearFilterAction()
     {
         $this->getFilterManager()->resetFilters();
+
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
@@ -100,10 +103,11 @@ class TranslationController extends BaseController
 
         if ($this->getRequest()->getMethod() === 'POST') {
             $translation = $this->handleForm($form);
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $unit->addTranslation($translation);
                 $this->getRepository()->persist($unit);
                 $this->addFlashMessage('success', 'Translation was successfully edited.');
+
                 return $this->redirect($this->generateUrl('liip_translation_interface'));
             }
         }

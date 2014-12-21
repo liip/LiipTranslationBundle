@@ -37,16 +37,18 @@ abstract class BaseController extends Controller
      * between Symfony 2.0 and 2.1.
      *
      * @param Form $form the form that must be handled
+     *
      * @return mixed data as returned by the getData() method
      */
     public function handleForm(Form $form)
     {
-        if(method_exists($form, 'handleRequest')) {
+        if (method_exists($form, 'handleRequest')) {
             $data = $form->handleRequest($this->getRequest())->getData();
         } else {
             $form->bindRequest($this->getRequest());
             $data = $form->getData();
         }
+
         return $data;
     }
 
@@ -54,14 +56,14 @@ abstract class BaseController extends Controller
      * Sets a flash message. This is here to avoid compatibility issues between
      * Symfony 2.0 and 2.3.
      *
-     * @param $type string the type of the flash message
-     * @param $message string the message itself
+     * @param string $type    the type of the flash message
+     * @param string $message the message itself
      */
     public function addFlashMessage($type, $message)
     {
         $session = $this->getSession();
 
-        if(method_exists($session, 'getFlashBag')) {
+        if (method_exists($session, 'getFlashBag')) {
             $session->getFlashBag()->set($type, $message);
         } else {
             $session->setFlash($type, $message);
@@ -74,6 +76,7 @@ abstract class BaseController extends Controller
      *
      * @param string $domain domain to check for
      * @param string $locale locale to check for
+     *
      * @throws AccessDeniedHttpException
      */
     public function securityCheck($domain = null, $locale = null)
@@ -94,6 +97,7 @@ abstract class BaseController extends Controller
     protected function getAuthorizedLocale()
     {
         $context = $this->getSecurityContext();
+
         return $this->getSecurity()->getAuthorizedLocaleList($context);
     }
 

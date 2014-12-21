@@ -26,8 +26,8 @@ class UnitQuery extends BaseUnitQuery
     /**
      * Find a unit by domain and key
      *
-     * @param $domain
-     * @param $key
+     * @param string $domain
+     * @param string $key
      *
      * @return Unit
      */
