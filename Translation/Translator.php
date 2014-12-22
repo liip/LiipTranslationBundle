@@ -64,22 +64,23 @@ class Translator extends BaseTranslator
         return $this->standardResources;
     }
 
-
     /**
-     * Return the full catalog of a given locale
+     * {@inheritdoc}
      *
-     * @param $locale
-     * @return \Symfony\Component\Translation\MessageCatalogueInterface
+     * Necessary only for versions of symfony < 2.6
      */
-    public function getCatalogue($locale)
+    public function getCatalogue($locale = null)
     {
+        if (null === $locale) {
+            $locale = $this->getLocale();
+        }
+
         if (!isset($this->catalogues[$locale])) {
             $this->loadCatalogue($locale);
         }
 
         return $this->catalogues[$locale];
     }
-
 
     /**
      * Load a specific resource
