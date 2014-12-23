@@ -26,20 +26,20 @@ class XliffFileLoader extends BaseLoader
         foreach ($xml->xpath('//xliff:trans-unit') as $translation) {
 
             // Read the attributes
-            $attributes = (array)$translation->attributes();
+            $attributes = (array) $translation->attributes();
             $attributes = $attributes['@attributes'];
             if (!(isset($attributes['resname']) || isset($translation->source)) || !isset($translation->target)) {
                 continue;
             }
             $key = isset($attributes['resname']) && $attributes['resname'] ? $attributes['resname'] : $translation->source;
-            $metadata = (array)$attributes;
+            $metadata = (array) $attributes;
 
             // read the notes
-            if (isset($translation->note)){
+            if (isset($translation->note)) {
                 $metadata['note'] = (string) $translation->note;
             }
 
-            $catalogue->setMetadata((string)$key, $metadata, $domain);
+            $catalogue->setMetadata((string) $key, $metadata, $domain);
         }
 
         return $catalogue;

@@ -27,7 +27,7 @@ class Translation extends BaseTranslation
     /**
      * Update this object from a ModelTranslation
      *
-     * @param ModelTranslation $unit
+     * @param ModelTranslation $translation
      */
     public function updateFromModel(ModelTranslation $translation)
     {

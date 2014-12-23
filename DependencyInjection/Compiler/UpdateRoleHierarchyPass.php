@@ -58,7 +58,7 @@ class UpdateRoleHierarchyPass implements CompilerPassInterface
 
     public function getDomainRoles($config)
     {
-        if(count($config['security']['domain_list'])==0){
+        if (count($config['security']['domain_list']) == 0) {
             throw new \Exception('To use the security by domain, you must define the security.domain_list parameter');
         }
         $roles = array();

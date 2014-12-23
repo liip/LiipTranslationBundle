@@ -32,8 +32,8 @@ class FilterManager
     protected $repository;
 
     /**
-     * @param $config
-     * @param $session
+     * @param array $config
+     * @param \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session $session
      * @param UnitRepository $repository
      */
     public function __construct($config, $session, UnitRepository $repository)
@@ -52,7 +52,7 @@ class FilterManager
     {
         $sessionValues = $this->session->get(Configuration::SESSION_PREFIX . 'filters', null);
 
-        return $sessionValues!==null ? $sessionValues : $this->getDefaultFilters();
+        return $sessionValues !== null ? $sessionValues : $this->getDefaultFilters();
     }
 
     /**

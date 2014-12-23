@@ -21,7 +21,8 @@ use Symfony\Component\Yaml\Yaml;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class ZipExporter {
+class ZipExporter
+{
 
     protected $unitsByLocaleAndDomain;
 
@@ -33,8 +34,8 @@ class ZipExporter {
     public function setUnits($units)
     {
         $this->unitsByLocaleAndDomain = array();
-        foreach($units as $unit) {
-            foreach($unit->getTranslations() as $translation) {
+        foreach ($units as $unit) {
+            foreach ($unit->getTranslations() as $translation) {
                 $this->unitsByLocaleAndDomain[$translation->getLocale()][$translation->getDomain()][] = $translation;
             }
         }
@@ -57,7 +58,7 @@ class ZipExporter {
     /**
      * Create a zip file from the current units
      *
-     * @param $path The pathname of the file o create. If not provided, file create a temporary file
+     * @param string|null $path The pathname of the file o create. If not provided, file create a temporary file
      *
      * @return string The zip file content
      */
@@ -88,11 +89,13 @@ class ZipExporter {
 
     /**
      * @param Translation[] $translations
+     *
      * @return string
      */
-    protected function createYml($translations) {
+    protected function createYml($translations)
+    {
         $flatArray = array();
-        foreach($translations as $translation) {
+        foreach ($translations as $translation) {
             if ($translation->getValue() !== null) {
                 $flatArray[$translation->getKey()] = $translation->getValue();
             }
