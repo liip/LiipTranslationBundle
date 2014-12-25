@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit bootstrap="./Tests/bootstrap.php" colors="true">
-
+    <php>
+        <!-- Silence E_USER_DEPRECATED (-16385 == -1 & ~E_USER_DEPRECATED) -->
+        <ini name="error_reporting" value="-16385"/>
+    </php>
     <testsuites>
         <testsuite name="LiipTranslationBundle test suite">
             <directory suffix="Test.php">./Tests</directory>
