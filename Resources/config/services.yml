@@ -29,7 +29,7 @@ services:
     liip.translation.exporter:
         class: Liip\TranslationBundle\Export\ZipExporter
 
-    liip.xliff.loader:
+    liip.translation.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader
 
     liip.translation.filter:

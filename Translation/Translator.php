@@ -101,7 +101,7 @@ class Translator extends BaseTranslator
     {
         // If possible use our custom xliff loader, so we get metadata
         if (in_array($resource['format'], array('xliff', 'xlf'))) {
-            return $this->container->get('liip.xliff.loader')->load($resource['path'], $resource['locale'], $resource['domain']);
+            return $this->container->get('liip.translation.xliff.loader')->load($resource['path'], $resource['locale'], $resource['domain']);
         }
 
         // Search for an other services
