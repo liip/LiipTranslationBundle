@@ -23,27 +23,31 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TestController extends Controller
 {
-    public function fallbackTestAction()
+    public function fallbackTestAction(Request $request)
     {
-        $this->getRequest()->setLocale('fr_CH');
+        $request->setLocale('fr_CH'); // symfony <= 2.5
+        $this->get('translator')->setLocale('fr_CH'); // symfony >= 2.6
+
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('fallback-key1', 'fallback-key2', 'fallback-key3', 'fallback-key4'),
             'domain' => 'fallback-test'
         ));
     }
 
-    public function overrideTestAction()
+    public function overrideTestAction(Request $request)
     {
-        $this->getRequest()->setLocale('en');
+        $request->setLocale('en');
+
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('override-key1', 'override-key2', 'override-key3'),
             'domain' => 'override-test'
         ));
     }
 
-    public function noImportTestAction()
+    public function noImportTestAction(Request $request)
     {
-        $this->getRequest()->setLocale('en');
+        $request->setLocale('en');
+
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('no-import-key1', 'no-import-key2'),
             'domain' => 'no-import-test'
