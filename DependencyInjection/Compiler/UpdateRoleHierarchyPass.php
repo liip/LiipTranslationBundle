@@ -40,12 +40,12 @@ class UpdateRoleHierarchyPass implements CompilerPassInterface
 
     public function updateHierarchy($hierarchy, $config)
     {
-        if ($config['security']['by_domain'] === true) {
+        if (!empty($config['security']['by_domain'])) {
             $hierarchy['ROLE_TRANSLATOR_ADMIN'][] = 'ROLE_TRANSLATOR_ALL_DOMAINS';
             $hierarchy['ROLE_TRANSLATOR_ALL_DOMAINS'] = $this->getDomainRoles($config);
         }
 
-        if ($config['security']['by_locale'] === true) {
+        if (!empty($config['security']['by_locale'])) {
             $hierarchy['ROLE_TRANSLATOR_ADMIN'][] = 'ROLE_TRANSLATOR_ALL_LOCALES';
             $hierarchy['ROLE_TRANSLATOR_ALL_LOCALES'] = $this->getLocaleRoles($config);
         }

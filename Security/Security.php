@@ -32,12 +32,12 @@ class Security
 
     public function isSecuredByDomain()
     {
-        return $this->config['security']['by_domain'];
+        return !empty($this->config['security']['by_domain']);
     }
 
     public function isSecuredByLocale()
     {
-        return $this->config['security']['by_locale'];
+        return !empty($this->config['security']['by_locale']);
     }
 
     public static function getRoleForLocale($locale)
@@ -57,7 +57,7 @@ class Security
      */
     public function getLocaleList()
     {
-        return $this->config['locale_list'];
+        return isset($this->config['locale_list']) ? $this->config['locale_list'] : array();
     }
 
     /**
