@@ -11,6 +11,8 @@ env:
   - SYMFONY_VERSION=2.6.*
 
 matrix:
+  allow_failures:
+    - php: hhvm
   include:
     - php: 5.3
       env: SYMFONY_VERSION=2.0.*
