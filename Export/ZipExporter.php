@@ -23,7 +23,6 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ZipExporter
 {
-
     protected $unitsByLocaleAndDomain;
 
     /**

@@ -31,7 +31,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     protected function getRepository(array $units = null)
     {
         $config = array(
-            'locale_list' => $this->getLocaleList()
+            'locale_list' => $this->getLocaleList(),
         );
 
         $translator = $this->getMockBuilder('Liip\TranslationBundle\Translation\Translator');
@@ -41,7 +41,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $persistence = $this->getMock('Liip\TranslationBundle\Persistence\PersistenceInterface');
         $persistence->expects($this->any())->method('getUnits')->will($this->returnValue($units));
         $persistence->expects($this->any())->method('getUnit')->will(
-            $this->returnCallback(function($domain, $key) use ($units) {
+            $this->returnCallback(function ($domain, $key) use ($units) {
                 foreach ($units as $unit) {
                     if ($unit->getDomain() == $domain && $unit->getKey() == $key) {
                         return $unit;
@@ -166,6 +166,4 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $repo = $this->getRepository(array());
         $repo->findTranslation('non-existing domain', 'key', 'en');
     }
-
-
 }

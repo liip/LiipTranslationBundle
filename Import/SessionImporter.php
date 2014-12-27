@@ -3,7 +3,6 @@
 namespace Liip\TranslationBundle\Import;
 
 use Liip\TranslationBundle\DependencyInjection\Configuration;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -35,9 +34,9 @@ class SessionImporter
     protected $translator;
 
     /**
-     * @param UnitRepository $repository
+     * @param UnitRepository                                                                              $repository
      * @param \Symfony\Component\HttpFoundation\Session|\Symfony\Component\HttpFoundation\Session\Session $session
-     * @param Translator $translator
+     * @param Translator                                                                                  $translator
      */
     public function __construct(UnitRepository $repository, $session, Translator $translator)
     {
@@ -100,16 +99,16 @@ class SessionImporter
      *
      * @param UploadedFile $file
      *
-     * @return string The path to the temp folder
+     * @return string          The path to the temp folder
      * @throws ImportException
      */
     protected function extractZip($file)
     {
         $tempFolder = sys_get_temp_dir().'/'.md5(rand(0, 99999));
-        if (@mkdir($tempFolder)===false) {
+        if (@mkdir($tempFolder) === false) {
             throw new ImportException("Impossible to create a temp folder for zip extraction");
         }
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         $zip->open($file->getRealPath());
         $zip->extractTo($tempFolder);
         $zip->close();
@@ -140,7 +139,7 @@ class SessionImporter
             'format' => $format,
             'locale' => $locale,
             'domain' => $domain,
-            'path' => $filePath
+            'path' => $filePath,
         ));
 
         // Merge with existing entries
@@ -244,11 +243,10 @@ class SessionImporter
     protected function updateSession($translations)
     {
         foreach ($translations as $locale => $values) {
-
             // Clear empty domains
             foreach (array('new', 'updated') as $modififactionType) {
                 foreach ($values[$modififactionType] as $domain => $trads) {
-                    if (count($trads)==0) {
+                    if (count($trads) == 0) {
                         unset($translations[$locale][$modififactionType][$domain]);
                     }
                 }
@@ -262,6 +260,4 @@ class SessionImporter
 
         $this->session->set(Configuration::SESSION_PREFIX.'import-list', $translations);
     }
-
-
 }

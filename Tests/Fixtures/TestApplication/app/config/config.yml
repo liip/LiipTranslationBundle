@@ -25,4 +25,3 @@ liip_translation:
         by_domain: false
         by_locale: false
         domain_list: [messages, security]
-

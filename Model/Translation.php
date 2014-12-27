@@ -29,9 +29,9 @@ class Translation extends Persistent
     private $metadata;
 
     /**
-     * @param string $value  value (ie translation)
-     * @param string $locale locale
-     * @param Unit   $unit   unit related to this translation
+     * @param string $value    value (ie translation)
+     * @param string $locale   locale
+     * @param Unit   $unit     unit related to this translation
      * @param array  $metadata
      */
     public function __construct($value, $locale, Unit $unit, array $metadata = array())

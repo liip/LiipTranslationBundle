@@ -43,10 +43,10 @@ class Translator extends BaseTranslator
     public function addResource($format, $resource, $locale, $domain = null)
     {
         $this->standardResources[] = array(
-            'format'=>$format,
-            'path'=>$resource,
-            'locale'=>$locale,
-            'domain'=> $domain === null ? 'messages' : $domain
+            'format' => $format,
+            'path' => $resource,
+            'locale' => $locale,
+            'domain' => $domain === null ? 'messages' : $domain,
         );
     }
 
@@ -119,7 +119,6 @@ class Translator extends BaseTranslator
         throw new \RuntimeException("Not service found to load {$resource['path']}");
     }
 
-
     /**
      * Initialize the translation before loading catalogues from the storage
      */
@@ -167,5 +166,4 @@ class Translator extends BaseTranslator
             $this->clearCacheForLocale($locale);
         }
     }
-
 }

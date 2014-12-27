@@ -4,7 +4,6 @@ namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Translation;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Persistence\Propel\Formatter\UnitFormatter;
 use Liip\TranslationBundle\Persistence\Propel\Model\UnitQuery;
 use Liip\TranslationBundle\Persistence\Propel\Model\Unit as PropelUnit;
@@ -28,7 +27,6 @@ use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTransla
  */
 class PropelPersistence implements PersistenceInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -103,7 +101,6 @@ class PropelPersistence implements PersistenceInterface
         }
     }
 
-
     public function deleteTranslation(Translation $translation)
     {
         $propelUnit = UnitQuery::create()->findOneByDomainAndKey(
@@ -125,7 +122,6 @@ class PropelPersistence implements PersistenceInterface
             $this->deleteTranslation($translation);
         }
     }
-
 
     public function saveTranslations(array $translations)
     {

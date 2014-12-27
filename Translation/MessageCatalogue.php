@@ -16,7 +16,6 @@
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
 
-
 /**
  * Define MetadataAwareInterface when absent (in 2.0 for example)
  */
@@ -31,7 +30,6 @@ if (! interface_exists('Symfony\Component\Translation\MetadataAwareInterface')) 
     }
 }
 
-
 /**
  * Implement it if require
  * The code is copy/paste from 2.1
@@ -42,7 +40,7 @@ use Symfony\Component\Translation\MessageCatalogue as BaseMessageCatalogue;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Translation\MetadataAwareInterface;
 
-if(in_array('Symfony\Component\Translation\MetadataAwareInterface', class_implements('Symfony\Component\Translation\MessageCatalogue'))) {
+if (in_array('Symfony\Component\Translation\MetadataAwareInterface', class_implements('Symfony\Component\Translation\MessageCatalogue'))) {
     class MessageCatalogue extends BaseMessageCatalogue
     {
     }

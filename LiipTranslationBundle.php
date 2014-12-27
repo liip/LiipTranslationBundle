@@ -6,7 +6,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Liip\TranslationBundle\DependencyInjection\Compiler\UpdateRoleHierarchyPass;
 
-
 /**
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.

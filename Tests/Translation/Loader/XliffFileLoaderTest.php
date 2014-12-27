@@ -26,8 +26,8 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $loader = new XliffFileLoader();
         $catalogue = $loader->load(__DIR__.'/../../Fixtures/test.xliff', 'en', 'messages');
 
-        $this->assertEquals(array('id'=>1), $catalogue->getMetadata('without.metadata'));
-        $this->assertEquals(array('id'=>2, 'minbytes'=>'10', 'maxbytes'=>'100'), $catalogue->getMetadata('with.metadata'));
+        $this->assertEquals(array('id' => 1), $catalogue->getMetadata('without.metadata'));
+        $this->assertEquals(array('id' => 2, 'minbytes' => '10', 'maxbytes' => '100'), $catalogue->getMetadata('with.metadata'));
     }
 
     public function testNoteExtraction()
@@ -35,7 +35,6 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $loader = new XliffFileLoader();
         $catalogue = $loader->load(__DIR__.'/../../Fixtures/test.xliff', 'en', 'messages');
 
-        $this->assertEquals(array('id'=>3, 'note'=>'Please edit it carefully'), $catalogue->getMetadata('with.note'));
+        $this->assertEquals(array('id' => 3, 'note' => 'Please edit it carefully'), $catalogue->getMetadata('with.note'));
     }
-
 }

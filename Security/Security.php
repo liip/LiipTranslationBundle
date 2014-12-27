@@ -42,12 +42,12 @@ class Security
 
     public static function getRoleForLocale($locale)
     {
-        return 'ROLE_TRANSLATOR_LOCALE_' . strtoupper($locale);
+        return 'ROLE_TRANSLATOR_LOCALE_'.strtoupper($locale);
     }
 
     public static function getRoleForDomain($domain)
     {
-        return 'ROLE_TRANSLATOR_DOMAIN_' . strtoupper($domain);
+        return 'ROLE_TRANSLATOR_DOMAIN_'.strtoupper($domain);
     }
 
     /**

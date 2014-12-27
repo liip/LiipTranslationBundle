@@ -3,9 +3,7 @@
 namespace Liip\TranslationBundle\Command;
 
 use Liip\TranslationBundle\Import\SymfonyImporter;
-use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -38,7 +36,7 @@ class ImportCommand extends ContainerAwareCommand
                 new InputOption('domains', null, InputOption::VALUE_REQUIRED, 'only import specific domains: comma separated list of domains (--domains=messages,validators)'),
                 new InputOption('with-translations', null, InputOption::VALUE_NONE, 'also import the associated translations'),
                 new InputOption('override', null, InputOption::VALUE_NONE, 'override existing translations'),
-                new InputOption('prune', null, InputOption::VALUE_NONE, 'remove all units that are no more present in files')
+                new InputOption('prune', null, InputOption::VALUE_NONE, 'remove all units that are no more present in files'),
             ))
         ;
     }
@@ -58,7 +56,7 @@ class ImportCommand extends ContainerAwareCommand
             $importOptions['import-translations'] = true;
         }
         if ($input->getOption('override')) {
-            if ($input->getOption('with-translations')==null) {
+            if ($input->getOption('with-translations') == null) {
                 throw new \RuntimeException('[override] option is only available in conjuction with [with-translations]');
             }
             $importOptions['override'] = true;

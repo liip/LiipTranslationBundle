@@ -2,7 +2,6 @@
 
 namespace Liip\TranslationBundle\Controller;
 
-use Liip\TranslationBundle\DependencyInjection\Configuration;
 use Liip\TranslationBundle\Form\FilterType;
 use Liip\TranslationBundle\Form\TranslationType;
 use Liip\TranslationBundle\Model\Translation;
@@ -41,6 +40,7 @@ class TranslationController extends BaseController
             }
             $filters['locale'] = array_intersect($filters['languages'], $authorizedLocales);
         }
+
         return $filters;
     }
 
@@ -55,7 +55,7 @@ class TranslationController extends BaseController
 
             if (is_bool($value)) {
                 $value = $value ? 'filters.value.true' : 'translation.filters.value.false';
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 $value = implode(', ', $value);
             }
             $result['filters.'.$name] = $value;
@@ -75,7 +75,7 @@ class TranslationController extends BaseController
             'items' => $units,
             'columns' => $filters['locale'],
             'filter_form' => $filterForm->createView(),
-            'filters' => $this->beautifyFilter($filters)
+            'filters' => $this->beautifyFilter($filters),
         ));
     }
 
@@ -114,7 +114,7 @@ class TranslationController extends BaseController
 
         return $this->render('LiipTranslationBundle:Translation:edition.html.twig', array(
             'translation' => $translation,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
     }
 

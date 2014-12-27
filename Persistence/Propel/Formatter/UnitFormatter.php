@@ -22,7 +22,6 @@ use Liip\TranslationBundle\Model\Translation as ModelTranslation;
  */
 class UnitFormatter extends \PropelFormatter
 {
-
     /**
      * {@inheritdoc}
      */
@@ -75,5 +74,4 @@ class UnitFormatter extends \PropelFormatter
     {
         return $data ? unserialize($data) : array();
     }
-
 }

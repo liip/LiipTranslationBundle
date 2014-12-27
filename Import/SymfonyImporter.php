@@ -18,7 +18,6 @@
 namespace Liip\TranslationBundle\Import;
 
 use Liip\TranslationBundle\Model\Unit;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
@@ -83,7 +82,7 @@ class SymfonyImporter
             'import-translations' => false,
             'override' => false,
             'metadata_locale' => 'en', // define from which locale you want to import the metadata
-            'prune' => false
+            'prune' => false,
         ), $options);
         if (array_key_exists('output', $options)) {
             $this->logger = $options['output'];
@@ -119,7 +118,6 @@ class SymfonyImporter
 
             $catalogues[$resource['locale']]->addCatalogue($this->translator->loadResource($resource));
             $this->log("  >> <info>OK</info>\n");
-
         }
 
         // Update all units from the catalog
@@ -164,9 +162,9 @@ class SymfonyImporter
         }
 
         // Potentially remove no more existing units
-        if ($options['prune']===true) {
+        if ($options['prune'] === true) {
             $this->log("\n<info>Remove units that are no more present in translation files</info>\n");
-            $domains = $options['domain_list']!==null ? $options['domain_list'] : array_keys($existingUnits);
+            $domains = $options['domain_list'] !== null ? $options['domain_list'] : array_keys($existingUnits);
             foreach ($domains as $domain) {
                 if (!isset($allFileUnits[$domain])) {
                     continue;
@@ -193,5 +191,4 @@ class SymfonyImporter
             $this->logger->write($msg);
         }
     }
-
 }

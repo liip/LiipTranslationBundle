@@ -39,5 +39,4 @@ interface PersistenceInterface
 
     public function deleteTranslation(Translation $translation);
     public function deleteTranslations(array $translations);
-
 }

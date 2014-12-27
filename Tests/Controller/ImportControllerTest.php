@@ -50,10 +50,9 @@ class ImportControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/import');
         $form = $crawler->filter('input[value="Upload"]')->form();
-        $client->submit($form, array('translation_file_import[file]'=>$this->createYml()));
+        $client->submit($form, array('translation_file_import[file]' => $this->createYml()));
         $crawler = $client->followRedirect();
         $this->assertNotContains('alert-error', $client->getResponse()->getContent());
-
 
         // Check the results
         $this->assertEquals('File import success, 1 new and 2 update', $crawler->filter('.alert-info')->text());
@@ -69,7 +68,7 @@ class ImportControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/import');
         $form = $crawler->filter('input[value="Upload"]')->form();
-        $client->submit($form, array('translation_file_import[file]'=>$this->createZip()));
+        $client->submit($form, array('translation_file_import[file]' => $this->createZip()));
         $crawler = $client->followRedirect();
         $this->assertNotContains('alert-error', $client->getResponse()->getContent());
 
@@ -87,7 +86,7 @@ class ImportControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/import');
         $form = $crawler->filter('input[value="Upload"]')->form();
-        $client->submit($form, array('translation_file_import[file]'=>$this->createZip()));
+        $client->submit($form, array('translation_file_import[file]' => $this->createZip()));
         $crawler = $client->followRedirect();
         $this->assertNotContains('alert-error', $client->getResponse()->getContent());
 
@@ -113,7 +112,7 @@ class ImportControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/import');
         $form = $crawler->filter('input[value="Upload"]')->form();
-        $client->submit($form, array('translation_file_import[file]'=>$this->createZip()));
+        $client->submit($form, array('translation_file_import[file]' => $this->createZip()));
         $crawler = $client->followRedirect();
         $this->assertEquals('File import success, 4 new and 2 update', $crawler->filter('.alert-info')->text());
 
@@ -136,7 +135,7 @@ class ImportControllerTest extends BaseWebTestCase
             'compound.translation1' => 'new compound value',
             'key1' => 'value1',
             'key2' => 'import-value2',
-            'key3' => 'import-value3'
+            'key3' => 'import-value3',
         )));
 
         return new UploadedFile($path, 'functional.en.yml');
@@ -161,6 +160,4 @@ class ImportControllerTest extends BaseWebTestCase
 
         return new UploadedFile($exporter->createZipFile(sys_get_temp_dir().'/trans.zip'), 'trans.zip');
     }
-
 }
-

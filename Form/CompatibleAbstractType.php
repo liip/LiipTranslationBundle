@@ -26,7 +26,9 @@ if (interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
          * @param \Symfony\Component\Form\FormBuilderInterface|\Symfony\Component\Form\FormBuilder $builder
          * @param array $options
          */
-        public function compatibleBuildForm($builder, array $options) { }
+        public function compatibleBuildForm($builder, array $options)
+        {
+        }
 
         public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
         {
@@ -40,7 +42,9 @@ if (interface_exists('Symfony\Component\Form\FormBuilderInterface')) {
          * @param \Symfony\Component\Form\FormBuilderInterface|\Symfony\Component\Form\FormBuilder $builder
          * @param array $options
          */
-        public function compatibleBuildForm($builder, array $options) { }
+        public function compatibleBuildForm($builder, array $options)
+        {
+        }
 
         public function buildForm(\Symfony\Component\Form\FormBuilder $builder, array $options)
         {
@@ -56,6 +60,7 @@ abstract class CompatibleAbstractType extends CompatibleAbstractTypeBase
         if (array_key_exists('translation_domain', $possibilities)) {
             $options['translation_domain'] = 'translation-bundle';
         }
+
         return $options;
     }
 }

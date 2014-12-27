@@ -30,7 +30,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     public function getUnit()
     {
         return array(
-            array(new Unit(self::DOMAIN, self::KEY, array()))
+            array(new Unit(self::DOMAIN, self::KEY, array())),
         );
     }
 
@@ -39,6 +39,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
         $u = new Unit(self::DOMAIN, self::KEY, array());
         $u->setTranslation(self::LOCALE1, self::TRANSLATION1);
         $u->setTranslation(self::LOCALE2, self::TRANSLATION2);
+
         return array(array($u));
     }
 

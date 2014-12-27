@@ -37,8 +37,8 @@ class BaseWebTestCase extends WebTestCase
     public function assertStatusCode($code, Client $client, $message = null)
     {
         $status = $client->getResponse()->getStatusCode();
-        if(is_array($code)) {
-            if(is_null($message)) {
+        if (is_array($code)) {
+            if (is_null($message)) {
                 $message = 'The status code [%s] is not in the expected ones : [%s].';
             }
             $this->assertContains($status, $code, sprintf($message, $status, implode(', ', $code)));
@@ -54,5 +54,4 @@ class BaseWebTestCase extends WebTestCase
     {
         $this->assertTrue($client->getResponse()->isRedirection());
     }
-
 }

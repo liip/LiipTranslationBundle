@@ -4,8 +4,6 @@ namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Translation;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
-use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -26,7 +24,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFilePersistence implements PersistenceInterface
 {
-
     protected $directory;
 
     public function __construct($options)
@@ -90,7 +87,6 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('units', $existingUnits);
     }
 
-
     public function deleteUnit(Unit $unit)
     {
         $this->deleteUnits(array($unit));
@@ -104,8 +100,6 @@ class YamlFilePersistence implements PersistenceInterface
         }
         $this->dumpFile('units', $existingUnits);
     }
-
-
 
     public function saveTranslation(Translation $translation)
     {
@@ -121,7 +115,6 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('translations', $existingTranslations);
     }
 
-
     public function deleteTranslation(Translation $translation)
     {
         $this->deleteTranslations(array($translation));
@@ -136,7 +129,6 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('translations', $existingTranslations);
     }
 
-
     protected function createUnitObject($domain, $key, $metadata, $translations)
     {
         $unit = new Unit($domain, $key, $metadata, false);
@@ -149,7 +141,6 @@ class YamlFilePersistence implements PersistenceInterface
 
         return $unit;
     }
-
 
     protected function loadFiles()
     {
@@ -167,5 +158,4 @@ class YamlFilePersistence implements PersistenceInterface
     {
         file_put_contents($this->directory.'/'.$name, Yaml::dump($data, 4));
     }
-
 }

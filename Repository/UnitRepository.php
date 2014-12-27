@@ -63,7 +63,6 @@ class UnitRepository
         return $this->config['locale_list'];
     }
 
-
     protected function loadAll()
     {
         if ($this->loaded) {
@@ -115,7 +114,6 @@ class UnitRepository
         return $units;
     }
 
-
     /**
      * @param array|string $columns
      * @param string|null  $value
@@ -134,7 +132,7 @@ class UnitRepository
         foreach ($this->allUnits as $u) {
             $status = true;
             foreach ($columns as $column => $value) {
-                $unitValue = call_user_func(array($u, 'get' . ucfirst($column)));
+                $unitValue = call_user_func(array($u, 'get'.ucfirst($column)));
                 $status &= is_array($value) ? in_array($unitValue, $value) : $unitValue == $value;
             }
             if ($status) {
@@ -191,7 +189,7 @@ class UnitRepository
             $unit = $this->findByDomainAndKey($domain, $key);
         } catch (NotFoundException $e) {
             if ($nullWhenNotFound) {
-                return null;
+                return;
             }
             throw $e;
         }
@@ -201,7 +199,7 @@ class UnitRepository
             return $unit->getTranslation($locale);
         }
 
-        return null;
+        return;
     }
 
     public function createUnit($domain, $key, array $metadata = array())
@@ -217,7 +215,7 @@ class UnitRepository
         if ($objects === null) {
             $objects = $this->allUnits;
         }
-        if ($objects instanceOf Unit) {
+        if ($objects instanceof Unit) {
             $objects = array($objects);
         }
 
@@ -268,7 +266,7 @@ class UnitRepository
                 'deleted' => count($dirtyTranslations['deleted']),
                 'created' => count($dirtyTranslations['created']),
                 'updated' => count($dirtyTranslations['modified']),
-            )
+            ),
         );
         $stats['units']['text'] = $this->generateStatisticText($stats['units']);
         $stats['translations']['text'] = $this->generateStatisticText($stats['translations']);
@@ -288,7 +286,7 @@ class UnitRepository
     {
         $this->loadAll();
 
-        return array_values(array_unique(array_map(function(Unit $u) { return $u->getDomain(); }, $this->allUnits)));
+        return array_values(array_unique(array_map(function (Unit $u) { return $u->getDomain(); }, $this->allUnits)));
     }
 
     /**
@@ -340,7 +338,6 @@ class UnitRepository
         $this->persist($unit);
     }
 
-
     /**
      * @param array $filters
      *
@@ -371,7 +368,6 @@ class UnitRepository
             $nonEmptyCount = 0;
             $valueCount = 0;
             foreach ($u->getTranslations() as $t) {
-
                 // Remove translations not required
                 if (! in_array($t->getLocale(), $filters['locale'])) {
                     unset($u[$t->getLocale()]);
@@ -403,7 +399,6 @@ class UnitRepository
 
         return $units;
     }
-
 
     protected function checkDomainGrants($domain)
     {

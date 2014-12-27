@@ -62,7 +62,7 @@ class ImportController extends BaseController
 
         try {
             $counters = $this->getSessionImporter()->handleUploadedFile($data['file']);
-            if ($counters['new']==0 && $counters['updated']==0) {
+            if ($counters['new'] == 0 && $counters['updated'] == 0) {
                 $this->addFlashMessage('warning', 'File import success, but not more modification found');
             } else {
                 $this->addFlashMessage('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
@@ -107,5 +107,4 @@ class ImportController extends BaseController
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
-
 }

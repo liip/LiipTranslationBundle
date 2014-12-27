@@ -117,7 +117,6 @@ abstract class BaseController extends Controller
         return $this->get('liip.translation.symfony_importer');
     }
 
-
     /**
      * @return PersistenceInterface
      */
@@ -182,4 +181,3 @@ abstract class BaseController extends Controller
         return $this->get('translator');
     }
 }
-

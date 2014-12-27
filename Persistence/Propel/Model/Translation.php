@@ -5,7 +5,6 @@ namespace Liip\TranslationBundle\Persistence\Propel\Model;
 use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseTranslation;
 use Liip\TranslationBundle\Model\Translation as ModelTranslation;
 
-
 /**
  * A propel representation of a translation
  *
@@ -23,7 +22,6 @@ use Liip\TranslationBundle\Model\Translation as ModelTranslation;
  */
 class Translation extends BaseTranslation
 {
-
     /**
      * Update this object from a ModelTranslation
      *
@@ -35,5 +33,4 @@ class Translation extends BaseTranslation
         $this->setValue($translation->getValue());
         $this->setMetadata($translation->getMetadata());
     }
-
 }

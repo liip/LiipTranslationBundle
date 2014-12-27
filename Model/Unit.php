@@ -69,7 +69,7 @@ class Unit extends Persistent implements \ArrayAccess
      * Set a translation for the given locale without caring if
      * the translation already exists or not.
      *
-     * @param string $locale the locale
+     * @param string $locale      the locale
      * @param string $translation the translation (value)
      * @param bool   $isUpdate
      */
@@ -154,7 +154,7 @@ class Unit extends Persistent implements \ArrayAccess
             return $this->translations[$locale];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -177,7 +177,6 @@ class Unit extends Persistent implements \ArrayAccess
     {
         $this->setIsDeleted();
     }
-
 
     public function offsetExists($locale)
     {

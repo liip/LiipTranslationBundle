@@ -30,7 +30,7 @@ class TestController extends Controller
 
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('fallback-key1', 'fallback-key2', 'fallback-key3', 'fallback-key4'),
-            'domain' => 'fallback-test'
+            'domain' => 'fallback-test',
         ));
     }
 
@@ -40,7 +40,7 @@ class TestController extends Controller
 
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('override-key1', 'override-key2', 'override-key3'),
-            'domain' => 'override-test'
+            'domain' => 'override-test',
         ));
     }
 
@@ -50,7 +50,7 @@ class TestController extends Controller
 
         return $this->render('TestBundle:Test:keys_values.html.twig', array(
             'keys' => array('no-import-key1', 'no-import-key2'),
-            'domain' => 'no-import-test'
+            'domain' => 'no-import-test',
         ));
     }
 }

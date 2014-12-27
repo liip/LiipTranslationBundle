@@ -30,7 +30,7 @@ class NonRegressionTest extends BaseWebTestCase
         $client->request('GET', '/non-regression/fallback');
         $this->assertEquals(
             "  fallback-key1: value_1_fr_CH\n  fallback-key2: value_2_fr\n  fallback-key3: value_3_en\n  fallback-key4: fallback-key4\n",
-            substr($client->getResponse()->getContent(),0,1000),
+            substr($client->getResponse()->getContent(), 0, 1000),
             "Assert the fallback system: fr_CH => fr => en => raw_key"
         );
     }
@@ -51,7 +51,7 @@ class NonRegressionTest extends BaseWebTestCase
             "  override-key1: value_1_app\n  override-key2: value_2_bundle\n  override-key3: value_3_bundle\n";
         $this->assertEquals(
             $expectedResult,
-            substr($client->getResponse()->getContent(),0,1000),
+            substr($client->getResponse()->getContent(), 0, 1000),
             "Assert the override system: bundle => bundle in app => app"
         );
     }
@@ -67,7 +67,7 @@ class NonRegressionTest extends BaseWebTestCase
         $client->request('GET', '/non-regression/no-import');
         $this->assertEquals(
             "  no-import-key1: value_1_app\n  no-import-key2: no-import-key2\n",
-            substr($client->getResponse()->getContent(),0,1000),
+            substr($client->getResponse()->getContent(), 0, 1000),
             "Assert that translations work even when the storage is empty"
         );
     }

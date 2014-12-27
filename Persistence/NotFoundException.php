@@ -17,11 +17,10 @@ namespace Liip\TranslationBundle\Persistence;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class NotFoundException extends \Exception {
-
+class NotFoundException extends \Exception
+{
     public function __construct($domain, $key)
     {
         parent::__construct("No translation unit found for domain [$domain] and key [$key]");
     }
-
 }

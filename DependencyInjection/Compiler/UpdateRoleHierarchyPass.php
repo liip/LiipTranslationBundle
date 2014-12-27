@@ -5,7 +5,6 @@ namespace Liip\TranslationBundle\DependencyInjection\Compiler;
 use Liip\TranslationBundle\Security\Security;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Compiler pass to update the security.role_hierarchy.roles
@@ -24,10 +23,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class UpdateRoleHierarchyPass implements CompilerPassInterface
 {
-
-   /**
-    * {@inheritDoc}
-    */
+    /**
+     * {@inheritDoc}
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasParameter('security.role_hierarchy.roles')) {
@@ -38,7 +36,6 @@ class UpdateRoleHierarchyPass implements CompilerPassInterface
             $container->getParameter('security.role_hierarchy.roles'),
             $container->getParameter('liip_translation_config')
         ));
-
     }
 
     public function updateHierarchy($hierarchy, $config)

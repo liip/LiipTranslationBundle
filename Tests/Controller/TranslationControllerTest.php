@@ -2,7 +2,6 @@
 
 namespace Liip\TranslationBundle\Tests\Controller;
 
-use Liip\TranslationBundle\Controller\TranslationController;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -34,10 +33,9 @@ class TranslationControllerTest extends BaseWebTestCase
 
         // Filter by languagues must reduces the number of columns
         $formData = array();
-        if (Kernel::MINOR_VERSION==0) {
+        if (Kernel::MINOR_VERSION == 0) {
             $formData['translation_filter[languages][fr_CH]'] = 'fr_CH';
-        }
-        else {
+        } else {
             $formData['translation_filter[languages]'] = array('fr_CH');
         }
         $client->submit($form, $formData);
@@ -61,7 +59,7 @@ class TranslationControllerTest extends BaseWebTestCase
         // Edit the value
         $form = $crawler->filter('input[type="submit"]')->form();
         $client->submit($form, array(
-            'translation_translation[value]' => 'new_value1'
+            'translation_translation[value]' => 'new_value1',
         ));
         $crawler = $client->followRedirect();
 
@@ -76,11 +74,11 @@ class TranslationControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $client->request('POST', $this->getUrl('liip_translation_inline_edit'), array(
                 'value' => 'new_value2_for_fr',
-                'id' => 'functional__key2__fr'
+                'id' => 'functional__key2__fr',
             ),
             array(),
             array(
-                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
             )
         );
 
@@ -134,11 +132,11 @@ class TranslationControllerTest extends BaseWebTestCase
         $client = static::createClient();
         $client->request('POST', $this->getUrl('liip_translation_inline_edit'), array(
                 'value' => 'Clear cache now!',
-                'id' => 'translation-bundle__button.clear_cache__en'
+                'id' => 'translation-bundle__button.clear_cache__en',
             ),
             array(),
             array(
-                'HTTP_X-Requested-With' => 'XMLHttpRequest'
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
             )
         );
 
@@ -153,5 +151,4 @@ class TranslationControllerTest extends BaseWebTestCase
         $link = $crawler->filter('a.translation-cache-clear');
         $this->assertEquals('Clear cache now!', $link->text());
     }
-
 }

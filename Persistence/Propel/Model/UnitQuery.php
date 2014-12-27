@@ -4,7 +4,6 @@ namespace Liip\TranslationBundle\Persistence\Propel\Model;
 
 use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseUnitQuery;
 
-
 /**
  * Query class of the propel representation of a translation
  *
@@ -22,7 +21,6 @@ use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseUnitQuery;
  */
 class UnitQuery extends BaseUnitQuery
 {
-
     /**
      * Find a unit by domain and key
      *
