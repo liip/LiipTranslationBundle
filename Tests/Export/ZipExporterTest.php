@@ -1,6 +1,7 @@
 <?php
 
 namespace Liip\TranslationBundle\Tests\Export;
+
 use Liip\TranslationBundle\Export\ZipExporter;
 use Liip\TranslationBundle\Model\Unit;
 
@@ -16,13 +17,15 @@ class ZipArchive extends \ZipArchive
      *
      * @return array
      */
-    public function getFileList() {
+    public function getFileList()
+    {
         $index = 0;
         $fileList = array();
         while ($index < $this->numFiles) {
             $fileList[] = $this->getNameIndex($index);
             $index++;
         }
+
         return $fileList;
     }
 }
@@ -44,7 +47,6 @@ class ZipArchive extends \ZipArchive
  */
 class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testExport()
     {
         $unit1 = new Unit('message', 'welcome.text');
@@ -67,13 +69,12 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
             'validator.en.yml',
             'message.fr.yml',
             'validator.fr.yml',
-            'message.fr_CH.yml'
+            'message.fr_CH.yml',
         ), $zip->getFileList());
 
         $this->assertEquals("welcome.text: Hello\nfirst_name: 'First name'\n", $zip->getFromName('message.en.yml'));
         $this->assertEquals("welcome.text: 'Salut toi'\n", $zip->getFromName('message.fr_CH.yml'));
     }
-
 
     public function testExportOfEmptyTranslation()
     {
@@ -89,7 +90,6 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("key1: 'Not empty'\n", $zip->getFromName('messages.en.yml'));
     }
 
-
     public function testExportOfEmptyLocale()
     {
         $unit1 = new Unit('messages', 'locale');
@@ -98,7 +98,6 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $zip = $this->getZipFromUnit(array($unit1));
         $this->assertEquals(array(), $zip->getFileList());
     }
-
 
     /**
      * Export a zip for the provided units
@@ -112,7 +111,7 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
         $zipPath = $exporter->createZipFile();
         $zip = new ZipArchive();
         $zip->open($zipPath);
+
         return $zip;
     }
-
 }

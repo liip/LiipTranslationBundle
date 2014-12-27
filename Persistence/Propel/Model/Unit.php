@@ -6,7 +6,6 @@ use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseUnit;
 use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTranslation;
 use Liip\TranslationBundle\Model\Unit as ModelUnit;
 
-
 /**
  * The propel representation of a unit
  *
@@ -24,7 +23,6 @@ use Liip\TranslationBundle\Model\Unit as ModelUnit;
  */
 class Unit extends BaseUnit
 {
-
     /**
      * Create a ModelUnit representation of a this object
      *
@@ -37,13 +35,12 @@ class Unit extends BaseUnit
             $this->getKey(),
             $this->getMetadata()
         );
-        foreach($this->getTranslations() as $translation) {
+        foreach ($this->getTranslations() as $translation) {
             $unit->setTranslation($translation->getLocale(), $translation->getValue());
         }
 
         return $unit;
     }
-
 
     /**
      * Update the current object from a ModelUnit
@@ -57,11 +54,10 @@ class Unit extends BaseUnit
         $this->setMetadata($unit->getMetadata());
     }
 
-
     /**
      * Get or create a Propel Tranlation object for the given locale
      *
-     * @param $locale
+     * @param string $locale
      *
      * @return Translation
      */

@@ -37,5 +37,4 @@ class Loader implements LoaderInterface
     {
         return $this->repository->getMessageCatalogues($locale, $domain);
     }
-
 }

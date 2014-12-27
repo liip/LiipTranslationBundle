@@ -4,7 +4,6 @@ namespace Liip\TranslationBundle\Persistence\Propel\Model;
 
 use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseTranslationQuery;
 
-
 /**
  * Query class of the propel representation of a translation
  *

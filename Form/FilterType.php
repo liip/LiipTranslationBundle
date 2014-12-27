@@ -33,29 +33,29 @@ class FilterType extends CompatibleAbstractType
         $builder
             ->add('empty', 'checkbox', $this->decorateOption(array(
                 'required' => false,
-                'label' => 'form.filter.empty'
+                'label' => 'form.filter.empty',
             ), $options))
             ->add('domain', 'choice', $this->decorateOption(array(
                 'choices' => $this->domains,
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
-                'label' => 'form.filter.domain'
+                'label' => 'form.filter.domain',
             ), $options))
             ->add('languages', 'choice', $this->decorateOption(array(
                 'choices' => $this->locales,
                 'multiple' => true,
                 'expanded' => true,
                 'required' => false,
-                'label' => 'form.filter.locale'
+                'label' => 'form.filter.locale',
             ), $options))
             ->add('key', 'text', $this->decorateOption(array(
                 'required' => false,
-                'label' => 'form.filter.key'
+                'label' => 'form.filter.key',
             ), $options))
             ->add('value', 'text', $this->decorateOption(array(
                 'required' => false,
-                'label' => 'form.filter.value'
+                'label' => 'form.filter.value',
             ), $options))
         ;
     }

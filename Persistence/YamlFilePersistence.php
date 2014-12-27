@@ -4,8 +4,6 @@ namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Translation;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
-use Symfony\Component\Locale\Exception\NotImplementedException;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -26,7 +24,6 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlFilePersistence implements PersistenceInterface
 {
-
     protected $directory;
 
     public function __construct($options)
@@ -42,7 +39,7 @@ class YamlFilePersistence implements PersistenceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * @return \Liip\TranslationBundle\Model\Unit[]
      */
     public function getUnits()
@@ -50,8 +47,8 @@ class YamlFilePersistence implements PersistenceInterface
         list($unitData, $translations) = $this->loadFiles();
 
         $units = array();
-        foreach($unitData as $domain => $keys) {
-            foreach($keys as $key => $metadata) {
+        foreach ($unitData as $domain => $keys) {
+            foreach ($keys as $key => $metadata) {
                 $units[] = $this->createUnitObject($domain, $key, $metadata, $translations);
             }
         }
@@ -60,7 +57,8 @@ class YamlFilePersistence implements PersistenceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
      * @return Unit
      * @throw NotFoundException
      */
@@ -74,8 +72,6 @@ class YamlFilePersistence implements PersistenceInterface
 
         return $this->createUnitObject($domain, $key, $units[$domain][$key], $translations);
     }
-
-
 
     public function saveUnit(Unit $unit)
     {
@@ -91,7 +87,6 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('units', $existingUnits);
     }
 
-
     public function deleteUnit(Unit $unit)
     {
         $this->deleteUnits(array($unit));
@@ -105,8 +100,6 @@ class YamlFilePersistence implements PersistenceInterface
         }
         $this->dumpFile('units', $existingUnits);
     }
-
-
 
     public function saveTranslation(Translation $translation)
     {
@@ -122,7 +115,6 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('translations', $existingTranslations);
     }
 
-
     public function deleteTranslation(Translation $translation)
     {
         $this->deleteTranslations(array($translation));
@@ -137,12 +129,11 @@ class YamlFilePersistence implements PersistenceInterface
         $this->dumpFile('translations', $existingTranslations);
     }
 
-
     protected function createUnitObject($domain, $key, $metadata, $translations)
     {
         $unit = new Unit($domain, $key, $metadata, false);
         if (isset($translations[$domain][$key])) {
-            foreach($translations[$domain][$key] as $locale => $data) {
+            foreach ($translations[$domain][$key] as $locale => $data) {
                 list($value, $metadata) = $data;
                 $unit->addTranslation(new Translation($value, $locale, $unit, $metadata), false);
             }
@@ -150,7 +141,6 @@ class YamlFilePersistence implements PersistenceInterface
 
         return $unit;
     }
-
 
     protected function loadFiles()
     {
@@ -160,6 +150,7 @@ class YamlFilePersistence implements PersistenceInterface
     protected function loadFile($name)
     {
         $file = $this->directory.'/'.$name;
+
         return file_exists($file) ? Yaml::parse(file_get_contents($file)) : array();
     }
 
@@ -167,5 +158,4 @@ class YamlFilePersistence implements PersistenceInterface
     {
         file_put_contents($this->directory.'/'.$name, Yaml::dump($data, 4));
     }
-
 }

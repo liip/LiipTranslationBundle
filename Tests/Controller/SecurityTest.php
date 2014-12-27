@@ -2,12 +2,8 @@
 
 namespace Liip\TranslationBundle\Tests\Controller;
 
-use Liip\TranslationBundle\Export\ZipExporter;
-use Liip\TranslationBundle\Model\Unit;
-use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Security\Security;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Yaml\Yaml;
@@ -27,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class SecurityTest extends BaseWebTestCase
 {
-    static $configFile = '/../Fixtures/TestApplication/app/config/config.yml';
+    public static $configFile = '/../Fixtures/TestApplication/app/config/config.yml';
 
     public static function setUpBeforeClass()
     {
@@ -37,7 +33,7 @@ class SecurityTest extends BaseWebTestCase
         $config = Yaml::parse(file_get_contents($file));
 
         // Activate the security
-        $securityConfigFile = Kernel::MINOR_VERSION==0 ? 'security.2.0.yml' : 'security.yml';
+        $securityConfigFile = Kernel::MINOR_VERSION == 0 ? 'security.2.0.yml' : 'security.yml';
         $config['imports'] = array(array('resource' => $securityConfigFile));
 
         // Activate the security on the bundle
@@ -45,7 +41,7 @@ class SecurityTest extends BaseWebTestCase
         $config['liip_translation']['security']['by_locale'] = true;
 
         // Write it down
-        file_put_contents($file,Yaml::dump($config));
+        file_put_contents($file, Yaml::dump($config));
 
         //  Import units and clear cache
         self::importUnits(array(), array('security'));
@@ -85,7 +81,6 @@ class SecurityTest extends BaseWebTestCase
         $this->processAction($roles, $parameters);
     }
 
-
     public function setRoles($roles)
     {
         $roles = is_array($roles) ? $roles : array($roles);
@@ -104,24 +99,24 @@ class SecurityTest extends BaseWebTestCase
     public function getValidAction()
     {
         return array(
-            array('ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
-            array('ROLE_TRANSLATOR_ADMIN', array('domain'=>'security', 'locale'=> 'en')),
-            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr'))
+            array('ROLE_TRANSLATOR_ADMIN', array('domain' => 'security', 'locale' => 'en')),
+            array('ROLE_TRANSLATOR_ADMIN', array('domain' => 'security', 'locale' => 'en')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS', 'ROLE_TRANSLATOR_LOCALE_FR'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain' => 'security', 'locale' => 'fr')),
       );
     }
 
     public function getUnautorizedAction()
     {
         return array(
-            array(array(), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain'=>'security', 'locale'=> 'fr')),
-            array(array('ROLE_TRANSLATOR_LOCALE_EN', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain'=>'security', 'locale'=> 'fr')),
+            array(array(), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_DOMAINS'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_ALL_LOCALES', 'ROLE_TRANSLATOR_DOMAIN_MESSAGES'), array('domain' => 'security', 'locale' => 'fr')),
+            array(array('ROLE_TRANSLATOR_LOCALE_EN', 'ROLE_TRANSLATOR_DOMAIN_SECURITY'), array('domain' => 'security', 'locale' => 'fr')),
         );
     }
 
@@ -133,4 +128,3 @@ class SecurityTest extends BaseWebTestCase
         self::clearCache();
     }
 }
-

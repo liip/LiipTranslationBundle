@@ -19,5 +19,4 @@ namespace Liip\TranslationBundle\Import;
  */
 class ImportException extends \Exception
 {
-
 }

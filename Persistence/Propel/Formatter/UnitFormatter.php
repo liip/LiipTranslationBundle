@@ -20,8 +20,8 @@ use Liip\TranslationBundle\Model\Translation as ModelTranslation;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-class UnitFormatter extends \PropelFormatter {
-
+class UnitFormatter extends \PropelFormatter
+{
     /**
      * {@inheritdoc}
      */
@@ -29,7 +29,7 @@ class UnitFormatter extends \PropelFormatter {
     {
         $allUnits = array();
         $unitTree = array();
-        foreach($stmt as $translation) {
+        foreach ($stmt as $translation) {
             $domain = $translation['DOMAIN'];
             $key = $translation['KEY'];
             if (!isset($unitTree[$domain][$key])) {
@@ -66,7 +66,7 @@ class UnitFormatter extends \PropelFormatter {
      * Unserialized Propel 'object' type
      * (Copy/paste from BaseUnit::getMetadata()
      *
-     * @param $data string
+     * @param string $data
      *
      * @return array
      */
@@ -74,5 +74,4 @@ class UnitFormatter extends \PropelFormatter {
     {
         return $data ? unserialize($data) : array();
     }
-
 }

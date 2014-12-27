@@ -34,23 +34,25 @@ class Translator extends BaseTranslator
     /**
      * Override the addResource, so that we can keep tracking standard resources
      *  but we don't call the parent method as we don't want to use them anymore
-     * @param string $format
-     * @param mixed $resource
-     * @param string $locale
-     * @param null $domain
+     *
+     * @param string      $format
+     * @param mixed       $resource
+     * @param string      $locale
+     * @param string|null $domain
      */
     public function addResource($format, $resource, $locale, $domain = null)
     {
         $this->standardResources[] = array(
-            'format'=>$format,
-            'path'=>$resource,
-            'locale'=>$locale,
-            'domain'=> $domain === null ? 'messages' : $domain
+            'format' => $format,
+            'path' => $resource,
+            'locale' => $locale,
+            'domain' => $domain === null ? 'messages' : $domain,
         );
     }
 
     /**
      * Return the list of 'standard' resources
+     *
      * @return array
      */
     public function getStandardResources()
@@ -61,6 +63,7 @@ class Translator extends BaseTranslator
                 throw new \RuntimeException('Ressources list is outdated, please run a cache:clear to update it');
             }
         }
+
         return $this->standardResources;
     }
 
@@ -68,6 +71,10 @@ class Translator extends BaseTranslator
      * {@inheritdoc}
      *
      * Necessary only for versions of symfony < 2.6
+     *
+     * @param string $locale
+     *
+     * @return \Symfony\Component\Translation\MessageCatalogueInterface
      */
     public function getCatalogue($locale = null)
     {
@@ -84,7 +91,9 @@ class Translator extends BaseTranslator
 
     /**
      * Load a specific resource
-     * @param $resource
+     *
+     * @param array $resource
+     *
      * @return MessageCatalogue
      * @throws \RuntimeException
      */
@@ -97,7 +106,7 @@ class Translator extends BaseTranslator
 
         // Search for an other services
         foreach ($this->loaderIds as $serviceId => $formats) {
-            if(! is_array($formats)) {
+            if (!is_array($formats)) {
                 $formats = array($formats);
             }
             foreach ($formats as $format) {
@@ -109,7 +118,6 @@ class Translator extends BaseTranslator
 
         throw new \RuntimeException("Not service found to load {$resource['path']}");
     }
-
 
     /**
      * Initialize the translation before loading catalogues from the storage
@@ -128,7 +136,7 @@ class Translator extends BaseTranslator
         // Add resources files directly, so that we still have translations
         // event if we don't run translation:import
         $standardResources = $this->getStandardResources();
-        foreach($standardResources as $resource) {
+        foreach ($standardResources as $resource) {
             parent::addResource($resource['format'], $resource['path'], $resource['locale'], $resource['domain']);
         }
 
@@ -146,7 +154,7 @@ class Translator extends BaseTranslator
 
     public function clearCacheForLocale($locale)
     {
-        foreach(Finder::create()->files()->name("catalogue.$locale*")->in($this->options['cache_dir']) as $file) {
+        foreach (Finder::create()->files()->name("catalogue.$locale*")->in($this->options['cache_dir']) as $file) {
             unlink($file);
         }
     }
@@ -158,5 +166,4 @@ class Translator extends BaseTranslator
             $this->clearCacheForLocale($locale);
         }
     }
-
 }

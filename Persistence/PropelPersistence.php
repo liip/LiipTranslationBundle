@@ -4,7 +4,6 @@ namespace Liip\TranslationBundle\Persistence;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Translation;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Persistence\Propel\Formatter\UnitFormatter;
 use Liip\TranslationBundle\Persistence\Propel\Model\UnitQuery;
 use Liip\TranslationBundle\Persistence\Propel\Model\Unit as PropelUnit;
@@ -28,9 +27,8 @@ use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTransla
  */
 class PropelPersistence implements PersistenceInterface
 {
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUnit($domain, $key)
     {
@@ -62,6 +60,7 @@ class PropelPersistence implements PersistenceInterface
      * Save the given Unit to the persistence layer.
      *
      * @param Unit $unit
+     *
      * @return bool
      */
     public function saveUnit(Unit $unit)
@@ -78,11 +77,12 @@ class PropelPersistence implements PersistenceInterface
      * Save the given Units to the persistence layer.
      *
      * @param Unit[] $units
+     *
      * @return bool
      */
     public function saveUnits(array $units)
     {
-        foreach($units as $unit) {
+        foreach ($units as $unit) {
             $this->saveUnit($unit);
         }
     }
@@ -96,11 +96,10 @@ class PropelPersistence implements PersistenceInterface
 
     public function deleteUnits(array $units)
     {
-        foreach($units as $unit) {
+        foreach ($units as $unit) {
             $this->deleteUnit($unit);
         }
     }
-
 
     public function deleteTranslation(Translation $translation)
     {
@@ -117,18 +116,16 @@ class PropelPersistence implements PersistenceInterface
         ;
     }
 
-
     public function deleteTranslations(array $translations)
     {
-        foreach($translations as $translation) {
+        foreach ($translations as $translation) {
             $this->deleteTranslation($translation);
         }
     }
 
-
     public function saveTranslations(array $translations)
     {
-        foreach($translations as $translation) {
+        foreach ($translations as $translation) {
             $this->saveTranslation($translation);
         }
     }
@@ -143,13 +140,13 @@ class PropelPersistence implements PersistenceInterface
 
         // Retrived or create the translation
         $propelTranslationToUpdate = null;
-        foreach($propelUnit->getTranslations() as $propelTranslation) {
+        foreach ($propelUnit->getTranslations() as $propelTranslation) {
             if ($propelTranslation->getLocale() == $translation->getLocale()) {
                 $propelTranslationToUpdate = $propelTranslation;
                 break;
             }
         }
-        if ($propelTranslationToUpdate === null){
+        if ($propelTranslationToUpdate === null) {
             $propelTranslationToUpdate = new PropelTranslation();
             $propelTranslationToUpdate->setUnitId($propelUnit->getId());
         }

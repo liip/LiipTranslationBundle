@@ -26,7 +26,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class TranslateCommand extends ContainerAwareCommand
 {
-
     protected function configure()
     {
         $this
@@ -35,7 +34,7 @@ class TranslateCommand extends ContainerAwareCommand
             ->setDefinition(array(
                 new InputArgument('key', InputArgument::REQUIRED, 'The key to translate'),
                 new InputOption('locale', 'l', InputOption::VALUE_REQUIRED, 'Destination locale', 'en'),
-                new InputOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Message domain', 'messages')
+                new InputOption('domain', 'd', InputOption::VALUE_REQUIRED, 'Message domain', 'messages'),
             ))
         ;
     }
@@ -52,5 +51,4 @@ class TranslateCommand extends ContainerAwareCommand
             '<info>'.$translator->trans($key, array(), $domain, $locale).'</info>'
         );
     }
-
 }

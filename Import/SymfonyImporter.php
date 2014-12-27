@@ -17,15 +17,14 @@
  */
 namespace Liip\TranslationBundle\Import;
 
-
 use Liip\TranslationBundle\Model\Unit;
-use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SymfonyImporter {
+class SymfonyImporter
+{
     private $config;
     /** @var Translator $translator */
     private $translator;
@@ -64,7 +63,8 @@ class SymfonyImporter {
     /**
      * Return true if a resource must be ignore
      *
-     * @param $resource
+     * @param array $resource
+     *
      * @return boolean
      */
     public function checkIfResourceIsIgnored($resource)
@@ -81,10 +81,10 @@ class SymfonyImporter {
             'output' => null,
             'import-translations' => false,
             'override' => false,
-            'metadata_locale' => 'en', # define from which locale you want to import the metadata
-            'prune' => false
+            'metadata_locale' => 'en', // define from which locale you want to import the metadata
+            'prune' => false,
         ), $options);
-        if (array_key_exists('output', $options)){
+        if (array_key_exists('output', $options)) {
             $this->logger = $options['output'];
         }
         $locales = $options['locale_list'] !== null ? $options['locale_list'] : $this->getLocaleList();
@@ -98,7 +98,7 @@ class SymfonyImporter {
 
         // Import resources one by one
         $this->log("<info>Evaluation of the file list</info>\n");
-        foreach($this->getStandardResources() as $resource) {
+        foreach ($this->getStandardResources() as $resource) {
             $this->log("    Resource <fg=cyan>{$resource['path']}</fg=cyan>");
 
             if ($this->checkIfResourceIsIgnored($resource)) {
@@ -118,7 +118,6 @@ class SymfonyImporter {
 
             $catalogues[$resource['locale']]->addCatalogue($this->translator->loadResource($resource));
             $this->log("  >> <info>OK</info>\n");
-
         }
 
         // Update all units from the catalog
@@ -127,10 +126,9 @@ class SymfonyImporter {
         $allFileUnits = array();
         foreach ($locales as $locale) {
             foreach ($catalogues[$locale]->all() as $domain => $translations) {
-                foreach($translations as $key => $value) {
-
+                foreach ($translations as $key => $value) {
                     // Retrieved or create a unit
-                    if(!isset($existingUnits[$domain][$key])) {
+                    if (!isset($existingUnits[$domain][$key])) {
                         $this->log("\t>> Creation of a new Unit [$domain, $key]\n");
                         $existingUnits[$domain][$key] = $this->repository->createUnit($domain, $key);
                     }
@@ -146,12 +144,12 @@ class SymfonyImporter {
                     }
 
                     // Update translation
-                    if($options['import-translations']) {
+                    if ($options['import-translations']) {
                         if ($unit->hasTranslation($locale) && $options['override']) {
                             $this->log("\t>> Translation [$domain, $key] for [$locale] overridden by '$value'\n");
                             $unit->setTranslation($locale, $value);
                         }
-                        if (!$unit->hasTranslation($locale)){
+                        if (!$unit->hasTranslation($locale)) {
                             $this->log("\t>> Translation [$domain, $key] for [$locale] imported\n");
                             $unit->setTranslation($locale, $value);
                         }
@@ -164,15 +162,15 @@ class SymfonyImporter {
         }
 
         // Potentially remove no more existing units
-        if ($options['prune']===true) {
+        if ($options['prune'] === true) {
             $this->log("\n<info>Remove units that are no more present in translation files</info>\n");
-            $domains = $options['domain_list']!==null ? $options['domain_list'] : array_keys($existingUnits);
-            foreach($domains as $domain) {
+            $domains = $options['domain_list'] !== null ? $options['domain_list'] : array_keys($existingUnits);
+            foreach ($domains as $domain) {
                 if (!isset($allFileUnits[$domain])) {
                     continue;
                 }
                 $removed = array_diff(array_keys($existingUnits[$domain]), array_keys($allFileUnits[$domain]));
-                foreach($removed as $key) {
+                foreach ($removed as $key) {
                     $this->log("\t>> Translation unit [$domain, $key] removed\n");
                     $existingUnits[$domain][$key]->delete();
                 }
@@ -187,10 +185,10 @@ class SymfonyImporter {
         return $stat;
     }
 
-    protected function log($msg) {
+    protected function log($msg)
+    {
         if ($this->logger && $this->logger->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
             $this->logger->write($msg);
         }
     }
-
 }
