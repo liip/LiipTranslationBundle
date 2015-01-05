@@ -5,20 +5,19 @@ LiipTranslationBundle
 
 This Bundle provides various tools to ease translations management of a Sf2 app. Here is a small [presentation](https://docs.google.com/presentation/d/1JK6vff6cVa92VxRIJ5ORzSUrmbtDPc5bPsFE35soEpw/edit?usp=sharing) of the bundle.
 
-
 Introduction
 ------------
 
-This bundle add a new layer in top of the translation mecanisms. This allows your customer to edit, override any translations directly from the website.
+This bundle add a new layer in top of the translation mechanisms. This allows your customer to edit and override any translations directly from the website.
 
 ### Separation of concern
 
-Using such a tool allows a clear separation between "key" and "value". Developers are responsible for defining new keys and removing old keys.
-Client/customer are responsible for translating the website.
+Using such a tool allows a clear separation between "key" and "value". Developers are responsible for defining new keys and removing old keys, while client/customer are responsible for translating the website.
 
 ### Key values on steroid
 
 The current basic key-value system could be better. We extend it and allow developers to complete keys with metadata (like it's possible with XLiFF).
+
 Extend your keys with informations like maxbytes, comment, description, urls, screenshot, etc... Anything that could help translators.
 
 A "value" is the translation for a "key" in a given locale, it's also possible to complete it with metadata (comments, update date, validity, etc...)
@@ -28,7 +27,7 @@ A "value" is the translation for a "key" in a given locale, it's also possible t
 The intermediate storage is currently available for:
 
  * Propel (database)
- * YAML (file)
+ * YAML (file or in Git)
 
 but adding a new persistance is very easy (you just have to implement a small interface)
 
@@ -36,8 +35,8 @@ but adding a new persistance is very easy (you just have to implement a small in
 
 This bundle work on any symfony 2.0+ version. Unit and functional tests have been written to ensure this compatibilty.
 
-Functionalities
----------------
+Features
+--------
 
 ### Translation interface in the backend
 
@@ -66,7 +65,6 @@ Useful to provide files to an external agency, or to transfer translations from 
 ### Security
 
  * Rights management (restricted to given locale or given domain)
-
 
 Installation
 ------------
