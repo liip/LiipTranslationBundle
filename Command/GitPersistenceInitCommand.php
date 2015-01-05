@@ -5,6 +5,7 @@ namespace Liip\TranslationBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 
 /**
@@ -46,53 +47,22 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $askQuestions = true;
         $remote = $input->getOption('remote');
-        if (null !== $remote) {
-            $askQuestions = false;
-        }
 
         $persistence = $this->getPersistence();
 
-        $dir = rtrim($persistence->getDirectoryName(), DIRECTORY_SEPARATOR);
-
-        if ($askQuestions) {
+        if (null !== $remote) {
             $dialog = $this->getHelper('dialog');
 
             $remote = $dialog->ask($output, 'Please enter a Git remote to clone and pull from and to push to: ');
 
-            if (!$dialog->askConfirmation($output, '<question>' . $remote . ' will be cloned into ' . $dir . '. Continue? [y] </question>', false)) {
+            if (!$dialog->askConfirmation($output, '<question>' . $remote . ' will be cloned into ' . $persistence->getDirectoryName() . '. Continue? [y] </question>', false)) {
                 return;
             }
         }
 
-        if (false === is_dir($dir)) {
-            $output->writeln('Creating directory "' . $dir . '"...');
-            $directoryProcess = new Process('mkdir -p ' . $dir);
-            $directoryProcess->run();
-            if (false === $directoryProcess->isSuccessful()) {
-                throw new \RuntimeException($directoryProcess->getErrorOutput());
-            }
-        } else {
-            $output->writeln('Directory "' . $dir . '" already exists, not creating.');
-            if (is_dir($dir . DIRECTORY_SEPARATOR . '.git')) {
-                throw new \RuntimeException('"' . $dir . '" already is a git repository.');
-            }
-        }
+        $persistence->cloneRepository($remote);
 
-        $output->writeln('Cloning...');
-        $gitProcess = new Process(sprintf(
-            'git clone %s %s',
-            $remote,
-            $dir
-        ));
-
-        $gitProcess->run();
-
-        if (false === $gitProcess->isSuccessful()) {
-            throw new \RuntimeException($gitProcess->getErrorOutput());
-        }
-
-        $output->writeln(sprintf('Init of git repository for remote "%s" in %s successful', $remote, $dir));
+        $output->writeln(sprintf('Init of git repository for remote "%s" in %s successful', $remote, $persistence->getDirectoryName()));
     }
 }

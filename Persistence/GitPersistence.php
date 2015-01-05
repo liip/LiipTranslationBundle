@@ -2,6 +2,7 @@
 
 namespace Liip\TranslationBundle\Persistence;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,6 +29,11 @@ class GitPersistence extends YamlFilePersistence
      * @const string Command for git pull
      */
     const CMD_GITPULL = 'git --git-dir=%s/.git pull';
+
+    /**
+     * @const strimg Command for cloning
+     */
+    const CMD_GITCLONE = 'git clone %s %s';
 
     /**
      * @var string Class name for processes, can be a mock class instead
@@ -117,6 +123,31 @@ class GitPersistence extends YamlFilePersistence
             self::CMD_GITPULL,
             $this->directory
         ));
+    }
+
+    /**
+     * Clones a given remote
+     *
+     * @param string $remote
+     *
+     * @return bool
+     *
+     * @throws \RuntimeException
+     */
+    public function cloneRepository($remote)
+    {
+        $fileSystem = new Filesystem;
+        $fileSystem->mkdir($this->directory);
+
+        if ($fileSystem->exists($this->directory . DIRECTORY_SEPARATOR . '.git')) {
+            throw new \RuntimeException('"' . $this->directory . '" already is a git repository.');
+        }
+
+        return $this->executeCmd(
+            self::CMD_GITCLONE,
+            $remote,
+            $this->directory
+        );
     }
 
     /**
