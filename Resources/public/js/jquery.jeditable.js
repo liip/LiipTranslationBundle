@@ -1,9 +1,9 @@
 /*
  * Jeditable - jQuery in place edit plugin
  *
- * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul, 2013 Gilles Meier
+ * Copyright (c) 2006-2009 Mika Tuupola, Dylan Verheul, 2013 Gilles Crettenand
  *
- * Modified by Gilles Meier <gilles.meier@liip.ch> to fit the needs of the LiipTranslationBundle.
+ * Modified by Gilles Crettenand <gilles.crettenand@liip.ch> to fit the needs of the LiipTranslationBundle.
  *
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  * Project home: http://www.appelsiini.net/projects/jeditable
