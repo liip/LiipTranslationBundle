@@ -34,8 +34,7 @@ but adding a new persistance is very easy (you just have to implement a small in
 
 ### Symfony compatibility
 
-This bundle work on any symfony version: from 2.0 to 2.4. Unit and functionnal tests have been written to ensure this compatibilty.
-
+This bundle work on any symfony 2.0+ version. Unit and functional tests have been written to ensure this compatibilty.
 
 Functionalities
 ---------------
