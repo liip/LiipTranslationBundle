@@ -4,7 +4,6 @@
     "description": "provide various tools to ease translation management",
     "keywords": ["translation", "i18n"],
     "license": "MIT",
-    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Liip AG",
@@ -20,13 +19,13 @@
         "symfony/framework-bundle": "~2.0"
     },
     "require-dev": {
-        "twig/twig": ">=1.0,<2.0-dev",
+        "twig/twig": "~1.0",
         "symfony/symfony": "~2.0",
-        "liip/rmt": "dev-master",
-        "liip/functional-test-bundle": "dev-master"
+        "liip/rmt": "~1.0",
+        "liip/functional-test-bundle": "~1.0"
     },
     "suggest": {
-        "twig/twig": ">=1.0,<2.0-dev"
+        "twig/twig": "~1.0"
     },
     "autoload": {
         "psr-0": { "Liip\\TranslationBundle": "" }

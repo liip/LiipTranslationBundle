@@ -5,6 +5,7 @@ namespace Liip\TranslationBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Liip\TranslationBundle\DependencyInjection\Compiler\UpdateRoleHierarchyPass;
+use Liip\TranslationBundle\DependencyInjection\Compiler\TranslatorPass;
 
 /**
  * This file is part of the LiipTranslationBundle. For more information concerning
@@ -24,5 +25,6 @@ class LiipTranslationBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new UpdateRoleHierarchyPass());
+        $container->addCompilerPass(new TranslatorPass());
     }
 }

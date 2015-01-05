@@ -1,7 +1,8 @@
-parameters:
-    translator.class: Liip\TranslationBundle\Translation\Translator
-
 services:
+    liip.translation.translator:
+        parent: translator.default
+        class: Liip\TranslationBundle\Translation\Translator
+
     liip.translation.repository:
         class: Liip\TranslationBundle\Repository\UnitRepository
         arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence", "@liip.translation.security"]
@@ -29,7 +30,7 @@ services:
     liip.translation.exporter:
         class: Liip\TranslationBundle\Export\ZipExporter
 
-    liip.xliff.loader:
+    liip.translation.xliff.loader:
         class: Liip\TranslationBundle\Translation\Loader\XliffFileLoader
 
     liip.translation.filter:
