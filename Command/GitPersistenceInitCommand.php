@@ -17,10 +17,8 @@ use Symfony\Component\Process\Process;
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
- * @author David Jeanmonod <david.jeanmonod@liip.ch>
- * @author Gilles Meier <gilles.meier@liip.ch>
- * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
- * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
+ * @author Pascal Thormeier <pascal.thormeier@liip.ch>
+ * @copyright Copyright (c) 2014, Liip, http://www.liip.ch
  */
 class GitPersistenceInitCommand extends GitPersistenceAwareCommand
 {
