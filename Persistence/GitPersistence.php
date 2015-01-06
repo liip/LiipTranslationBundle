@@ -159,15 +159,10 @@ class GitPersistence extends YamlFilePersistence
      */
     protected function commitTranslations(array $translations)
     {
-        $message = 'Auto-commit the following translations: ' . "\n";
-        foreach ($translations as $translation) {
-            $message .= ' - ' . $translation->getMessage() . "\n";
-        }
-
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message
+            'Auto-commit translations'
         ));
     }
 
@@ -180,15 +175,10 @@ class GitPersistence extends YamlFilePersistence
      */
     protected function commitUnits(array $units)
     {
-        $message = 'Auto-commit the following Units: ' . "\n";
-        foreach ($units as $unit) {
-            $message .= ' - ' . $unit->getKey() . "\n";
-        }
-
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message
+            'Auto-commit units'
         ));
     }
 
