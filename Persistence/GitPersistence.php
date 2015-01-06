@@ -205,7 +205,7 @@ class GitPersistence extends YamlFilePersistence
         $process = new $this->processClass($command);
         $process->run();
 
-        if (false === $process->isSuccessful()) {
+        if (false === $process->isSuccessful() && strlen($process->getErrorOutput()) > 0) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
