@@ -51,7 +51,7 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
 
         $persistence = $this->getPersistence();
 
-        if (null !== $remote) {
+        if (null === $remote) {
             $dialog = $this->getHelper('dialog');
 
             $remote = $dialog->ask($output, 'Please enter a Git remote to clone and pull from and to push to: ');
@@ -61,6 +61,7 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
             }
         }
 
+        $output->writeln('Cloning...');
         $persistence->cloneRepository($remote);
 
         $output->writeln(sprintf('Init of git repository for remote "%s" in %s successful', $remote, $persistence->getDirectoryName()));
