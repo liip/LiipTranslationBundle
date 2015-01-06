@@ -23,12 +23,12 @@ class GitPersistence extends YamlFilePersistence
     /**
      * @const string Command for git commit and push
      */
-    const CMD_COMMITPUSH = 'git --git-dir=%s commit -a -m "%s" && git --git-dir=%s push';
+    const CMD_COMMITPUSH = '(cd %s && git add . && git commit -a -m "%s" && git push --all origin)';
 
     /**
      * @const string Command for git pull
      */
-    const CMD_GITPULL = 'git --git-dir=%s/.git pull';
+    const CMD_GITPULL = '(cd %s && git pull)';
 
     /**
      * @const strimg Command for cloning
@@ -143,11 +143,11 @@ class GitPersistence extends YamlFilePersistence
             throw new \RuntimeException('"' . $this->directory . '" already is a git repository.');
         }
 
-        return $this->executeCmd(
+        return $this->executeCmd(sprintf(
             self::CMD_GITCLONE,
             $remote,
             $this->directory
-        );
+        ));
     }
 
     /**
@@ -167,8 +167,7 @@ class GitPersistence extends YamlFilePersistence
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message,
-            $this->directory
+            $message
         ));
     }
 
@@ -189,8 +188,7 @@ class GitPersistence extends YamlFilePersistence
         return $this->executeCmd(sprintf(
             self::CMD_COMMITPUSH,
             $this->directory,
-            $message,
-            $this->directory
+            $message
         ));
     }
 
