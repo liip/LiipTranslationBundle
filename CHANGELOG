@@ -3,6 +3,7 @@ VERSION 0  FIRST FUNCTIONAL DRAFT
 =================================
 
    Version 0.0 - First functional draft
+      08/01/2015 09:17  0.0.10  Add GitPersistance
       07/11/2013 17:31  0.0.9  Add a --prune option for the translation:import command + some more fixes
       29/10/2013 16:48  0.0.8  Fix the filtering by empty string
       12/10/2013 14:14  0.0.7  Fix a bug in the import process + add tests for security
