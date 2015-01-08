@@ -41,7 +41,10 @@ class GitPersistenceUpdateTranslationsCommand extends GitPersistenceAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $persistence = $this->getPersistence();
-        $output->writeln(sprintf('Pulling translations in %s', $persistence->getDirectoryName()));
+        $output->writeln(sprintf(
+            'Pulling translations in %s',
+            $persistence->getDirectoryName()
+        ));
 
         $gitOutput = $persistence->pullTranslations();
         $output->writeln($gitOutput);

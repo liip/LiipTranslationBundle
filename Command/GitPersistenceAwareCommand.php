@@ -16,7 +16,7 @@ use Liip\TranslationBundle\Persistence\GitPersistence;
  *
  * @license http://opensource.org/licenses/MIT MIT License
  * @author Pascal Thormeier <pascal.thormeier@liip.ch>
- * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
+ * @copyright Copyright (c) 2014, Liip, http://www.liip.ch
  */
 abstract class GitPersistenceAwareCommand extends ContainerAwareCommand
 {
@@ -30,6 +30,7 @@ abstract class GitPersistenceAwareCommand extends ContainerAwareCommand
     public function getPersistence()
     {
         $persistence = $this->getContainer()->get('liip.translation.persistence');
+
         if (false === $persistence instanceof GitPersistence) {
             throw new \RuntimeException(sprintf(
                 'Cannot initialize git repository, configured persistence should be "%s", "%s" given',

@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @license http://opensource.org/licenses/MIT MIT License
  * @author Pascal Thormeier <pascal.thormeier@liip.ch>
- * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
+ * @copyright Copyright (c) 2014, Liip, http://www.liip.ch
  */
 class GitPersistence extends YamlFilePersistence
 {
@@ -140,7 +140,7 @@ class GitPersistence extends YamlFilePersistence
         $fileSystem->mkdir($this->directory);
 
         if ($fileSystem->exists($this->directory . DIRECTORY_SEPARATOR . '.git')) {
-            throw new \RuntimeException('"' . $this->directory . '" already is a git repository.');
+            throw new \RuntimeException(sprintf('"%s" already is a git repository.', $this->directory));
         }
 
         return $this->executeCmd(sprintf(
@@ -212,9 +212,15 @@ class GitPersistence extends YamlFilePersistence
     protected function getResolvedOptions(array $options)
     {
         $resolver = new OptionsResolver;
-        $resolver->setDefaults(array('processClass' => "Symfony\\Component\\Process\\Process"))
+        $resolver->setDefaults(array(
+                'processClass' => "Symfony\\Component\\Process\\Process"
+            ))
             ->setRequired(array('folder'))
-            ->setAllowedTypes(array('processClass' => 'string', 'folder' => 'string'));
+            ->setAllowedTypes(array(
+                'processClass' => 'string',
+                'folder' => 'string'
+            ))
+        ;
 
         return $resolver->resolve($options);
     }
