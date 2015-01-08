@@ -57,6 +57,7 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
             $remote = $dialog->ask($output, 'Please enter a Git remote to clone and pull from and to push to: ');
 
             if (!$dialog->askConfirmation($output, '<question>' . $remote . ' will be cloned into ' . $persistence->getDirectoryName() . '. Continue? [y] </question>', false)) {
+                $output->writeln('Not cloning, cancelled.');
                 return;
             }
         }
