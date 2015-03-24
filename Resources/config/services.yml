@@ -5,7 +5,7 @@ services:
 
     liip.translation.repository:
         class: Liip\TranslationBundle\Repository\UnitRepository
-        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.persistence", "@liip.translation.security"]
+        arguments: ["%liip_translation_config%", "@liip.translation.translator", "@liip.translation.persistence", "@liip.translation.security"]
 
     liip.translation.security:
         class: Liip\TranslationBundle\Security\Security
@@ -21,11 +21,11 @@ services:
 
     liip.translation.session_importer:
         class: Liip\TranslationBundle\Import\SessionImporter
-        arguments: ["@liip.translation.repository", "@session", "@translator"]
+        arguments: ["@liip.translation.repository", "@session", "@liip.translation.translator"]
 
     liip.translation.symfony_importer:
         class: Liip\TranslationBundle\Import\SymfonyImporter
-        arguments: ["%liip_translation_config%", "@translator", "@liip.translation.repository"]
+        arguments: ["%liip_translation_config%", "@liip.translation.translator", "@liip.translation.repository"]
 
     liip.translation.exporter:
         class: Liip\TranslationBundle\Export\ZipExporter
