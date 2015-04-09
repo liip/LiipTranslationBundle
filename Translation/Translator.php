@@ -57,6 +57,16 @@ class Translator extends BaseTranslator
      */
     public function getStandardResources()
     {
+        if (!$this->initialized && isset($this->options['resource_files'])) {
+            foreach ($this->options['resource_files'] as $files) {
+                foreach ($files as $file) {
+                    // filename is domain.locale.format
+                    list($domain, $locale, $format) = explode('.', basename($file), 3);
+                    $this->addResource($format, $file, $locale, $domain);
+                }
+            }
+        }
+
         // Check validity
         foreach ($this->standardResources as $resource) {
             if (!file_exists($resource['path'])) {
