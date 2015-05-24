@@ -18,6 +18,8 @@ services:
     liip.translation.loader:
         class: Liip\TranslationBundle\Translation\Loader
         arguments: ["@liip.translation.repository"]
+        tags:
+            - { name: "translation.loader", alias: "liip" }
 
     liip.translation.session_importer:
         class: Liip\TranslationBundle\Import\SessionImporter

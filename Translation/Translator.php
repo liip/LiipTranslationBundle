@@ -140,9 +140,6 @@ class Translator extends BaseTranslator
 
         parent::initialize();
 
-        // Register our custom loader
-        $this->addLoader('liip', $this->container->get('liip.translation.loader'));
-
         // Add resources files directly, so that we still have translations
         // event if we don't run translation:import
         $standardResources = $this->getStandardResources();
