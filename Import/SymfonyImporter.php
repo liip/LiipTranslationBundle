@@ -19,8 +19,8 @@ namespace Liip\TranslationBundle\Import;
 
 use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Repository\UnitRepository;
-use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
+use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SymfonyImporter

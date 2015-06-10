@@ -4,6 +4,7 @@ namespace Liip\TranslationBundle\Controller;
 
 use Liip\TranslationBundle\Form\FileImportType;
 use Liip\TranslationBundle\Import\ImportException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -53,22 +54,25 @@ class ImportController extends BaseController
     /**
      * File upload handling, redirect to the dashboard
      *
+     * @param Request $request the request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function uploadAction()
+    public function uploadAction(Request $request)
     {
         $form = $this->createForm(new FileImportType());
-        $data = $this->handleForm($form);
+        $data = $form->handleRequest($request)->getData();
+        $session = $this->getSession();
 
         try {
             $counters = $this->getSessionImporter()->handleUploadedFile($data['file']);
             if ($counters['new'] == 0 && $counters['updated'] == 0) {
-                $this->addFlashMessage('warning', 'File import success, but not more modification found');
+                $session->getFlashBag()->set('warning', 'File import success, but not more modification found');
             } else {
-                $this->addFlashMessage('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
+                $session->getFlashBag()->set('info', "File import success, {$counters['new']} new and {$counters['updated']} update");
             }
         } catch (ImportException $e) {
-            $this->addFlashMessage('error', 'Error while trying to import: '.$e->getMessage());
+            $session->getFlashBag()->set('error', 'Error while trying to import: '.$e->getMessage());
         }
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
@@ -88,7 +92,8 @@ class ImportController extends BaseController
         $this->securityCheck($domain, $locale);
 
         $this->getSessionImporter()->remove($domain, $key, $locale);
-        $this->addFlashMessage('success', 'Entry removed');
+        $session = $this->getSession();
+        $session->getFlashBag()->set('success', 'Entry removed');
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }
@@ -103,7 +108,8 @@ class ImportController extends BaseController
     public function processAction($locale)
     {
         $stats = $this->getSessionImporter()->comfirmImportation($locale);
-        $this->addFlashMessage('success', "Import success ({$stats['translations']['text']})");
+        $session = $this->getSession();
+        $session->getFlashBag()->set('success', "Import success ({$stats['translations']['text']})");
 
         return $this->redirect($this->generateUrl('liip_translation_import'));
     }

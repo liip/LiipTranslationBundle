@@ -79,10 +79,10 @@ class TranslationController extends BaseController
         ));
     }
 
-    public function filterAction()
+    public function filterAction(Request $request)
     {
         $filterForm = $this->createFilterForm();
-        $newFilters = $this->handleForm($filterForm);
+        $newFilters = $filterForm->handleRequest($request)->getData();
         $this->getFilterManager()->updateFilters($newFilters);
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
@@ -95,18 +95,19 @@ class TranslationController extends BaseController
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
-    public function editAction($locale, $domain, $key)
+    public function editAction($locale, $domain, $key, Request $request)
     {
         $unit = $this->getRepository()->findByDomainAndKey($domain, $key);
         $translation = $unit->hasTranslation($locale) ? $unit->getTranslation($locale) : new Translation(null, $locale, $unit);
         $form = $this->createForm(new TranslationType(), $translation);
 
-        if ($this->getRequest()->getMethod() === 'POST') {
-            $translation = $this->handleForm($form);
+        if ($request->getMethod() === 'POST') {
+            $translation = $form->handleRequest($request)->getData();
             if ($form->isValid()) {
                 $unit->addTranslation($translation);
                 $this->getRepository()->persist($unit);
-                $this->addFlashMessage('success', 'Translation was successfully edited.');
+                $session = $this->getSession();
+                $session->getFlashBag()->set('success', 'Translation was successfully edited.');
 
                 return $this->redirect($this->generateUrl('liip_translation_interface'));
             }
@@ -118,14 +119,15 @@ class TranslationController extends BaseController
         ));
     }
 
-    public function inlineEditAction()
+    public function inlineEditAction(Request $request)
     {
-        $value = $this->getRequest()->request->get('value');
-        $id = $this->getRequest()->request->get('id');
+        $value = $request->request->get('value');
+        $id = $request->request->get('id');
         list($domain, $key, $locale) = explode('__', $id);
 
         $this->getRepository()->updateTranslation($locale, $domain, $key, $value);
-        $this->addFlashMessage('success', 'Translation was successfully updated.');
+        $session = $this->getSession();
+        $session->getFlashBag()->set('success', 'Translation was successfully updated.');
 
         return new Response($value);
     }
@@ -133,7 +135,8 @@ class TranslationController extends BaseController
     public function removeAction($locale, $domain, $key)
     {
         $this->getRepository()->removeTranslation($locale, $domain, $key);
-        $this->addFlashMessage('success', 'Translation was successfully deleted.');
+        $session = $this->getSession();
+        $session->getFlashBag()->set('success', 'Translation was successfully deleted.');
 
         // Cache must be cleared, so that the fallback translation get display again on the list
         $this->getTranslator()->clearCacheForLocale($locale);
@@ -141,7 +144,7 @@ class TranslationController extends BaseController
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }
 
-    public function exportAction()
+    public function exportAction(Request $request)
     {
         $response = new Response();
 
@@ -153,7 +156,7 @@ class TranslationController extends BaseController
 
         $response->setContent($zipContent);
         $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->generateZipFilename($this->getRequest(), $filters).'"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="'.$this->generateZipFilename($request, $filters).'"');
 
         return $response;
     }
@@ -161,7 +164,8 @@ class TranslationController extends BaseController
     public function cacheClearAction()
     {
         $this->getTranslator()->clearCache();
-        $this->addFlashMessage('success', 'Cache cleared');
+        $session = $this->getSession();
+        $session->getFlashBag()->set('success', 'Cache cleared');
 
         return $this->redirect($this->generateUrl('liip_translation_interface'));
     }

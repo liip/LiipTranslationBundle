@@ -2,37 +2,36 @@
 #######################
 
 liip_translation_interface:
-    pattern:  /list
+    path:     /list
     defaults: { _controller: LiipTranslationBundle:Translation:index }
 
 liip_translation_filter:
-    pattern:  /filter
+    path:     /filter
     defaults: { _controller: LiipTranslationBundle:Translation:filter }
-    requirements:
-        _method:  POST
+    methods:  [POST]
 
 liip_translation_resetfilter:
-    pattern:  /filter-reset
+    path:     /filter-reset
     defaults: { _controller: LiipTranslationBundle:Translation:clearFilter }
 
 liip_translation_edit:
-    pattern:  /edit/{locale}/{domain}/{key}
+    path:     /edit/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Translation:edit }
 
 liip_translation_inline_edit:
-    pattern:  /inline-edit/
+    path:     /inline-edit/
     defaults: { _controller: LiipTranslationBundle:Translation:inlineEdit }
 
 liip_translation_remove:
-    pattern:  /remove/{locale}/{domain}/{key}
+    path:     /remove/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Translation:remove }
 
 liip_translation_cache_clear:
-    pattern:  /cache-clear
+    path:     /cache-clear
     defaults: { _controller: LiipTranslationBundle:Translation:cacheClear }
 
 liip_translation_export:
-    pattern:  /export
+    path:     /export
     defaults: { _controller: LiipTranslationBundle:Translation:export }
 
 
@@ -40,25 +39,23 @@ liip_translation_export:
 ##################
 
 liip_translation_import:
-    pattern:  /import
+    path:     /import
     defaults: { _controller: LiipTranslationBundle:Import:index }
 
 liip_translation_import_reset:
-    pattern:  /import/reset
+    path:     /import/reset
     defaults: { _controller: LiipTranslationBundle:Import:reset }
 
 liip_translation_import_file:
-    pattern: /import/upload
+    path:     /import/upload
     defaults: { _controller: LiipTranslationBundle:Import:upload }
-    requirements:
-        _method:  POST
+    methods:  [POST]
 
 liip_translation_import_remove_entry:
-    pattern: /import/remove-entry/{locale}/{domain}/{key}
+    path:     /import/remove-entry/{locale}/{domain}/{key}
     defaults: { _controller: LiipTranslationBundle:Import:removeEntry }
 
 liip_translation_import_process:
-    pattern: /import/process/{locale}
+    path:     /import/process/{locale}
     defaults: { _controller: LiipTranslationBundle:Import:process }
-    requirements:
-        _method:  POST
+    methods:  [POST]

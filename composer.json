@@ -15,12 +15,12 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "symfony/framework-bundle": "~2.0"
+        "php": ">=5.3.9",
+        "symfony/framework-bundle": "~2.3"
     },
     "require-dev": {
         "twig/twig": "~1.0",
-        "symfony/symfony": "~2.0",
+        "symfony/symfony": "~2.3",
         "liip/rmt": "~1.0",
         "liip/functional-test-bundle": "~1.0"
     },
@@ -30,5 +30,10 @@
     "autoload": {
         "psr-0": { "Liip\\TranslationBundle": "" }
     },
-    "target-dir": "Liip/TranslationBundle"
+    "target-dir": "Liip/TranslationBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
+    }
 }

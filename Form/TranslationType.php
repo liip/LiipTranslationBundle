@@ -19,7 +19,7 @@ namespace Liip\TranslationBundle\Form;
  */
 class TranslationType extends CompatibleAbstractType
 {
-    public function compatibleBuildForm($builder, array $options)
+    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         $builder->add('value', 'textarea', $this->decorateOption(array(
             'label' => 'form.translation.value',

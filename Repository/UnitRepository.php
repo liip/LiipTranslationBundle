@@ -7,9 +7,10 @@ use Liip\TranslationBundle\Model\Unit;
 use Liip\TranslationBundle\Model\Exceptions\PermissionDeniedException;
 use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
-use Liip\TranslationBundle\Translation\MessageCatalogue;
 use Liip\TranslationBundle\Translation\Translator;
 use Liip\TranslationBundle\Security\Security;
+
+use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * Allow to retrieve, filter and persist translation unit

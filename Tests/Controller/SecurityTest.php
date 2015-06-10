@@ -33,7 +33,7 @@ class SecurityTest extends BaseWebTestCase
         $config = Yaml::parse(file_get_contents($file));
 
         // Activate the security
-        $securityConfigFile = Kernel::MINOR_VERSION == 0 ? 'security.2.0.yml' : 'security.yml';
+        $securityConfigFile = 'security.yml';
         $config['imports'] = array(array('resource' => $securityConfigFile));
 
         // Activate the security on the bundle

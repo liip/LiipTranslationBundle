@@ -9,7 +9,7 @@ services:
 
     liip.translation.security:
         class: Liip\TranslationBundle\Security\Security
-        arguments: ["%liip_translation_config%", @?security.context]
+        arguments: ["%liip_translation_config%"]
 
     liip.translation.persistence:
         class: %liip.translation.persistence.class%
