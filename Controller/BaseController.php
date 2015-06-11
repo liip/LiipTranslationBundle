@@ -33,44 +33,6 @@ use Symfony\Component\Security\Core\SecurityContext;
 abstract class BaseController extends Controller
 {
     /**
-     * Handle a form submission. This is here to avoid compatibility issues
-     * between Symfony 2.0 and 2.1.
-     *
-     * @param Form $form the form that must be handled
-     *
-     * @return mixed data as returned by the getData() method
-     */
-    public function handleForm(Form $form)
-    {
-        if (method_exists($form, 'handleRequest')) {
-            $data = $form->handleRequest($this->getRequest())->getData();
-        } else {
-            $form->bindRequest($this->getRequest());
-            $data = $form->getData();
-        }
-
-        return $data;
-    }
-
-    /**
-     * Sets a flash message. This is here to avoid compatibility issues between
-     * Symfony 2.0 and 2.3.
-     *
-     * @param string $type    the type of the flash message
-     * @param string $message the message itself
-     */
-    public function addFlashMessage($type, $message)
-    {
-        $session = $this->getSession();
-
-        if (method_exists($session, 'getFlashBag')) {
-            $session->getFlashBag()->set($type, $message);
-        } else {
-            $session->setFlash($type, $message);
-        }
-    }
-
-    /**
      * Process security for the provided locale or domain. Either one of the both
      * parameters can be null if we don't need to check them.
      *

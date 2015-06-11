@@ -18,7 +18,7 @@ Using such a tool allows a clear separation between "key" and "value". Developer
 
 The current basic key-value system could be better. We extend it and allow developers to complete keys with metadata (like it's possible with XLiFF).
 
-Extend your keys with informations like maxbytes, comment, description, urls, screenshot, etc... Anything that could help translators.
+Extend your keys with information like maxbytes, comment, description, urls, screenshot, etc... Anything that could help translators.
 
 A "value" is the translation for a "key" in a given locale, it's also possible to complete it with metadata (comments, update date, validity, etc...)
 
@@ -29,24 +29,24 @@ The intermediate storage is currently available for:
  * Propel (database)
  * YAML (file or in Git)
 
-but adding a new persistance is very easy (you just have to implement a small interface)
+but adding a new persistence is very easy (you just have to implement a small interface)
 
 ### Symfony compatibility
 
-This bundle work on any symfony 2.0+ version. Unit and functional tests have been written to ensure this compatibilty.
+This bundle work on any symfony 2.3+ version. Unit and functional tests have been written to ensure this compatibility.
 
 Features
 --------
 
 ### Translation interface in the backend
 
- * Edit through a contextual popin
+ * Edit through a contextual popup
  * Fast inline editing
  * Possibility to view various translated column at the same time (en, fr, pt, etc...)
  * Filter by locale, domain, date
  * Filter for untranslated key
  * Search by key name or translation value
- * Display help messages from the developpers
+ * Display help messages from the developers
 
 ### Import/Export
 
@@ -76,6 +76,8 @@ Installation
 Configuration
 -------------
 
+In your ``config.yml`` add the given Bundle specific configuration, for example:
+
     liip_translation:
         locale_list: [en_JP, en_US, en, fr_CH, fr]
         security:
@@ -89,6 +91,12 @@ Configuration
             default_filters:
               domain: ['messages']
               languages: ['en', 'fr']
+
+Also load the routes:
+
+    _liip_translation:
+        resource: "@LiipTranslationBundle/Resources/config/routing.yml"
+        prefix: /translation
 
 ### Security
 

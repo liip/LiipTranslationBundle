@@ -51,23 +51,6 @@ class SessionImporter
     }
 
     /**
-     * Return the UploadedFile original extension. This is here for
-     * compatibility reason with Symfony 2.0.
-     *
-     * @param UploadedFile $file
-     *
-     * @return string
-     */
-    protected function getFileExtension(UploadedFile $file)
-    {
-        if (method_exists($file, 'getClientOriginalExtension')) {
-            return $file->getClientOriginalExtension();
-        } else {
-            return pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-        }
-    }
-
-    /**
      * Take care of uploaded files (including zip) for importing resources
      *
      * @param UploadedFile $file
@@ -76,7 +59,7 @@ class SessionImporter
      */
     public function handleUploadedFile(UploadedFile $file)
     {
-        if ($this->getFileExtension($file) === 'zip') {
+        if ($file->getClientOriginalExtension() === 'zip') {
             $tempFolder = $this->extractZip($file);
             $counters = array('new' => 0, 'updated' => 0);
             foreach (scandir($tempFolder) as $path) {

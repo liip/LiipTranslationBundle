@@ -2,7 +2,7 @@
 
 namespace Liip\TranslationBundle\Translation\Loader;
 
-use Liip\TranslationBundle\Translation\MessageCatalogue;
+use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Loader\XliffFileLoader as BaseLoader;
 
 class XliffFileLoader extends BaseLoader

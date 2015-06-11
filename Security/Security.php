@@ -2,7 +2,9 @@
 
 namespace Liip\TranslationBundle\Security;
 
-use Symfony\Component\Security\Core\SecurityContext;
+use Doctrine\Common\Proxy\Exception\InvalidArgumentException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Service that handle all aspect of the security
@@ -24,10 +26,27 @@ class Security
     protected $config = array();
     protected $securityContext = null;
 
-    public function __construct($config, SecurityContext $securityContext = null)
+    public function __construct($config, $securityChecker = null)
     {
         $this->config = $config;
-        $this->securityContext = $securityContext;
+
+        $this->validateSecurityChecker($securityChecker);
+        $this->securityChecker = $securityChecker;
+    }
+
+    private function validateSecurityChecker($securityChecker)
+    {
+        if (null === $securityChecker) {
+            return;
+        }
+
+        if (!is_object($securityChecker)) {
+            throw new \InvalidArgumentException(sprintf('Second parameter to Liip\TranslationBundle\Security\Security needs to be an instance of SecurityContextInterface or AuthorizationCheckerInterface, type "%s" passed', gettype($securityChecker)));
+        }
+
+        if (!$securityChecker instanceof SecurityContextInterface && !$securityChecker instanceof AuthorizationCheckerInterface) {
+            throw new \InvalidArgumentException(sprintf('Second parameter to Liip\TranslationBundle\Security\Security needs to be an instance of SecurityContextInterface or AuthorizationCheckerInterface, instance of "%s" given', get_class($securityChecker)));
+        }
     }
 
     public function isSecuredByDomain()
@@ -63,19 +82,21 @@ class Security
     /**
      * Return the list of locales authorized by the provided security context
      *
-     * @param SecurityContext|null $securityContext
+     * @param SecurityContextInterface|AuthorizationCheckerInterface|null $securityChecker
      *
      * @return array
      */
-    public function getAuthorizedLocaleList($securityContext)
+    public function getAuthorizedLocaleList($securityChecker)
     {
-        if (!$securityContext || !$this->isSecuredByLocale()) {
+        $this->validateSecurityChecker($securityChecker);
+
+        if (!$securityChecker || !$this->isSecuredByLocale()) {
             return $this->getLocaleList();
         }
 
         $authorizedLocaleList = array();
         foreach ($this->getLocaleList() as $locale) {
-            if ($securityContext->isGranted(self::getRoleForLocale($locale))) {
+            if ($securityChecker->isGranted(self::getRoleForLocale($locale))) {
                 $authorizedLocaleList[] = $locale;
             }
         }
@@ -85,19 +106,19 @@ class Security
 
     public function isGrantedForDomain($domain)
     {
-        if ($this->securityContext === null || !$this->isSecuredByDomain()) {
+        if ($this->securityChecker === null || !$this->isSecuredByDomain()) {
             return true;
         }
 
-        return $this->securityContext->isGranted(self::getRoleForDomain($domain));
+        return $this->securityChecker->isGranted(self::getRoleForDomain($domain));
     }
 
     public function isGrantedForLocale($locale)
     {
-        if ($this->securityContext === null || !$this->isSecuredByLocale()) {
+        if ($this->securityChecker === null || !$this->isSecuredByLocale()) {
             return true;
         }
 
-        return $this->securityContext->isGranted(self::getRoleForLocale($locale));
+        return $this->securityChecker->isGranted(self::getRoleForLocale($locale));
     }
 }

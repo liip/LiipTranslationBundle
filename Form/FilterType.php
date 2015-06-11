@@ -28,7 +28,7 @@ class FilterType extends CompatibleAbstractType
         $this->domains = count($domains) > 0 ? array_combine($domains, $domains) : array();
     }
 
-    public function compatibleBuildForm($builder, array $options)
+    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('empty', 'checkbox', $this->decorateOption(array(
