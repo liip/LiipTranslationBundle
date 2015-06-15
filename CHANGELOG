@@ -2,6 +2,9 @@
 VERSION 0  FIRST FUNCTIONAL DRAFT
 =================================
 
+   Version 0.1 - New min version is Symfony 2.3+, much improved support for Symfony 2.7+
+      15/06/2015 10:42  0.1.0  initial release
+
    Version 0.0 - First functional draft
       08/01/2015 09:17  0.0.10  Add GitPersistance
       07/11/2013 17:31  0.0.9  Add a --prune option for the translation:import command + some more fixes
