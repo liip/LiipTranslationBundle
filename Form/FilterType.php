@@ -2,6 +2,8 @@
 
 namespace Liip\TranslationBundle\Form;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 /**
  * Form to filter the translation list
  *
@@ -28,7 +30,7 @@ class FilterType extends CompatibleAbstractType
         $this->domains = count($domains) > 0 ? array_combine($domains, $domains) : array();
     }
 
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('empty', 'checkbox', $this->decorateOption(array(

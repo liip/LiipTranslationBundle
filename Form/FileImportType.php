@@ -2,6 +2,8 @@
 
 namespace Liip\TranslationBundle\Form;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 /**
  * File upload form
  *
@@ -19,7 +21,7 @@ namespace Liip\TranslationBundle\Form;
  */
 class FileImportType extends CompatibleAbstractType
 {
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('file', 'file', $this->decorateOption(array(
             'label' => 'form.import.file',
