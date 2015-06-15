@@ -33,29 +33,3 @@ liip_translation_cache_clear:
 liip_translation_export:
     path:     /export
     defaults: { _controller: LiipTranslationBundle:Translation:export }
-
-
-# Import interface
-##################
-
-liip_translation_import:
-    path:     /import
-    defaults: { _controller: LiipTranslationBundle:Import:index }
-
-liip_translation_import_reset:
-    path:     /import/reset
-    defaults: { _controller: LiipTranslationBundle:Import:reset }
-
-liip_translation_import_file:
-    path:     /import/upload
-    defaults: { _controller: LiipTranslationBundle:Import:upload }
-    methods:  [POST]
-
-liip_translation_import_remove_entry:
-    path:     /import/remove-entry/{locale}/{domain}/{key}
-    defaults: { _controller: LiipTranslationBundle:Import:removeEntry }
-
-liip_translation_import_process:
-    path:     /import/process/{locale}
-    defaults: { _controller: LiipTranslationBundle:Import:process }
-    methods:  [POST]

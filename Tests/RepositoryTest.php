@@ -158,7 +158,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Liip\TranslationBundle\Persistence\NotFoundException
+     * @expectedException \Liip\TranslationBundle\Persistence\NotFoundException
      * @expectedMessage "No translation unit found for domain [non-existing domain] and key [key]"
      */
     public function testFindInvalidUnitTranslation()
