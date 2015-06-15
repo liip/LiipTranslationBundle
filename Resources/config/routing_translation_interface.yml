@@ -1,0 +1,61 @@
+# Translation interface
+#######################
+
+liip_translation_interface:
+    path:     /list
+    defaults: { _controller: LiipTranslationBundle:Translation:index }
+
+liip_translation_filter:
+    path:     /filter
+    defaults: { _controller: LiipTranslationBundle:Translation:filter }
+    methods:  [POST]
+
+liip_translation_resetfilter:
+    path:     /filter-reset
+    defaults: { _controller: LiipTranslationBundle:Translation:clearFilter }
+
+liip_translation_edit:
+    path:     /edit/{locale}/{domain}/{key}
+    defaults: { _controller: LiipTranslationBundle:Translation:edit }
+
+liip_translation_inline_edit:
+    path:     /inline-edit/
+    defaults: { _controller: LiipTranslationBundle:Translation:inlineEdit }
+
+liip_translation_remove:
+    path:     /remove/{locale}/{domain}/{key}
+    defaults: { _controller: LiipTranslationBundle:Translation:remove }
+
+liip_translation_cache_clear:
+    path:     /cache-clear
+    defaults: { _controller: LiipTranslationBundle:Translation:cacheClear }
+
+liip_translation_export:
+    path:     /export
+    defaults: { _controller: LiipTranslationBundle:Translation:export }
+
+
+# Import interface
+##################
+
+liip_translation_import:
+    path:     /import
+    defaults: { _controller: LiipTranslationBundle:Import:index }
+
+liip_translation_import_reset:
+    path:     /import/reset
+    defaults: { _controller: LiipTranslationBundle:Import:reset }
+
+liip_translation_import_file:
+    path:     /import/upload
+    defaults: { _controller: LiipTranslationBundle:Import:upload }
+    methods:  [POST]
+
+liip_translation_import_remove_entry:
+    path:     /import/remove-entry/{locale}/{domain}/{key}
+    defaults: { _controller: LiipTranslationBundle:Import:removeEntry }
+
+liip_translation_import_process:
+    path:     /import/process/{locale}
+    defaults: { _controller: LiipTranslationBundle:Import:process }
+    methods:  [POST]
