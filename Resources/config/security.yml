@@ -1,5 +1,0 @@
-security:
-  role_hierarchy:
-    ROLE_TRANSLATOR_ADMIN: [ROLE_TRANSLATOR_ALL_DOMAINS, ROLE_TRANSLATOR_ALL_LOCALES]
-    ROLE_TRANSLATOR_ALL_DOMAINS: [] # Specific domains such as ROLE_TRANSLATOR_DOMAIN_MESSAGES are created dynamically and cannot be listed here
-    ROLE_TRANSLATOR_ALL_LOCALES: [] # Specific locales such as ROLE_TRANSLATOR_LOCALE_FR_CH are created dynamically and cannot be listed here

@@ -29,7 +29,7 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:git-persistence:init')
+            ->setName('liip:translation:git-persistence:init')
             ->setDescription('Initializes a Git repository at the configured folder where your translations will be stored.')
             ->setDefinition(array(
                 new InputOption('remote', null, InputOption::VALUE_OPTIONAL, 'Git remote to clone and pull from and to push to (if given, command omits asking any questions)'),

@@ -27,7 +27,7 @@ class ListResourcesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:list-resources')
+            ->setName('liip:translation:list-resources')
             ->setDescription('List all existing translations resources found in the application.')
             ->setDefinition(array(
                 new InputOption('group', 'g', InputOption::VALUE_NONE, 'Display a single entry for all languages'),

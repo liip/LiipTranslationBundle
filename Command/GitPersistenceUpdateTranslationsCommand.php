@@ -26,7 +26,7 @@ class GitPersistenceUpdateTranslationsCommand extends GitPersistenceAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:git-persistence:pull')
+            ->setName('liip:translation:git-persistence:pull')
             ->setDescription('Updates the configured Git repository at the configured folder.')
         ;
     }

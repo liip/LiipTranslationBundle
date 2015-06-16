@@ -29,7 +29,7 @@ class ImportCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:import')
+            ->setName('liip:translation:import')
             ->setDescription('Import all existing translation units into the application storage.')
             ->setDefinition(array(
                 new InputOption('locales', null, InputOption::VALUE_REQUIRED, 'only import specific locales: comma separated list of locales (--locales=en,fr,fr_CH)'),

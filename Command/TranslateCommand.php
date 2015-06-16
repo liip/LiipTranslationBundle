@@ -29,7 +29,7 @@ class TranslateCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('translation:translate')
+            ->setName('liip:translation:translate')
             ->setDescription('Translation a key (useful for testing)')
             ->setDefinition(array(
                 new InputArgument('key', InputArgument::REQUIRED, 'The key to translate'),

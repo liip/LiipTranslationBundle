@@ -31,7 +31,7 @@ class BaseWebTestCase extends WebTestCase
         self::clearCache();
         $localesParam = empty($locales) ? '' : '--locales='.implode(',', $locales);
         $domainsParam = empty($domains) ? '' : '--domains='.implode(',', $domains);
-        self::executeCommand("app/console translation:import $localesParam $domainsParam -vvv");
+        self::executeCommand("app/console liip:translation:import $localesParam $domainsParam -vvv");
     }
 
     public function assertStatusCode($code, Client $client, $message = null)

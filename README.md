@@ -98,6 +98,15 @@ Also load the routes:
         resource: "@LiipTranslationBundle/Resources/config/routing.yml"
         prefix: /translation
 
+Alternatively you can load the translation and import interface routes separately:
+
+    _liip_translation_interface:
+        resource: "@LiipTranslationBundle/Resources/config/routing_translation_interface.yml"
+    
+    _liip_translation_import_interface:
+        resource: "@LiipTranslationBundle/Resources/config/routing_import_interface.yml"
+
+
 ### Security
 
 Access to translation management can be restricted by domains or by locales. By default, those restrictions are
