@@ -4,6 +4,7 @@ namespace Liip\TranslationBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -40,5 +41,10 @@ class LiipTranslationExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        if ($config['persistence']['service'] !== null) {
+            $container->removeDefinition('liip.translation.persistence');
+            $container->setAlias('liip.translation.persistence', $config['persistence']['service']);
+        }
     }
 }
