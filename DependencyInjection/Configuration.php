@@ -43,18 +43,27 @@ class Configuration implements ConfigurationInterface
 
                 ->arrayNode('persistence')
                     ->addDefaultsIfNotSet()
+                    ->beforeNormalization()
+                        ->ifTrue(function ($v) {
+                            return !isset($v['service']) && !isset($v['class']);
+                        })
+                        ->then(function ($v) {
+                            $v['class'] = 'Liip\TranslationBundle\Persistence\YamlFilePersistence';
+                            return $v;
+                        })
+                    ->end()
+                    ->validate()
+                        ->ifTrue(function ($v) {
+                            return $v['service'] !== null && $v['class'] !== null;
+                        })
+                        ->thenInvalid('You cannot set both the service and class in the persistence configuration')
+                    ->end()
                     ->children()
-                        ->scalarNode('class')
-                            ->isRequired()
-                            ->defaultValue('Liip\TranslationBundle\Persistence\YamlFilePersistence')
-                        ->end()
+                        ->scalarNode('service')->defaultNull()->end()
+                        ->scalarNode('class')->defaultNull()->end()
                         ->arrayNode('options')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->scalarNode('folder')
-                                    ->defaultValue("%kernel.root_dir%/data/translations")
-                                ->end()
-                            ->end()
+                            ->defaultValue(array('folder' => '%kernel.root_dir%/data/translations'))
+                            ->prototype('variable')->end()
                         ->end()
                     ->end()
                 ->end()
