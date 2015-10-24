@@ -36,7 +36,7 @@ matrix:
     - php: 5.3
       env: SYMFONY_VERSION=2.3.* COMPOSER_FLAGS="--prefer-lowest"
   allow_failures:
-    - php: SYMFONY_VERSION=3.0.*@dev
+    - env: SYMFONY_VERSION=3.0.*@dev
     - php: hhvm
 
 before_install:
