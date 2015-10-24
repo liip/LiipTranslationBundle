@@ -13,7 +13,6 @@ namespace Liip\TranslationBundle\Model;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Model
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -180,7 +179,7 @@ class Unit extends Persistent implements \ArrayAccess
 
     public function offsetExists($locale)
     {
-        return array_key_exists($locale, $this->translations) && ! $this->translations[$locale]->isDeleted;
+        return array_key_exists($locale, $this->translations) && !$this->translations[$locale]->isDeleted;
     }
 
     public function offsetGet($locale)
@@ -200,7 +199,7 @@ class Unit extends Persistent implements \ArrayAccess
             $this->translations[$locale]->setIsModified(true);
         } else {
             if (!$locale) {
-                throw new \RuntimeException("cannot set a translation without locale.");
+                throw new \RuntimeException('cannot set a translation without locale.');
             }
             $t = new Translation($value, $locale, $this);
             $t->setIsNew(true);

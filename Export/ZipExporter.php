@@ -7,12 +7,11 @@ use Liip\TranslationBundle\Model\Unit;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Export a set of Unit into YML files grouped into a ZIP file
+ * Export a set of Unit into YML files grouped into a ZIP file.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Import
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -26,7 +25,7 @@ class ZipExporter
     protected $unitsByLocaleAndDomain;
 
     /**
-     * Set the units you want to export
+     * Set the units you want to export.
      *
      * @param Unit[] $units
      */
@@ -41,7 +40,7 @@ class ZipExporter
     }
 
     /**
-     * Create the data of a zip file from the current units
+     * Create the data of a zip file from the current units.
      *
      * @return string The zip file content
      */
@@ -55,7 +54,7 @@ class ZipExporter
     }
 
     /**
-     * Create a zip file from the current units
+     * Create a zip file from the current units.
      *
      * @param string|null $path The pathname of the file o create. If not provided, file create a temporary file
      *

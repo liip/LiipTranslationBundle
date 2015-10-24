@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Importer for the classic symfony files, used by the command app/console translation:import
+ * Importer for the classic symfony files, used by the command app/console translation:import.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Import
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -15,6 +14,7 @@
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
+
 namespace Liip\TranslationBundle\Import;
 
 use Liip\TranslationBundle\Model\Unit;
@@ -41,7 +41,7 @@ class SymfonyImporter
     }
 
     /**
-     * Return the list of managed locales (defined in the bundle config)
+     * Return the list of managed locales (defined in the bundle config).
      *
      * @return array
      */
@@ -51,7 +51,7 @@ class SymfonyImporter
     }
 
     /**
-     * Return the list of all translations resources
+     * Return the list of all translations resources.
      *
      * @return array
      */
@@ -61,11 +61,11 @@ class SymfonyImporter
     }
 
     /**
-     * Return true if a resource must be ignore
+     * Return true if a resource must be ignore.
      *
      * @param array $resource
      *
-     * @return boolean
+     * @return bool
      */
     public function checkIfResourceIsIgnored($resource)
     {
@@ -178,7 +178,7 @@ class SymfonyImporter
         }
 
         $this->log("<info>Save the changes</info>\n");
-        $this->log("<comment>Persisting</comment> ... ");
+        $this->log('<comment>Persisting</comment> ... ');
         $stat = $this->repository->persist();
         $this->log("<info>Success</info>\n");
 

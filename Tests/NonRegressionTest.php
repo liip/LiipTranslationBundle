@@ -2,13 +2,10 @@
 
 namespace Liip\TranslationBundle\Tests;
 
-use Symfony\Component\HttpKernel\Kernel;
-
 /**
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Tests
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -20,7 +17,7 @@ use Symfony\Component\HttpKernel\Kernel;
 class NonRegressionTest extends BaseWebTestCase
 {
     /**
-     * Test the fallback system as defined in http://symfony.com/doc/current/book/translation.html#configuration
+     * Test the fallback system as defined in http://symfony.com/doc/current/book/translation.html#configuration.
      */
     public function testFallback()
     {
@@ -31,12 +28,12 @@ class NonRegressionTest extends BaseWebTestCase
         $this->assertEquals(
             "  fallback-key1: value_1_fr_CH\n  fallback-key2: value_2_fr\n  fallback-key3: value_3_en\n  fallback-key4: fallback-key4\n",
             substr($client->getResponse()->getContent(), 0, 1000),
-            "Assert the fallback system: fr_CH => fr => en => raw_key"
+            'Assert the fallback system: fr_CH => fr => en => raw_key'
         );
     }
 
     /**
-     * Test overriding as defined in http://symfony.com/doc/current/book/translation.html#translation-locations-and-naming-conventions
+     * Test overriding as defined in http://symfony.com/doc/current/book/translation.html#translation-locations-and-naming-conventions.
      */
     public function testOverriding()
     {
@@ -49,7 +46,7 @@ class NonRegressionTest extends BaseWebTestCase
         $this->assertEquals(
             $expectedResult,
             substr($client->getResponse()->getContent(), 0, 1000),
-            "Assert the override system: bundle => bundle in app => app"
+            'Assert the override system: bundle => bundle in app => app'
         );
     }
 
@@ -65,7 +62,7 @@ class NonRegressionTest extends BaseWebTestCase
         $this->assertEquals(
             "  no-import-key1: value_1_app\n  no-import-key2: no-import-key2\n",
             substr($client->getResponse()->getContent(), 0, 1000),
-            "Assert that translations work even when the storage is empty"
+            'Assert that translations work even when the storage is empty'
         );
     }
 }

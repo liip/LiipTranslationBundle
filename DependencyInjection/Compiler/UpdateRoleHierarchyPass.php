@@ -7,12 +7,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Compiler pass to update the security.role_hierarchy.roles
+ * Compiler pass to update the security.role_hierarchy.roles.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\DependencyInjection
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -24,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class UpdateRoleHierarchyPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

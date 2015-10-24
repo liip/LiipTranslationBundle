@@ -7,12 +7,11 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
- * A translator that work over an intermediate storage
+ * A translator that work over an intermediate storage.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -24,7 +23,8 @@ use Symfony\Component\Translation\MessageCatalogue;
 class Translator extends BaseTranslator
 {
     /**
-     * Store all the classical resources to be able to import them in the storage
+     * Store all the classical resources to be able to import them in the storage.
+     *
      * @var array
      */
     protected $standardResources = array();
@@ -33,7 +33,7 @@ class Translator extends BaseTranslator
 
     /**
      * Override the addResource, so that we can keep tracking standard resources
-     *  but we don't call the parent method as we don't want to use them anymore
+     *  but we don't call the parent method as we don't want to use them anymore.
      *
      * @param string      $format
      * @param mixed       $resource
@@ -51,7 +51,7 @@ class Translator extends BaseTranslator
     }
 
     /**
-     * Return the list of 'standard' resources
+     * Return the list of 'standard' resources.
      *
      * @return array
      */
@@ -100,11 +100,12 @@ class Translator extends BaseTranslator
     }
 
     /**
-     * Load a specific resource
+     * Load a specific resource.
      *
      * @param array $resource
      *
      * @return MessageCatalogue
+     *
      * @throws \RuntimeException
      */
     public function loadResource($resource)
@@ -130,7 +131,7 @@ class Translator extends BaseTranslator
     }
 
     /**
-     * Initialize the translation before loading catalogues from the storage
+     * Initialize the translation before loading catalogues from the storage.
      */
     protected function initialize()
     {

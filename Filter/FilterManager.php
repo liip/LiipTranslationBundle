@@ -6,12 +6,11 @@ use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\DependencyInjection\Configuration;
 
 /**
- * Allow to filter translation based on a set of session filters
+ * Allow to filter translation based on a set of session filters.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Form
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -44,7 +43,7 @@ class FilterManager
     }
 
     /**
-     * Return the current filters to apply (from the session or the default config)
+     * Return the current filters to apply (from the session or the default config).
      *
      * @return array
      */
@@ -56,7 +55,7 @@ class FilterManager
     }
 
     /**
-     * Update the filters in session
+     * Update the filters in session.
      *
      * @param $newFilters
      */
@@ -66,7 +65,7 @@ class FilterManager
     }
 
     /**
-     * Clear the current filters
+     * Clear the current filters.
      */
     public function resetFilters()
     {
@@ -74,7 +73,7 @@ class FilterManager
     }
 
     /**
-     * Get the default filters from the config
+     * Get the default filters from the config.
      *
      * @return array
      */

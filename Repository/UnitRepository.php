@@ -9,16 +9,14 @@ use Liip\TranslationBundle\Persistence\NotFoundException;
 use Liip\TranslationBundle\Persistence\PersistenceInterface;
 use Liip\TranslationBundle\Translation\Translator;
 use Liip\TranslationBundle\Security\Security;
-
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
- * Allow to retrieve, filter and persist translation unit
+ * Allow to retrieve, filter and persist translation unit.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Repository
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -55,7 +53,7 @@ class UnitRepository
     }
 
     /**
-     * Return the list of managed locales (defined in the bundle config)
+     * Return the list of managed locales (defined in the bundle config).
      *
      * @return array
      */
@@ -81,7 +79,7 @@ class UnitRepository
                         $found = true;
                     }
                 }
-                if (! $found) {
+                if (!$found) {
                     $units[] = $u;
                 }
             }
@@ -125,7 +123,7 @@ class UnitRepository
     {
         $this->loadAll();
 
-        if (! is_array($columns)) {
+        if (!is_array($columns)) {
             $columns = array($columns => $value);
         }
 
@@ -277,7 +275,7 @@ class UnitRepository
 
     protected function generateStatisticText($stats)
     {
-        return sprintf("%s created, %s modified and %s removed", $stats['created'], $stats['updated'], $stats['deleted']);
+        return sprintf('%s created, %s modified and %s removed', $stats['created'], $stats['updated'], $stats['deleted']);
     }
 
     /**
@@ -313,7 +311,8 @@ class UnitRepository
     }
 
     /**
-     * Remove a specific translation
+     * Remove a specific translation.
+     *
      * @param string $locale
      * @param string $domain
      * @param string $key
@@ -326,7 +325,8 @@ class UnitRepository
     }
 
     /**
-     * Update a specific translation
+     * Update a specific translation.
+     *
      * @param string $locale
      * @param string $domain
      * @param string $key
@@ -346,7 +346,7 @@ class UnitRepository
      */
     public function findFiltered(array $filters)
     {
-        /** @var Unit[] $units */
+        /* @var Unit[] $units */
         if (!isset($filters['domain']) || is_null($filters['domain']) || empty($filters['domain'])) {
             $units = $this->findAll();
         } else {
@@ -370,7 +370,7 @@ class UnitRepository
             $valueCount = 0;
             foreach ($u->getTranslations() as $t) {
                 // Remove translations not required
-                if (! in_array($t->getLocale(), $filters['locale'])) {
+                if (!in_array($t->getLocale(), $filters['locale'])) {
                     unset($u[$t->getLocale()]);
                     continue;
                 }
@@ -378,10 +378,10 @@ class UnitRepository
                 // Count empty or match values
                 $value = $t->getValue();
                 if ($value !== null && strlen($value) > 0) {
-                    $nonEmptyCount++;
+                    ++$nonEmptyCount;
                 }
                 if ($filterValue && strpos($value, $filterValue) !== false) {
-                    $valueCount++;
+                    ++$valueCount;
                 }
             }
 

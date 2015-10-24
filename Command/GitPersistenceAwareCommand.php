@@ -6,12 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Liip\TranslationBundle\Persistence\GitPersistence;
 
 /**
- * Abstract command class for every command that is related to GitPersistence
+ * Abstract command class for every command that is related to GitPersistence.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Command
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -21,7 +20,7 @@ use Liip\TranslationBundle\Persistence\GitPersistence;
 abstract class GitPersistenceAwareCommand extends ContainerAwareCommand
 {
     /**
-     * Returns the configured repository, which should be a GitPersistence
+     * Returns the configured repository, which should be a GitPersistence.
      *
      * @return GitPersistence
      *
