@@ -6,14 +6,12 @@ use Liip\TranslationBundle\Export\ZipExporter;
 use Liip\TranslationBundle\Model\Unit;
 
 /**
- * Add some more methods on the ZipArchive base class
- *
- * @package Liip\TranslationBundle\Tests\Export
+ * Add some more methods on the ZipArchive base class.
  */
 class ZipArchive extends \ZipArchive
 {
     /**
-     * Return the list of files
+     * Return the list of files.
      *
      * @return array
      */
@@ -23,7 +21,7 @@ class ZipArchive extends \ZipArchive
         $fileList = array();
         while ($index < $this->numFiles) {
             $fileList[] = $this->getNameIndex($index);
-            $index++;
+            ++$index;
         }
 
         return $fileList;
@@ -31,12 +29,11 @@ class ZipArchive extends \ZipArchive
 }
 
 /**
- * Test the Zip exporter
+ * Test the Zip exporter.
  *
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Tests\Export
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -100,8 +97,10 @@ class XliffFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Export a zip for the provided units
+     * Export a zip for the provided units.
+     *
      * @param $units
+     *
      * @return ZipArchive
      */
     protected function getZipFromUnit($units)

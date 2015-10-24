@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Kernel;
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Tests\Controller
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

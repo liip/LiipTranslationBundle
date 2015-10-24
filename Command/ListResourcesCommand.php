@@ -8,12 +8,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * List all existing translations resources
+ * List all existing translations resources.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Command
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -40,7 +39,7 @@ class ListResourcesCommand extends ContainerAwareCommand
         $output->writeln("\n<comment>List of available translation resources:</comment>\n");
         $resources = $this->getContainer()->get('liip.translation.symfony_importer')->getStandardResources();
 
-        if (! $input->getOption('group')) {
+        if (!$input->getOption('group')) {
             foreach ($resources as $resource) {
                 $path = $resource['path'];
                 $output->writeln("\t".realpath($path));
@@ -51,7 +50,7 @@ class ListResourcesCommand extends ContainerAwareCommand
                 $pathParts = pathinfo(realpath($resource['path']));
                 list($domain, $locale) = explode('.', $pathParts['filename']);
                 $resource = $pathParts['dirname'].'/'.$domain;
-                if (! array_key_exists($resource, $languageByResources)) {
+                if (!array_key_exists($resource, $languageByResources)) {
                     $languageByResources[$resource] = array();
                 }
                 $languageByResources[$resource][] = $locale;

@@ -9,12 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Controller used for the translation interface
+ * Controller used for the translation interface.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Controller
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

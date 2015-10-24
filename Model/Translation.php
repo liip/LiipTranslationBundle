@@ -3,12 +3,11 @@
 namespace Liip\TranslationBundle\Model;
 
 /**
- * Representation of a translation element
+ * Representation of a translation element.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Model
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -43,7 +42,7 @@ class Translation extends Persistent
     }
 
     /**
-     * Mark this translation as deleted (will be remove at the next persist)
+     * Mark this translation as deleted (will be remove at the next persist).
      */
     public function delete()
     {

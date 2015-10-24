@@ -7,12 +7,11 @@ use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTransla
 use Liip\TranslationBundle\Model\Unit as ModelUnit;
 
 /**
- * The propel representation of a unit
+ * The propel representation of a unit.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -24,7 +23,7 @@ use Liip\TranslationBundle\Model\Unit as ModelUnit;
 class Unit extends BaseUnit
 {
     /**
-     * Create a ModelUnit representation of a this object
+     * Create a ModelUnit representation of a this object.
      *
      * @return ModelUnit
      */
@@ -43,7 +42,7 @@ class Unit extends BaseUnit
     }
 
     /**
-     * Update the current object from a ModelUnit
+     * Update the current object from a ModelUnit.
      *
      * @param ModelUnit $unit
      */
@@ -55,7 +54,7 @@ class Unit extends BaseUnit
     }
 
     /**
-     * Get or create a Propel Tranlation object for the given locale
+     * Get or create a Propel Tranlation object for the given locale.
      *
      * @param string $locale
      *

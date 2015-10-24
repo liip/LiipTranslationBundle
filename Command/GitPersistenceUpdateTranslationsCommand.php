@@ -6,12 +6,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Update translations in the Git repository used for GitPersistence
+ * Update translations in the Git repository used for GitPersistence.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Command
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -21,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class GitPersistenceUpdateTranslationsCommand extends GitPersistenceAwareCommand
 {
     /**
-     * Configuration
+     * Configuration.
      */
     protected function configure()
     {
@@ -36,6 +35,7 @@ class GitPersistenceUpdateTranslationsCommand extends GitPersistenceAwareCommand
      * @param OutputInterface $output
      *
      * @return int|null|void
+     *
      * @throws \RuntimeException
      */
     protected function execute(InputInterface $input, OutputInterface $output)

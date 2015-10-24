@@ -7,12 +7,11 @@ use Liip\TranslationBundle\Model\Translation;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * Persistance layer that store all data into two YAML files
+ * Persistance layer that store all data into two YAML files.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -21,7 +20,6 @@ use Symfony\Component\Yaml\Yaml;
  * @author Sylvain Fankhauser <sylvain.fankhauser@liip.ch>
  * @copyright Copyright (c) 2013, Liip, http://www.liip.ch
  */
-
 class YamlFilePersistence implements PersistenceInterface
 {
     protected $directory;
@@ -40,6 +38,7 @@ class YamlFilePersistence implements PersistenceInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return \Liip\TranslationBundle\Model\Unit[]
      */
     public function getUnits()

@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Controller
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -27,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ImportController extends BaseController
 {
     /**
-     * Importating dashboard
+     * Importating dashboard.
      *
      * @return Response
      */
@@ -40,7 +39,7 @@ class ImportController extends BaseController
     }
 
     /**
-     * Clear the current dashboard
+     * Clear the current dashboard.
      *
      * @return Response
      */
@@ -52,7 +51,7 @@ class ImportController extends BaseController
     }
 
     /**
-     * File upload handling, redirect to the dashboard
+     * File upload handling, redirect to the dashboard.
      *
      * @param Request $request the request
      *
@@ -79,7 +78,7 @@ class ImportController extends BaseController
     }
 
     /**
-     * Remove an entry from the session
+     * Remove an entry from the session.
      *
      * @param string $locale
      * @param string $domain
@@ -99,7 +98,7 @@ class ImportController extends BaseController
     }
 
     /**
-     * Process the importation for the given locale, and redirect to the dashboard
+     * Process the importation for the given locale, and redirect to the dashboard.
      *
      * @param string $locale
      *

@@ -8,12 +8,11 @@ use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Importer session based, allow to upload several files, then to edit/remove translations before processing the import
+ * Importer session based, allow to upload several files, then to edit/remove translations before processing the import.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Import
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -51,7 +50,7 @@ class SessionImporter
     }
 
     /**
-     * Take care of uploaded files (including zip) for importing resources
+     * Take care of uploaded files (including zip) for importing resources.
      *
      * @param UploadedFile $file
      *
@@ -78,18 +77,19 @@ class SessionImporter
     }
 
     /**
-     * Extract a zip file into a temp folder and return the folder path
+     * Extract a zip file into a temp folder and return the folder path.
      *
      * @param UploadedFile $file
      *
-     * @return string          The path to the temp folder
+     * @return string The path to the temp folder
+     *
      * @throws ImportException
      */
     protected function extractZip($file)
     {
         $tempFolder = sys_get_temp_dir().'/'.md5(rand(0, 99999));
         if (@mkdir($tempFolder) === false) {
-            throw new ImportException("Impossible to create a temp folder for zip extraction");
+            throw new ImportException('Impossible to create a temp folder for zip extraction');
         }
         $zip = new \ZipArchive();
         $zip->open($file->getRealPath());
@@ -100,12 +100,13 @@ class SessionImporter
     }
 
     /**
-     * Add a file to the current import buffer
+     * Add a file to the current import buffer.
      *
      * @param string $filePath The path to the file
      * @param string $fileName Optional, the filename to parse to extract resources data
      *
      * @return array
+     *
      * @throws ImportException
      */
     protected function importFile($filePath, $fileName = null)
@@ -211,7 +212,7 @@ class SessionImporter
     }
 
     /**
-     * Reset the buffer
+     * Reset the buffer.
      */
     public function clear()
     {

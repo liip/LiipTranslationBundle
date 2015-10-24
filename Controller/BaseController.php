@@ -11,7 +11,6 @@ use Liip\TranslationBundle\Repository\UnitRepository;
 use Liip\TranslationBundle\Security\Security;
 use Liip\TranslationBundle\Translation\Translator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -21,7 +20,6 @@ use Symfony\Component\Security\Core\SecurityContext;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Controller
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
