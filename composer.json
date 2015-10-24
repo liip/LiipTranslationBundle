@@ -28,9 +28,8 @@
         "twig/twig": "~1.0"
     },
     "autoload": {
-        "psr-0": { "Liip\\TranslationBundle": "" }
+        "psr-4": { "Liip\\TranslationBundle\\": "" }
     },
-    "target-dir": "Liip/TranslationBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "0.2.x-dev"
