@@ -8,14 +8,15 @@ use Symfony\Component\Translation\Loader\XliffFileLoader as BaseLoader;
 class XliffFileLoader extends BaseLoader
 {
     /**
-     * Load translations and metadata of the trans-unit
+     * Load translations and metadata of the trans-unit.
      *
      * {@inheritdoc}
+     *
      * @api
      */
     public function load($resource, $locale, $domain = 'messages')
     {
-        /** @var MessageCatalogue $catalogue */
+        /* @var MessageCatalogue $catalogue */
         $base_catalogue = parent::load($resource, $locale, $domain);
         $catalogue = new MessageCatalogue($locale);
         $catalogue->addCatalogue($base_catalogue);

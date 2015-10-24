@@ -7,12 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Return some basic pages used in the non regression tests
+ * Return some basic pages used in the non regression tests.
  *
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Tests
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

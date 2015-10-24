@@ -15,7 +15,6 @@ use Symfony\Component\Translation\TranslatorInterface;
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Command
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

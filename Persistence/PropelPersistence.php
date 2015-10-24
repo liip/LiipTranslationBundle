@@ -11,12 +11,11 @@ use Liip\TranslationBundle\Persistence\Propel\Model\TranslationQuery;
 use Liip\TranslationBundle\Persistence\Propel\Model\Translation as PropelTranslation;
 
 /**
- * Persistence layer based on Propel
+ * Persistence layer based on Propel.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

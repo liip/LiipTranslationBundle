@@ -5,16 +5,13 @@ namespace Liip\TranslationBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Process\Process;
 
 /**
- * Initialize a Git repo inside your project to use git persistence
+ * Initialize a Git repo inside your project to use git persistence.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Command
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -24,7 +21,7 @@ use Symfony\Component\Process\Process;
 class GitPersistenceInitCommand extends GitPersistenceAwareCommand
 {
     /**
-     * Configuration
+     * Configuration.
      */
     protected function configure()
     {
@@ -56,8 +53,9 @@ class GitPersistenceInitCommand extends GitPersistenceAwareCommand
 
             $remote = $dialog->ask($output, 'Please enter a Git remote to clone and pull from and to push to: ');
 
-            if (!$dialog->askConfirmation($output, '<question>' . $remote . ' will be cloned into ' . $persistence->getDirectoryName() . '. Continue? [y] </question>', false)) {
+            if (!$dialog->askConfirmation($output, '<question>'.$remote.' will be cloned into '.$persistence->getDirectoryName().'. Continue? [y] </question>', false)) {
                 $output->writeln('Not cloning, cancelled.');
+
                 return;
             }
         }

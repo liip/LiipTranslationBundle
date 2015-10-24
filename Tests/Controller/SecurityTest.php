@@ -4,7 +4,6 @@ namespace Liip\TranslationBundle\Tests\Controller;
 
 use Liip\TranslationBundle\Security\Security;
 use Liip\TranslationBundle\Tests\BaseWebTestCase;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Yaml\Yaml;
 
@@ -12,7 +11,6 @@ use Symfony\Component\Yaml\Yaml;
  * This file is part of the LiipTranslationBundle test suite.
  * For more information concerning the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Tests\Controller
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
