@@ -6,14 +6,13 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files
+ * This is the class that validates and merges configuration from your app/config files.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\DependencyInjection
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -27,7 +26,7 @@ class Configuration implements ConfigurationInterface
     const SESSION_PREFIX = 'liip.translation.';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -49,6 +48,7 @@ class Configuration implements ConfigurationInterface
                         })
                         ->then(function ($v) {
                             $v['class'] = 'Liip\TranslationBundle\Persistence\YamlFilePersistence';
+
                             return $v;
                         })
                     ->end()

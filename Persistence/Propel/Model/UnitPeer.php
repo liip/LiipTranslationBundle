@@ -5,12 +5,11 @@ namespace Liip\TranslationBundle\Persistence\Propel\Model;
 use Liip\TranslationBundle\Persistence\Propel\Model\om\BaseUnitPeer;
 
 /**
- * Peer class of the propel representation of a unit
+ * Peer class of the propel representation of a unit.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License

@@ -1,13 +1,13 @@
 non_regression_fallback:
-    pattern:  /non-regression/fallback
+    path:     /non-regression/fallback
     defaults: { _controller: TestBundle:Test:fallbackTest }
 
 non_regression_override:
-    pattern:  /non-regression/override
+    path:     /non-regression/override
     defaults: { _controller: TestBundle:Test:overrideTest }
 
 non_regression_no_import:
-    pattern:  /non-regression/no-import
+    path:     /non-regression/no-import
     defaults: { _controller: TestBundle:Test:noImportTest }
 
 liip_translation:

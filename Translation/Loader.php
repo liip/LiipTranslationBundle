@@ -6,12 +6,11 @@ use Liip\TranslationBundle\Repository\UnitRepository;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 
 /**
- * Load translations from the repository (intermediate storage)
+ * Load translations from the repository (intermediate storage).
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Translation
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -31,6 +30,7 @@ class Loader implements LoaderInterface
 
     /**
      * {@inheritdoc}
+     *
      * @api
      */
     public function load($resource, $locale, $domain = 'messages')

@@ -7,12 +7,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Compiler pass to dynamically set the service for isGrant checks (can be removed when requiring Symfony 2.6+
+ * Compiler pass to dynamically set the service for isGrant checks (can be removed when requiring Symfony 2.6+.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\DependencyInjection
  * @version 0.2.0
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -22,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class SecurityPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

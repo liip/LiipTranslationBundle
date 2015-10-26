@@ -6,12 +6,11 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Persistence layer based on Yaml and Git
+ * Persistence layer based on Yaml and Git.
  *
  * This file is part of the LiipTranslationBundle. For more information concerning
  * the bundle, see the README.md file at the project root.
  *
- * @package Liip\TranslationBundle\Persistence
  * @version 0.0.1
  *
  * @license http://opensource.org/licenses/MIT MIT License
@@ -41,7 +40,7 @@ class GitPersistence extends YamlFilePersistence
     protected $processClass;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $options
      */
@@ -55,7 +54,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Saves units to Yaml and auto-commits them to git
+     * Saves units to Yaml and auto-commits them to git.
      *
      * @param array $units
      */
@@ -67,7 +66,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Deletes units and auto-commits them to git
+     * Deletes units and auto-commits them to git.
      *
      * @param array $units
      */
@@ -79,7 +78,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Saves translations to Yaml and auto-commits them
+     * Saves translations to Yaml and auto-commits them.
      *
      * @param array $translations
      */
@@ -91,7 +90,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Deletes translations and auto-commits them
+     * Deletes translations and auto-commits them.
      *
      * @param array $translations
      */
@@ -103,7 +102,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Returns the directory given
+     * Returns the directory given.
      *
      * @return string
      */
@@ -113,7 +112,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Pulls the translation repository
+     * Pulls the translation repository.
      *
      * @return bool
      */
@@ -126,7 +125,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Clones a given remote
+     * Clones a given remote.
      *
      * @param string $remote
      *
@@ -136,10 +135,10 @@ class GitPersistence extends YamlFilePersistence
      */
     public function cloneRepository($remote)
     {
-        $fileSystem = new Filesystem;
+        $fileSystem = new Filesystem();
         $fileSystem->mkdir($this->directory);
 
-        if ($fileSystem->exists($this->directory . DIRECTORY_SEPARATOR . '.git')) {
+        if ($fileSystem->exists($this->directory.DIRECTORY_SEPARATOR.'.git')) {
             throw new \RuntimeException(sprintf('"%s" already is a git repository.', $this->directory));
         }
 
@@ -151,7 +150,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Commits translations
+     * Commits translations.
      *
      * @param array $translations
      *
@@ -167,7 +166,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Commits units
+     * Commits units.
      *
      * @param array $units
      *
@@ -183,11 +182,12 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Executes a given command on the shell
+     * Executes a given command on the shell.
      *
      * @param string $command
      *
      * @return bool
+     *
      * @throws \RuntimeException
      */
     protected function executeCmd($command)
@@ -203,7 +203,7 @@ class GitPersistence extends YamlFilePersistence
     }
 
     /**
-     * Get a set of usable options
+     * Get a set of usable options.
      *
      * @param array $options
      *
@@ -211,14 +211,14 @@ class GitPersistence extends YamlFilePersistence
      */
     protected function getResolvedOptions(array $options)
     {
-        $resolver = new OptionsResolver;
+        $resolver = new OptionsResolver();
         $resolver->setDefaults(array(
-                'processClass' => "Symfony\\Component\\Process\\Process"
+                'processClass' => 'Symfony\\Component\\Process\\Process',
             ))
             ->setRequired(array('folder'))
             ->setAllowedTypes(array(
                 'processClass' => 'string',
-                'folder' => 'string'
+                'folder' => 'string',
             ))
         ;
 
