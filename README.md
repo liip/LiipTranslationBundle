@@ -8,7 +8,7 @@ This Bundle provides various tools to ease translations management of a Sf2 app.
 Introduction
 ------------
 
-This bundle add a new layer in top of the translation mechanisms. This allows your customer to edit and override any translations directly from the website.
+This bundle adds a new layer on top of existing translation mechanisms. This allows your customers to edit and override any translations directly from the website.
 
 ### Separation of concern
 
@@ -29,11 +29,11 @@ The intermediate storage is currently available for:
  * Propel (database)
  * YAML (file or in Git)
 
-but adding a new persistence is very easy (you just have to implement a small interface)
+but adding a new persistence implementation is very easy (you just have to implement a small interface)
 
 ### Symfony compatibility
 
-This bundle work on any symfony 2.3+ version. Unit and functional tests have been written to ensure this compatibility.
+This bundle works on any Symfony versions 2.3+. Unit and functional tests have been written to ensure this compatibility.
 
 Features
 --------
@@ -75,6 +75,18 @@ Installation
 
 Configuration
 -------------
+
+Include the bundle in your ``AppKernel.php``:
+
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+            new Liip\TranslationBundle\LiipTranslationBundle(),
+            // ...
+        );
+        // ...
+    }
 
 In your ``config.yml`` add the given Bundle specific configuration, for example:
 
@@ -118,7 +130,7 @@ disabled, you can turn them on in the config, with:
             by_domain: false
             by_locale: true
 
-You can activate, one or both restrictions together. Once this have been activated, you have to attribute
+You can activate one or both restrictions together. Once this have been activated, you have to attribute
 associated roles to your users. The existing roles are:
 
     ROLE_TRANSLATOR_ADMIN
